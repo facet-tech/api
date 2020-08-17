@@ -18,24 +18,11 @@ var ginLambda *ginadapter.GinLambda
 // returns a proxy response
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	if ginLambda == nil {
-		// stdout and stderr are sent to AWS CloudWatch Logs
 		log.Printf("Gin cold start")
 		r := gin.Default()
-		/*r.Use(cors.New(cors.Config{
-			AllowOrigins:     []string{"*"},
-			AllowMethods:     []string{"PUT", "PATCH", "GET", "POST", "DELETE", "HEAD", "OPTIONS"},
-			AllowHeaders:     []string{"Origin"},
-			ExposeHeaders:    []string{"Content-Length"},
-			AllowCredentials: true,
-			AllowOriginFunc: func(origin string) bool {
-				return origin == "*"
-			},
-		}))*/
-
 		r.GET("/facet/:id", getFacet)
 		r.POST("/facet/:id", createFacet)
 		r.DELETE("/facet/:id", deleteFacet)
-
 		ginLambda = ginadapter.New(r)
 	}
 
