@@ -36,9 +36,6 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
 
-    - name: Terraform Init
-      run: terraform init
-
     - name: Deploy
       if: github.ref == 'refs/heads/master'
-      run: cd facet.ninja/api/terraform && terraform apply -auto-approve
+      run: cd facet.ninja/api/terraform && terraform init && terraform apply -auto-approve
