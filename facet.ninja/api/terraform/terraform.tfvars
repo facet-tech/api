@@ -1,0 +1,8 @@
+account_id                   = "935571265336"
+aws_lambda_qualifier_version = "$LATEST"
+environment                  = "dev"
+filename                     = "../build/main.zip"
+handler                      = "main"
+name                         = "api"
+region                       = "us-west-2"
+runtime                      = "go1.x"
