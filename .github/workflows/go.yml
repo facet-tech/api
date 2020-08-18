@@ -41,4 +41,4 @@ jobs:
 
     - name: Deploy
       if: github.ref == 'refs/heads/master'
-      run: facet.ninja/api/terraform && terraform apply -auto-approve
+      run: cd facet.ninja/api/terraform && terraform apply -auto-approve
