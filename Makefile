@@ -12,8 +12,9 @@ all: clean build package
 build: 
 	$(GOBUILD) ./...
 	cd facet.ninja/api/src && $(GOBUILD) -o ../build/$(BINARY_NAME)
+	cd ../../../
 package:
-	cd facet.ninja/api/src && zip ../build/main.zip ../build/$(BINARY_NAME)
+	zip ./facet.ninja/api/build/main.zip ./facet.ninja/api/build/$(BINARY_NAME)
 #test:#
 #	$(GOTEST) -v ./sample
 clean: 

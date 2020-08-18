@@ -30,5 +30,15 @@ jobs:
             dep ensure
         fi
 
-    - name: make
+    - name: build
       run: make
+
+    - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Deploy
+        if: github.ref == 'refs/heads/master'
+        run: facet.ninja/api/terraform && terraform apply -auto-approve
