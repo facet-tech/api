@@ -48,7 +48,7 @@ func getJs(c *gin.Context) {
 		facets, error := getItem(site)
 		for _, facet := range facets.Facet {
 			for _, facetId := range facet.Id {
-				commaSeperatedIdsString += commaSeperatedIdsString + ",\"" + facetId + "\""
+				commaSeperatedIdsString += ",\"" + facetId + "\"\n"
 			}
 		}
 		javascript = strings.Replace(javascript, "GO_ARRAY_REPLACE_ME", strings.TrimPrefix(commaSeperatedIdsString, ","), -1)
