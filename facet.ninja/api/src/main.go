@@ -48,10 +48,10 @@ func getJs(c *gin.Context) {
 		facets, error := getItem(site)
 		for _, facet := range facets.Facet {
 			for _, facetId := range facet.Id {
-				commaSeperatedIdsString += ",\"" + facetId + "\"\n"
+				commaSeperatedIdsString += "\t'" + facetId + "',\n"
 			}
 		}
-		javascript = strings.Replace(javascript, "GO_ARRAY_REPLACE_ME", strings.TrimPrefix(commaSeperatedIdsString, ","), -1)
+		javascript = strings.Replace(javascript, "GO_ARRAY_REPLACE_ME", strings.TrimSuffix(commaSeperatedIdsString, ","), -1)
 		if error == nil {
 			c.Data(200, "text/javascript", []byte(javascript))
 		} else {
@@ -92,7 +92,7 @@ func js() string {
 //aHR0cHM6Ly9teXdlYnNpdGUuZmFjZXQubmluamEv
 var all = document.getElementsByTagName("*");
 var nodesToRemove = new Set([
-    GO_ARRAY_REPLACE_ME
+	GO_ARRAY_REPLACE_ME
 ])
 
 const callback = async function(mutationsList, observer) {
