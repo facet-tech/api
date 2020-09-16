@@ -87,7 +87,7 @@ func js() string {
 		el = el.parentNode;
 	}
 	var aa = stack.slice(1);
-	return aa.join(' > ');
+	return aa.join('>');
 }
 //aHR0cHM6Ly9teXdlYnNpdGUuZmFjZXQubmluamEv
 var all = document.getElementsByTagName("*");
