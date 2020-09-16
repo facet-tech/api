@@ -89,18 +89,18 @@ func js() string {
 	var aa = stack.slice(1);
 	return aa.join('>');
 }
-//aHR0cHM6Ly9teXdlYnNpdGUuZmFjZXQubmluamEv
-var all = document.getElementsByTagName("*");
+
 var nodesToRemove = new Set([
 	GO_ARRAY_REPLACE_ME
 ])
 
 const callback = async function(mutationsList, observer) {
 for(let mutation of mutationsList) {
-if(nodesToRemove.has(getDomPath(mutation.target))) {
-mutation.target.remove();
-}
-}
+	if(nodesToRemove.has(getDomPath(mutation.target))) {
+		mutation.target.style.display = "none"
+		mutation.target.style.setProperty("display", "none", "important");
+		}
+	}
 };
 
 const targetNode = document
