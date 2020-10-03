@@ -95,12 +95,14 @@ var nodesToRemove = new Set([
 ])
 
 const callback = async function(mutationsList, observer) {
-for(let mutation of mutationsList) {
-	if(nodesToRemove.has(getDomPath(mutation.target))) {
-		mutation.target.style.display = "none"
-		mutation.target.style.setProperty("display", "none", "important");
-		}
-	}
+    if ((disableHideFacetNinja === undefined || disableHideFacetNinja === null) && disableHideFacetNinja !== true) {
+        for(let mutation of mutationsList) {
+	        if(nodesToRemove.has(getDomPath(mutation.target))) {
+	        	mutation.target.style.display = "none"
+	        	mutation.target.style.setProperty("display", "none", "important");
+            }
+        }
+    }
 };
 
 const targetNode = document
