@@ -95,7 +95,7 @@ var nodesToRemove = new Set([
 ])
 
 const callback = async function(mutationsList, observer) {
-    if ((typeof variable === 'undefined' || disableHideFacetNinja === null || disableHideFacetNinja === false) {
+    if (typeof variable === 'undefined' || disableHideFacetNinja === null || disableHideFacetNinja === false) {
         for(let mutation of mutationsList) {
 	        if(nodesToRemove.has(getDomPath(mutation.target))) {
 	        	mutation.target.style.display = "none"
