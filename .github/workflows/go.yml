@@ -31,7 +31,7 @@ jobs:
         fi
 
     - name: build
-      run: make
+      run: cd src/facet.ninja/api && make
 
     - name: Setup SSH Keys and known_hosts
       env:
@@ -58,4 +58,4 @@ jobs:
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
       if: github.ref == 'refs/heads/master'
-      run: cd facet.ninja/api/terraform && terraform init && terraform apply -auto-approve
+      run: cd deploy && terraform init && terraform apply -auto-approve

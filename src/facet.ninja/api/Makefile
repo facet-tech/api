@@ -10,13 +10,14 @@ BINARY_NAME=main
     
 all: clean build package
 build: 
+	#cd src/facet.ninja/api
 	$(GOBUILD) ./...
-	cd facet.ninja/api/src && $(GOBUILD) -o ../build/$(BINARY_NAME)
-	cd ../../../
+	$(GOBUILD) -o ../../../build/$(BINARY_NAME)
+	#cd ../../..
 package:
-	zip ./facet.ninja/api/build/main.zip ./facet.ninja/api/build/$(BINARY_NAME)
+	cd ../../.. && zip ./build/main.zip ./build/$(BINARY_NAME)
 #test:#
 #	$(GOTEST) -v ./sample
 clean: 
-	rm -f facet.ninja/api/src/$(BINARY_NAME)
-	rm -f facet.ninja/api/src/$(BINARY_NAME).zip
+	rm -f ../../../build/$(BINARY_NAME)
+	rm -f ..//../../build/$(BINARY_NAME).zip
