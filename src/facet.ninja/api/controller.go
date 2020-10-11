@@ -131,6 +131,7 @@ const callback = async function(mutationsList, observer) {
 	        	mutation.target.style.display = "none"
 	        	mutation.target.style.setProperty("display", "none", "important");
             }
+            console.log(getDomPath(mutation.target))
         }
     }
 };
