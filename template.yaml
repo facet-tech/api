@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description:
+  Facet.ninja rest API
+Resources:
+  API:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: ./build/main
+      CodeUri: ./build/main.zip
+      Runtime: go1.x
+      Timeout: 5
+      Events:
+        ProxyApiGreedy:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
