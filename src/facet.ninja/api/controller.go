@@ -130,7 +130,15 @@ const callback = async function(mutationsList, observer) {
 	        if(nodesToRemove.has(getDomPath(mutation.target))) {
 	        	mutation.target.style.display = "none"
 	        	mutation.target.style.setProperty("display", "none", "important");
-            }
+            } 
+           
+               for (let child_node of mutation.target.children)  { 
+                   console.log(getDomPath(child_node))
+                   child_node.style.display = "none"
+	        	   child_node.style.setProperty("display", "none", "important");
+                   
+                }
+            
             console.log(getDomPath(mutation.target))
         }
     }
