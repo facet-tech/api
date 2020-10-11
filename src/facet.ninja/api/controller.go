@@ -116,7 +116,7 @@ func js() string {
         el = el.parentNode;
     }
     var res = stack.slice(1).join(' > '); // removes the html element
-    return res;
+    return res.replace(/\s+/g, '');
 }
 
 var data = new Map([
