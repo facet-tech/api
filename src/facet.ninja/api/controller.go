@@ -123,21 +123,25 @@ var data = new Map([
 GO_ARRAY_REPLACE_ME
 ])
 
+var facetedNodes = new Set()
+
 const callback = async function(mutationsList, observer) {
     if ((typeof disableHideFacetNinja === 'undefined' || disableHideFacetNinja === null || disableHideFacetNinja === false) && data.has(window.location.pathname)) {
         let nodesToRemove = data.get(window.location.pathname)       
         for(let mutation of mutationsList) {
-	        if(nodesToRemove.has(getDomPath(mutation.target))) {
-	        	mutation.target.style.display = "none"
+            let domPath = getDomPath(mutation.target)
+	        if(nodesToRemove.has(domPath) && !facetedNodes.has(domPath)) {
+	        	facetedNodes.add(domPath)
+                mutation.target.style.display = "none"
 	        	mutation.target.style.setProperty("display", "none", "important");
             }
-            console.log(getDomPath(mutation.target))
+            //console.log(getDomPath(mutation.target))
         }
     }
 };
 
 const targetNode = document
-const config = { subtree: true, childList: true };
+const config = { subtree: true, childList: true, attributes: true};
 const observer = new MutationObserver(callback);
 observer.observe(targetNode, config);`
 	return script
