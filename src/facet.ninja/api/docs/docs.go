@@ -46,5 +46,5 @@ type foobarParamsWrapper struct {
 	// This text will appear as description of your request body.
 	// in:query
 	DomainID    string `json:"domainId"`
-	WorkspaceId string `json:"workspaceId"`
+	WorkspaceID string `json:"workspaceId"`
 }
