@@ -29,4 +29,7 @@ swagger: check-swagger
 	go mod vendor  && swagger generate spec -o ./swagger.yaml --scan-models
 
 serve-swagger: check-swagger
-	swagger serve -F=swagger swagger.yaml
+	swagger serve -F=swagger swagger.yaml --host=localhost --port 8282
+
+swagger-generate: 
+	make swagger && make serve-swagger
