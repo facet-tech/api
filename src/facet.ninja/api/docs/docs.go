@@ -2,13 +2,12 @@ package docs
 
 import (
 	"facet.ninja/api/domain"
-	"github.com/pdrum/swagger-automation/api"
 )
 
 // swagger:route GET /domain Domain domainResponseWrapper
 // Foobar does some amazing stuff.
 // responses:
-//   200: domainResponseWrapper
+//   400: notFoundResponseWrapper
 
 // swagger:route POST /domain Domain domainResponseWrapper
 // Foobar does some amazing stuff.
@@ -18,14 +17,7 @@ import (
 // swagger:route DELETE /domain Domain domainResponseWrapper
 // Foobar does some amazing stuff.
 // responses:
-//   200
-
-// This text will appear as description of your response body.
-// swagger:response foobarResponse
-type foobarResponseWrapper struct {
-	// in:body
-	Body api.FooBarResponse
-}
+//   400
 
 // This text will appear as description of your response body.
 // swagger:response domainResponseWrapper
@@ -34,9 +26,6 @@ type domainResponseWrapper struct {
 	Body domain.Domain
 }
 
-// swagger:parameters idOfFoobarEndpoint
-type foobarParamsWrapper struct {
-	// This text will appear as description of your request body.
-	// in:body
-	Body api.FooBarRequest
-}
+// Not Found
+// swagger:response NotFoundResponseWrapper
+type notFoundResponseWrapper struct{}

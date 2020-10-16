@@ -110,3 +110,10 @@ Support for frameworks other than Gin can rely on the same methods from the `cor
 ## License
 
 This library is licensed under the Apache 2.0 License.
+
+## Swagger
+
+```
+make swagger
+make serve-swagger
+```

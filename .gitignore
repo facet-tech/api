@@ -19,6 +19,7 @@ sample/main
 sample/output-sam.yaml
 
 # generated swagger file
+vendor
 swagger.yaml
 
 # generated build folder
