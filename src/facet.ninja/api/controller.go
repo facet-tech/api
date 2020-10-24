@@ -40,9 +40,11 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 		r.GET("/workspace", getWorkspaceController)
 		r.POST("/workspace", createWorkspaceController)
 		//r.DELETE("/site", deleteSiteController)
+		r.OPTIONS("/workspace", options)
 
 		r.GET("/domain", getDomainController)
 		r.POST("/domain", createDomainController)
+		r.OPTIONS("/domain", options)
 		//r.DELETE("/site", "/domain")
 
 		r.GET("/user", getUserController)
