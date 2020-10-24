@@ -3,6 +3,10 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"io/ioutil"
+	"log"
+	"strings"
+
 	"facet.ninja/api/domain"
 	"facet.ninja/api/facet"
 	"facet.ninja/api/user"
@@ -11,9 +15,6 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
-	"log"
-	"strings"
 )
 
 const CREATED = "created"
@@ -61,6 +62,7 @@ func addCorsHeaders(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.Header("Access-Control-Allow-Methods", "*")
 	c.Header("Access-Control-Allow-Headers", "*")
+	c.Header("Access-Control-Allow-Credentials", "true")
 }
 
 func getJs(c *gin.Context) {
