@@ -1,11 +1,12 @@
 package facet
 
 import (
+	"errors"
 	"facet.ninja/api/db"
+	"facet.ninja/api/util"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
-	"log"
 )
 
 const FACET_TABLE_NAME = "facet"
@@ -24,7 +25,6 @@ type Facet struct {
 func FetchAll(siteId string) (*[]Facet, error) {
 	input := &dynamodb.QueryInput{
 		TableName: aws.String(FACET_TABLE_NAME),
-
 		KeyConditions: map[string]*dynamodb.Condition{
 			"domainId": {
 				ComparisonOperator: aws.String("EQ"),
@@ -36,71 +36,50 @@ func FetchAll(siteId string) (*[]Facet, error) {
 			},
 		},
 	}
-	result, err := db.Database.Query(input)
-	if err != nil {
-		return nil, err
-	}
-	if result.Items == nil {
-		return nil, nil
-	}
+	result, error := db.Database.Query(input)
 	facets := new([]Facet)
-	err = dynamodbattribute.UnmarshalListOfMaps(result.Items, facets)
-
-	if err != nil {
-		return nil, err
+	if error == nil && result.Items != nil {
+		error = dynamodbattribute.UnmarshalListOfMaps(result.Items, facets)
 	}
-
-	return facets, nil
+	return facets, error
 }
 
-func Fetch(domainId string, urlPath string) (*Facet, error) {
+func (facet *Facet) fetch() error {
 	input := &dynamodb.GetItemInput{
 		TableName: aws.String(FACET_TABLE_NAME),
 		Key: map[string]*dynamodb.AttributeValue{
 			"domainId": {
-				S: aws.String(domainId),
+				S: aws.String(facet.DomainId),
 			},
 			"urlPath": {
-				S: aws.String(urlPath),
+				S: aws.String(facet.UrlPath),
 			},
 		},
 	}
-	result, err := db.Database.GetItem(input)
-	if err != nil {
-		return nil, err
+	result, error := db.Database.GetItem(input)
+	if error == nil && result != nil {
+		if len(result.Item) == 0 {
+			error = errors.New(util.NOT_FOUND)
+		} else {
+			error = dynamodbattribute.UnmarshalMap(result.Item, facet)
+		}
 	}
-	if result.Item == nil {
-		return nil, nil
-	}
-	facets := new(Facet)
-	err = dynamodbattribute.UnmarshalMap(result.Item, facets)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return facets, nil
+	return error
 }
 
-func Put(facet Facet) error {
-	log.Print(facet)
-	item, err := dynamodbattribute.MarshalMap(facet)
-	log.Print(item)
-	log.Print(err)
-	if err == nil {
+func (facet *Facet) create() error {
+	item, error := dynamodbattribute.MarshalMap(facet)
+	if error == nil {
 		input := &dynamodb.PutItemInput{
 			TableName: aws.String(FACET_TABLE_NAME),
 			Item:      item,
 		}
-		_, err2 := db.Database.PutItem(input)
-		log.Print(err2)
-		return err2
-	} else {
-		return err
+		_, error = db.Database.PutItem(input)
 	}
+	return error
 }
 
-func Delete(facet Facet) error {
+func (facet *Facet) delete() error {
 	input := &dynamodb.DeleteItemInput{
 		TableName: aws.String(FACET_TABLE_NAME),
 		Key: map[string]*dynamodb.AttributeValue{
@@ -112,6 +91,6 @@ func Delete(facet Facet) error {
 			},
 		},
 	}
-	_, err := db.Database.DeleteItem(input)
-	return err
+	_, error := db.Database.DeleteItem(input)
+	return error
 }

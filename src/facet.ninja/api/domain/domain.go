@@ -1,75 +1,50 @@
 package domain
 
 import (
+	"errors"
 	"facet.ninja/api/db"
 	"facet.ninja/api/util"
-	"facet.ninja/api/workspace"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
-	"log"
-	"strings"
 )
 
 type Domain struct {
-	Id          string                 `json:"id"`
-	Domain      string                 `json:"domain"`
-	WorkspaceId string                 `json:"workspaceId"`
 	Attribute   map[string]interface{} `json:"attribute,omitempty"`
-}
-
-type Id struct {
-	Id string `json:"id"`
+	Domain      string                 `json:"domain"`
+	Id          string                 `json:"id"`
+	WorkspaceId string                 `json:"workspaceId"`
 }
 
 const (
 	KEY_DOMAIN           = "DOMAIN"
-	WORKSPACE_TABLE_NAME = "workspace"
+	WORKSPACE_TABLE_NAME = "workspace-temp"
+	DOMAIN_ID_INDEX      = "domain-workspaceId-index"
 )
 
-func createKey(key string, value string) string {
-	return key + "#" + value
-}
-
-func getValueFromKey(key string, prefix string) string {
-	return strings.TrimPrefix(key, prefix+"#")
-}
-
-func Create(domain Domain) (result Domain, error error) {
-	workspace := workspace.Workspace{}
-	workspace.Id = domain.WorkspaceId
-	domain.Id = util.GenerateBase64UUID()
-	workspace.Key = createKey(KEY_DOMAIN, domain.Id)
-	workspace.Domain = domain.Domain
-	workspace.Attribute = domain.Attribute
-	log.Print(domain)
-	item, err := dynamodbattribute.MarshalMap(workspace)
-	log.Print(item)
-	log.Println(err)
-	if err == nil {
-
+func (domain *Domain) create() error {
+	domain.Id = db.CreateId(KEY_DOMAIN)
+	item, error := dynamodbattribute.MarshalMap(domain)
+	if error == nil {
 		input := &dynamodb.PutItemInput{
 			TableName: aws.String(WORKSPACE_TABLE_NAME),
 			Item:      item,
 		}
-		_, err2 := db.Database.PutItem(input)
-		log.Println(err2)
-		return domain, err2
-	} else {
-		return domain, err
+		_, error = db.Database.PutItem(input)
 	}
+	return error
 }
 
-func Fetch(domain string, workspaceId string) (*Id, error) {
+func (domain *Domain) fetch() error {
 	input := &dynamodb.QueryInput{
 		TableName: aws.String(WORKSPACE_TABLE_NAME),
-		IndexName: aws.String("domain-id-index"),
+		IndexName: aws.String(DOMAIN_ID_INDEX),
 		KeyConditions: map[string]*dynamodb.Condition{
-			"id": {
+			"workspaceId": {
 				ComparisonOperator: aws.String("EQ"),
 				AttributeValueList: []*dynamodb.AttributeValue{
 					{
-						S: aws.String(workspaceId),
+						S: aws.String(domain.WorkspaceId),
 					},
 				},
 			},
@@ -77,26 +52,19 @@ func Fetch(domain string, workspaceId string) (*Id, error) {
 				ComparisonOperator: aws.String("EQ"),
 				AttributeValueList: []*dynamodb.AttributeValue{
 					{
-						S: aws.String(domain),
+						S: aws.String(domain.Domain),
 					},
 				},
 			},
 		},
 	}
-	result, err := db.Database.Query(input)
-	if err != nil {
-		return nil, err
+	result, error := db.Database.Query(input)
+	if error == nil && result.Items != nil {
+		if len(result.Items) == 0 {
+			error = errors.New(util.NOT_FOUND)
+		} else {
+			error = dynamodbattribute.UnmarshalMap(result.Items[0], domain)
+		}
 	}
-	if result.Items == nil {
-		return nil, nil
-	}
-	workspace := new(workspace.Workspace)
-	err = dynamodbattribute.UnmarshalMap(result.Items[0], workspace)
-	id := new(Id)
-	id.Id = getValueFromKey(workspace.Key, KEY_DOMAIN)
-	if err != nil {
-		return nil, err
-	}
-
-	return id, nil
+	return error
 }
