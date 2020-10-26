@@ -2,7 +2,7 @@ name: Go
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, jmeter]
   pull_request:
     branches: [ master ]
 
@@ -54,8 +54,14 @@ jobs:
       with:
         terraform_version: 0.13.5
 
-    - name: Deploy
+    - name: Deploy Test Endpoint
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
       if: github.ref == 'refs/heads/master'
       run: cd deploy && terraform init && terraform apply -auto-approve
+
+    - name: Run JMeter on Test Endpoint
+      uses: rbhadti94/apache-jmeter-action@v0.2.0
+      with:
+        testFilePath: test/jmeter.jmx
+        outputReportsFolder: test/reports/
