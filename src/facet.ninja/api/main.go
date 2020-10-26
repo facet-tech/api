@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"facet.ninja/api/domain"
 	"facet.ninja/api/facet"
 	"facet.ninja/api/user"
@@ -12,8 +11,6 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/awslabs/aws-lambda-go-api-proxy/gin"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
-	"log"
 	"strings"
 )
 
@@ -25,7 +22,6 @@ func main() {
 
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	if ginLambda == nil {
-		log.Printf("Gin cold start")
 		router := gin.Default()
 		defaultRoutes(router)
 		facet.Route(router)
@@ -35,13 +31,11 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 		router.GET("/facet.ninja.js", getJs)
 		ginLambda = ginadapter.New(router)
 	}
-
 	return ginLambda.ProxyWithContext(ctx, req)
 }
 
 func defaultRoutes(route *gin.Engine) {
 	route.OPTIONS("/*anyPath", util.Options)
-
 }
 
 func getJs(c *gin.Context) {
@@ -126,17 +120,4 @@ const config = { subtree: true, childList: true, attributes: true};
 const observer = new MutationObserver(callback);
 observer.observe(targetNode, config);`
 	return script
-}
-
-func options(c *gin.Context) {
-	util.SetResponseCode(nil, nil, c)
-}
-
-func bodyToJson(object interface{}, c *gin.Context) {
-	body, error := ioutil.ReadAll(c.Request.Body)
-	if error == nil {
-		json.Unmarshal(body, &object)
-	} else {
-		c.JSON(500, error)
-	}
 }

@@ -11,20 +11,20 @@ const DELETE = "DELETE"
 const OPTIONS = "OPTIONS"
 const NOT_FOUND = "NOT_FOUND"
 
-func SetResponseCode(result interface{}, error error, c *gin.Context) {
-	SetCorsHeaders(c)
+func SetResponseCode(result interface{}, error error, context *gin.Context) {
+	SetCorsHeaders(context)
 	if error != nil {
 		log.Print(error)
 		if error.Error() == NOT_FOUND {
-			c.JSON(404, error)
+			context.JSON(404, error)
 		} else {
-			c.JSON(500, error.Error())
+			context.JSON(500, error.Error())
 		}
 
-	} else if c.Request.Method == POST {
-		c.JSON(201, result)
+	} else if context.Request.Method == POST {
+		context.JSON(201, result)
 	} else {
-		c.JSON(200, result)
+		context.JSON(200, result)
 	}
 }
 

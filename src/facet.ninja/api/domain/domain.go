@@ -17,9 +17,8 @@ type Domain struct {
 }
 
 const (
-	KEY_DOMAIN           = "DOMAIN"
-	WORKSPACE_TABLE_NAME = "workspace-temp"
-	DOMAIN_ID_INDEX      = "domain-workspaceId-index"
+	KEY_DOMAIN      = "DOMAIN"
+	DOMAIN_ID_INDEX = "domain-workspaceId-index"
 )
 
 func (domain *Domain) create() error {
@@ -27,7 +26,7 @@ func (domain *Domain) create() error {
 	item, error := dynamodbattribute.MarshalMap(domain)
 	if error == nil {
 		input := &dynamodb.PutItemInput{
-			TableName: aws.String(WORKSPACE_TABLE_NAME),
+			TableName: aws.String(db.WorkspaceTableName),
 			Item:      item,
 		}
 		_, error = db.Database.PutItem(input)
@@ -37,7 +36,7 @@ func (domain *Domain) create() error {
 
 func (domain *Domain) fetch() error {
 	input := &dynamodb.QueryInput{
-		TableName: aws.String(WORKSPACE_TABLE_NAME),
+		TableName: aws.String(db.WorkspaceTableName),
 		IndexName: aws.String(DOMAIN_ID_INDEX),
 		KeyConditions: map[string]*dynamodb.Condition{
 			"workspaceId": {

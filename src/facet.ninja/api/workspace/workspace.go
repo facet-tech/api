@@ -16,13 +16,12 @@ type Workspace struct {
 }
 
 const (
-	KEY_WORKSPACE        = "WORKSPACE"
-	WORKSPACE_TABLE_NAME = "workspace-temp"
+	KEY_WORKSPACE = "WORKSPACE"
 )
 
 func (workspace *Workspace) fetch() error {
 	input := &dynamodb.GetItemInput{
-		TableName: aws.String(WORKSPACE_TABLE_NAME),
+		TableName: aws.String(db.WorkspaceTableName),
 		Key: map[string]*dynamodb.AttributeValue{
 			"workspaceId": {
 				S: aws.String(workspace.Id),
@@ -49,7 +48,7 @@ func (workspace *Workspace) create() error {
 	item, error := dynamodbattribute.MarshalMap(workspace)
 	if error == nil {
 		input := &dynamodb.PutItemInput{
-			TableName: aws.String(WORKSPACE_TABLE_NAME),
+			TableName: aws.String(db.WorkspaceTableName),
 			Item:      item,
 		}
 		_, error = db.Database.PutItem(input)

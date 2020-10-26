@@ -12,3 +12,8 @@ var Database = dynamodb.New(session.New(), aws.NewConfig().WithRegion("us-west-2
 func CreateId(key string) string {
 	return key + "~" + util.GenerateBase64UUID()
 }
+
+const (
+	WorkspaceTableName = "workspace-prod"
+	FacetTableName     = "facet-prod"
+)

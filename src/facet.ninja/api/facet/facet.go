@@ -9,8 +9,6 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
 
-const FACET_TABLE_NAME = "facet"
-
 type DomElement struct {
 	Enabled string   `json:"enabled"`
 	Path    []string `json:"path"`
@@ -24,7 +22,7 @@ type Facet struct {
 
 func FetchAll(siteId string) (*[]Facet, error) {
 	input := &dynamodb.QueryInput{
-		TableName: aws.String(FACET_TABLE_NAME),
+		TableName: aws.String(db.FacetTableName),
 		KeyConditions: map[string]*dynamodb.Condition{
 			"domainId": {
 				ComparisonOperator: aws.String("EQ"),
@@ -46,7 +44,7 @@ func FetchAll(siteId string) (*[]Facet, error) {
 
 func (facet *Facet) fetch() error {
 	input := &dynamodb.GetItemInput{
-		TableName: aws.String(FACET_TABLE_NAME),
+		TableName: aws.String(db.FacetTableName),
 		Key: map[string]*dynamodb.AttributeValue{
 			"domainId": {
 				S: aws.String(facet.DomainId),
@@ -71,7 +69,7 @@ func (facet *Facet) create() error {
 	item, error := dynamodbattribute.MarshalMap(facet)
 	if error == nil {
 		input := &dynamodb.PutItemInput{
-			TableName: aws.String(FACET_TABLE_NAME),
+			TableName: aws.String(db.FacetTableName),
 			Item:      item,
 		}
 		_, error = db.Database.PutItem(input)
@@ -81,7 +79,7 @@ func (facet *Facet) create() error {
 
 func (facet *Facet) delete() error {
 	input := &dynamodb.DeleteItemInput{
-		TableName: aws.String(FACET_TABLE_NAME),
+		TableName: aws.String(db.FacetTableName),
 		Key: map[string]*dynamodb.AttributeValue{
 			"domainId": {
 				S: aws.String(facet.DomainId),

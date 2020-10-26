@@ -1446,7 +1446,7 @@
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
 	&quot;domainId&quot;  : &quot;${domainId}&quot;,&#xd;
-	&quot;urlPath&quot;  : &quot;${facetUrlpath}&quot;&#xd;
+	&quot;urlPath&quot;   : &quot;${facetUrlPath}&quot;&#xd;
 }&#xd;
 </stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>

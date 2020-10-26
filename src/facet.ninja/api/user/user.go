@@ -17,9 +17,8 @@ type User struct {
 }
 
 const (
-	KEY_USER        = "USER"
-	USER_TABLE_NAME = "workspace-temp"
-	EMAIL_INDEX     = "email-index"
+	KEY_USER    = "USER"
+	EMAIL_INDEX = "email-index"
 )
 
 func (user *User) create() error {
@@ -27,7 +26,7 @@ func (user *User) create() error {
 	item, error := dynamodbattribute.MarshalMap(user)
 	if error == nil {
 		input := &dynamodb.PutItemInput{
-			TableName: aws.String(USER_TABLE_NAME),
+			TableName: aws.String(db.WorkspaceTableName),
 			Item:      item,
 		}
 		_, error = db.Database.PutItem(input)
@@ -37,7 +36,7 @@ func (user *User) create() error {
 
 func (user *User) fetch() error {
 	input := &dynamodb.QueryInput{
-		TableName: aws.String(USER_TABLE_NAME),
+		TableName: aws.String(db.WorkspaceTableName),
 		IndexName: aws.String(EMAIL_INDEX),
 		KeyConditions: map[string]*dynamodb.Condition{
 			"email": {
@@ -64,7 +63,7 @@ func (user *User) fetch() error {
 func (user *User) delete() error {
 	user.Id = db.CreateId(KEY_USER)
 	input := &dynamodb.DeleteItemInput{
-		TableName: aws.String(USER_TABLE_NAME),
+		TableName: aws.String(db.WorkspaceTableName),
 		Key: map[string]*dynamodb.AttributeValue{
 			"workspaceId": {
 				S: aws.String(user.WorkspaceId),
