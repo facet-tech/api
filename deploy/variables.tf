@@ -1,8 +1,13 @@
 variable "account_id" {}
 variable "aws_lambda_qualifier_version" {}
+variable "deploy_live_stage" {}
+variable "deploy_test_stage" {}
+variable "description" {}
 variable "environment" {}
 variable "filename" {}
 variable "handler" {}
 variable "name" {}
 variable "region" {}
+variable "route53_record_name" {}
+variable "route53_record_zone_id" {}
 variable "runtime" {}

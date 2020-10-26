@@ -1,8 +1,13 @@
 account_id                   = "935571265336"
 aws_lambda_qualifier_version = "$LATEST"
-environment                  = "dev"
+deploy_live_stage            = true
+deploy_test_stage            = true
+description                  = "API for the front end facets."
+environment                  = "prod"
 filename                     = "../build/main.zip"
 handler                      = "./build/main"
 name                         = "api"
 region                       = "us-west-2"
+route53_record_name          = "api"
+route53_record_zone_id       = "Z05672452AKEG6MP6GI8Y"
 runtime                      = "go1.x"
