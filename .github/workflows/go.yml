@@ -65,3 +65,13 @@ jobs:
       with:
         testFilePath: test/jmeter.jmx
         outputReportsFolder: test/reports/
+
+    - name: Upload test results
+        uses: jakejarvis/s3-sync-action@v0.5.0
+        env:
+          AWS_S3_BUCKET: cdn.facet.ninja
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: 'us-west-2'
+          SOURCE_DIR: 'test/reports'
+          DEST_DIR: test/api/regression/$GITHUB_RUN_NUMBER/
