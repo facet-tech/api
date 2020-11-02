@@ -57,7 +57,6 @@ jobs:
     - name: Deploy Test Endpoint
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-      if: github.ref == 'refs/heads/master'
       run: cd deploy && terraform init && terraform apply -auto-approve
 
     - name: Run JMeter on Test Endpoint
@@ -93,7 +92,7 @@ jobs:
         test $(jq .Total.errorCount test/results/statistics.json) -eq 0
 
     - name: Deploy Live Endpoint
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+      env:
+        SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         if: github.ref == 'refs/heads/master'
         run: cd deploy && terraform init && terraform apply -auto-approve -var deploy_live_stage=true
