@@ -90,5 +90,4 @@ jobs:
 
     - name: Verify Regression Test Results
       run: |
-        sudo apt-get install jq
         test $(jq .Total.errorCount test/results/statistics.json) -eq 0
