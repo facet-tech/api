@@ -30,22 +30,22 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="POST_DURATION_DEFAULT" elementType="Argument">
             <stringProp name="Argument.name">POST_DURATION_DEFAULT</stringProp>
-            <stringProp name="Argument.value">700</stringProp>
+            <stringProp name="Argument.value">5000</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="GET_DURATION_DEFAULT" elementType="Argument">
             <stringProp name="Argument.name">GET_DURATION_DEFAULT</stringProp>
-            <stringProp name="Argument.value">200</stringProp>
+            <stringProp name="Argument.value">5000</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="OPTIONS_DURATION_DEFAULT" elementType="Argument">
             <stringProp name="Argument.name">OPTIONS_DURATION_DEFAULT</stringProp>
-            <stringProp name="Argument.value">200</stringProp>
+            <stringProp name="Argument.value">5000</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="DELETE_DURATION_DEFAULT" elementType="Argument">
             <stringProp name="Argument.name">DELETE_DURATION_DEFAULT</stringProp>
-            <stringProp name="Argument.value">200</stringProp>
+            <stringProp name="Argument.value">5000</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
