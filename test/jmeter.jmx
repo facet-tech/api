@@ -381,7 +381,7 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-	&quot;email&quot; 		: &quot;${__RandomString(10,abcdefghijklmnopqrstuvwxyz,)}-jemter@facet.ninja&quot;,&#xd;
+	&quot;email&quot; 		: &quot;${__RandomString(10,abcdefghijklmnopqrstuvwxyz,)}-jmeter@facet.ninja&quot;,&#xd;
 	&quot;workspaceId&quot;  : &quot;${workspaceId}&quot;&#xd;
 }&#xd;
 </stringProp>
@@ -802,7 +802,7 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-	&quot;domain&quot; 		: &quot;${__RandomString(10,abcdefghijklmnopqrstuvwxyz,)}.jemter.facet.ninja&quot;,&#xd;
+	&quot;domain&quot; 		: &quot;${__RandomString(10,abcdefghijklmnopqrstuvwxyz,)}.jmeter.facet.ninja&quot;,&#xd;
 	&quot;workspaceId&quot;  : &quot;${workspaceId}&quot;&#xd;
 }&#xd;
 </stringProp>

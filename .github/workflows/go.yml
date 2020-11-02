@@ -64,7 +64,7 @@ jobs:
       uses: rbhadti94/apache-jmeter-action@v0.2.0
       with:
         testFilePath: test/jmeter.jmx
-        outputReportsFolder: test/reports/
+        outputReportsFolder: test/results/
 
     - name: Upload test results
       uses: jakejarvis/s3-sync-action@v0.5.0
@@ -73,5 +73,22 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: 'us-west-2'
-        SOURCE_DIR: 'test/reports'
+        SOURCE_DIR: 'test/results'
         DEST_DIR: test/api/regression/$GITHUB_RUN_NUMBER/
+
+    - name: Upload test results
+      uses: jakejarvis/s3-sync-action@v0.5.0
+      with:
+        args: --delete
+      env:
+        AWS_S3_BUCKET: cdn.facet.ninja
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: 'us-west-2'
+        SOURCE_DIR: 'test/results'
+        DEST_DIR: test/api/regression/latest/
+
+    - name: Verify Regression Test Results
+      run: |
+        sudo apt-get install jq
+        test $(jq .Total.errorCount test/results/statistics.json) -eq 0
