@@ -94,5 +94,5 @@ jobs:
     - name: Deploy Live Endpoint
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-      if: github.ref == 'refs/heads/master'
+#      if: github.ref == 'refs/heads/master'
       run: cd deploy && terraform init && terraform apply -auto-approve -var deploy_live_stage=true
