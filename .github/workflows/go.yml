@@ -87,9 +87,9 @@ jobs:
         SOURCE_DIR: 'test/results'
         DEST_DIR: test/api/regression/latest/
 
-#    - name: Verify Regression Test Results
-#      run: |
-#        test $(jq .Total.errorCount test/results/statistics.json) -eq 0
+    - name: Verify Regression Test Results
+      run: |
+        test $(jq .Total.errorCount test/results/statistics.json) -eq 0
 
     - name: Deploy Live Endpoint
       env:
