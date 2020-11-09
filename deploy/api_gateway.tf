@@ -1,5 +1,5 @@
 module "api_gateway" {
-  source                 = "git@github.com:facets-io/terraform-module-aws-api-gateway.git?ref=0.0.2"
+  source                 = "git@github.com:facets-io/terraform-module-aws-api-gateway.git?ref=0.0.3"
   name                   = "${var.name}"
   environment            = var.environment
   description            = var.description
