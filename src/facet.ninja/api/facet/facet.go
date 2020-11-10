@@ -2,6 +2,7 @@ package facet
 
 import (
 	"errors"
+
 	"facet.ninja/api/db"
 	"facet.ninja/api/util"
 	"github.com/aws/aws-sdk-go/aws"
@@ -18,6 +19,13 @@ type Facet struct {
 	DomainId   string       `json:"domainId"`
 	UrlPath    string       `json:"urlPath"`
 	DomElement []DomElement `json:"domElement"`
+}
+
+type DTO struct {
+	DomainId string  `json:"domainId"`
+	UrlPath  string  `json:"urlPath"`
+	Facet    []Facet `json:"facet"`
+	Version  string  `json:"version"`
 }
 
 func FetchAll(siteId string) (*[]Facet, error) {

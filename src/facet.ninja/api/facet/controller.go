@@ -2,9 +2,10 @@ package facet
 
 import (
 	"encoding/json"
+	"io/ioutil"
+
 	"facet.ninja/api/util"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
 )
 
 const (
