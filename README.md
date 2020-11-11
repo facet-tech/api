@@ -11,7 +11,7 @@ cd `/src/facet.ninja/api`
 make
 ```
 
-2. Run sam: `sam local start-api --env-vars env.json`
+2. Run sam from the root directory of the project: `sam local start-api --env-vars env.json`
 
 ## Run tests
 
