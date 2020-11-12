@@ -2,6 +2,7 @@ package facet
 
 import (
 	"errors"
+
 	"facet.ninja/api/db"
 	"facet.ninja/api/util"
 	"github.com/aws/aws-sdk-go/aws"
@@ -10,17 +11,24 @@ import (
 )
 
 type DomElement struct {
-	Enabled string   `json:"enabled"`
-	Path    []string `json:"path"`
+	Name string `json:"name"`
+	Path string `json:"path"`
 }
 
 type Facet struct {
-	DomainId   string       `json:"domainId"`
-	UrlPath    string       `json:"urlPath"`
+	Enabled    bool         `json:"enabled"`
+	Name       string       `json:"name"`
 	DomElement []DomElement `json:"domElement"`
 }
 
-func FetchAll(siteId string) (*[]Facet, error) {
+type FacetDTO struct {
+	DomainId string  `json:"domainId"`
+	UrlPath  string  `json:"urlPath"`
+	Facet    []Facet `json:"facet"`
+	Version  string  `json:"version"`
+}
+
+func FetchAll(siteId string) (*[]FacetDTO, error) {
 	input := &dynamodb.QueryInput{
 		TableName: aws.String(db.FacetTableName),
 		KeyConditions: map[string]*dynamodb.Condition{
@@ -35,14 +43,14 @@ func FetchAll(siteId string) (*[]Facet, error) {
 		},
 	}
 	result, error := db.Database.Query(input)
-	facets := new([]Facet)
+	facets := new([]FacetDTO)
 	if error == nil && result.Items != nil {
 		error = dynamodbattribute.UnmarshalListOfMaps(result.Items, facets)
 	}
 	return facets, error
 }
 
-func (facet *Facet) fetch() error {
+func (facet *FacetDTO) fetch() error {
 	input := &dynamodb.GetItemInput{
 		TableName: aws.String(db.FacetTableName),
 		Key: map[string]*dynamodb.AttributeValue{
@@ -65,7 +73,7 @@ func (facet *Facet) fetch() error {
 	return error
 }
 
-func (facet *Facet) create() error {
+func (facet *FacetDTO) create() error {
 	item, error := dynamodbattribute.MarshalMap(facet)
 	if error == nil {
 		input := &dynamodb.PutItemInput{
@@ -77,7 +85,7 @@ func (facet *Facet) create() error {
 	return error
 }
 
-func (facet *Facet) delete() error {
+func (facet *FacetDTO) delete() error {
 	input := &dynamodb.DeleteItemInput{
 		TableName: aws.String(db.FacetTableName),
 		Key: map[string]*dynamodb.AttributeValue{
