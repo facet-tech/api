@@ -52,8 +52,8 @@ func getJs(c *gin.Context) {
 				for _, domElement := range facet.DomElement {
 					commaSeperatedIdsString += "'" + domElement.Path + "',"
 				}
-				commaSeperatedIdsString = strings.TrimSuffix(commaSeperatedIdsString, ",")
 			}
+			commaSeperatedIdsString = strings.TrimSuffix(commaSeperatedIdsString, ",")
 			commaSeperatedIdsString += "])],\n"
 		}
 		javascript = strings.Replace(javascript, "GO_ARRAY_REPLACE_ME", strings.TrimSuffix(commaSeperatedIdsString, ",\n"), -1)
