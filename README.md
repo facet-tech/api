@@ -7,7 +7,7 @@ API for the facet.ninja extension.
 1. Run make:
 
 ```
-cd `/src/facet.ninja/api
+cd /src/facet.ninja/api
 make
 ```
 
