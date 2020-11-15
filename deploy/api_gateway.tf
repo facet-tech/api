@@ -1,6 +1,6 @@
 module "api_gateway" {
-  source                 = "git@github.com:facets-io/terraform-module-aws-api-gateway.git?ref=0.0.2"
-  name                   = "${var.name}"
+  source                 = "git@github.com:facets-io/terraform-module-aws-api-gateway.git?ref=0.0.4"
+  name                   = var.name
   environment            = var.environment
   description            = var.description
   versioned_directory    = path.cwd
@@ -17,7 +17,7 @@ module "api_gateway" {
         {
           method              = "ANY"
           integration_request = {
-            uri                  = module.lambda.lambda_versioned_invoke_arn
+            uri = module.lambda.lambda_versioned_invoke_arn
           }
         }
       ]

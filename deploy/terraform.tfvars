@@ -1,6 +1,6 @@
 account_id                   = "935571265336"
 aws_lambda_qualifier_version = "$LATEST"
-deploy_live_stage            = true
+deploy_live_stage            = false
 deploy_test_stage            = true
 description                  = "API for the front end facets."
 environment                  = "prod"

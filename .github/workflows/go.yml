@@ -2,9 +2,7 @@ name: Go
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches: [ '*']
 
 jobs:
 
@@ -54,8 +52,45 @@ jobs:
       with:
         terraform_version: 0.13.5
 
-    - name: Deploy
+    - name: Deploy Test Endpoint
+      env:
+        SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+      run: cd deploy && terraform init && terraform apply -auto-approve
+
+    - name: Run JMeter on Test Endpoint
+      uses: rbhadti94/apache-jmeter-action@v0.2.0
+      with:
+        testFilePath: test/jmeter.jmx
+        outputReportsFolder: test/results/
+
+    - name: Upload test results
+      uses: jakejarvis/s3-sync-action@v0.5.0
+      env:
+        AWS_S3_BUCKET: cdn.facet.ninja
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: 'us-west-2'
+        SOURCE_DIR: 'test/results'
+        DEST_DIR: test/api/regression/$GITHUB_RUN_NUMBER/
+
+    - name: Upload test results
+      uses: jakejarvis/s3-sync-action@v0.5.0
+      with:
+        args: --delete
+      env:
+        AWS_S3_BUCKET: cdn.facet.ninja
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: 'us-west-2'
+        SOURCE_DIR: 'test/results'
+        DEST_DIR: test/api/regression/latest/
+
+    - name: Verify Regression Test Results
+      run: |
+        test $(jq .Total.errorCount test/results/statistics.json) -eq 0
+
+    - name: Deploy Live Endpoint
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
       if: github.ref == 'refs/heads/master'
-      run: cd deploy && terraform init && terraform apply -auto-approve
+      run: cd deploy && terraform init && terraform apply -auto-approve -var deploy_live_stage=true
