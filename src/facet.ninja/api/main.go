@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"strings"
+
 	"facet.ninja/api/domain"
 	"facet.ninja/api/facet"
 	"facet.ninja/api/user"
@@ -9,9 +11,8 @@ import (
 	"facet.ninja/api/workspace"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/awslabs/aws-lambda-go-api-proxy/gin"
+	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
 	"github.com/gin-gonic/gin"
-	"strings"
 )
 
 var ginLambda *ginadapter.GinLambda
@@ -45,14 +46,14 @@ func getJs(c *gin.Context) {
 	site := c.Request.URL.Query().Get("id")
 	if &site != nil {
 		facets, error := facet.FetchAll(site)
-		for _, url := range *facets {
-			commaSeperatedIdsString += "\t['" + url.UrlPath + "',new Set(["
-			for _, facet := range url.DomElement {
-				for _, facetId := range facet.Path {
-					commaSeperatedIdsString += "'" + facetId + "',"
+		for _, facetDto := range *facets {
+			commaSeperatedIdsString += "\t['" + facetDto.UrlPath + "',new Set(["
+			for _, facet := range facetDto.Facet {
+				for _, domElement := range facet.DomElement {
+					commaSeperatedIdsString += "'" + domElement.Path + "',"
 				}
-				commaSeperatedIdsString = strings.TrimSuffix(commaSeperatedIdsString, ",")
 			}
+			commaSeperatedIdsString = strings.TrimSuffix(commaSeperatedIdsString, ",")
 			commaSeperatedIdsString += "])],\n"
 		}
 		javascript = strings.Replace(javascript, "GO_ARRAY_REPLACE_ME", strings.TrimSuffix(commaSeperatedIdsString, ",\n"), -1)

@@ -2,9 +2,10 @@ package facet
 
 import (
 	"encoding/json"
+	"io/ioutil"
+
 	"facet.ninja/api/util"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
 )
 
 const (
@@ -20,7 +21,7 @@ func Route(router *gin.Engine) {
 }
 
 func Get(c *gin.Context) {
-	facet := Facet{}
+	facet := FacetDTO{}
 	facet.DomainId = c.Request.URL.Query().Get(DOMAIN_ID_QUERY_PARAMATER)
 	facet.UrlPath = c.Request.URL.Query().Get(URL_PATH_QUERY_PARAMATER)
 	error := facet.fetch()
@@ -28,7 +29,7 @@ func Get(c *gin.Context) {
 }
 
 func Post(c *gin.Context) {
-	facet := Facet{}
+	facet := FacetDTO{}
 	body, error := ioutil.ReadAll(c.Request.Body)
 	json.Unmarshal(body, &facet)
 	error = facet.create()
@@ -36,7 +37,7 @@ func Post(c *gin.Context) {
 }
 
 func Delete(c *gin.Context) {
-	facet := Facet{}
+	facet := FacetDTO{}
 	body, error := ioutil.ReadAll(c.Request.Body)
 	json.Unmarshal(body, &facet)
 	error = facet.delete()
