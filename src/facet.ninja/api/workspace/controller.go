@@ -15,7 +15,7 @@ const (
 func Route(router *gin.Engine) {
 	router.GET(BASE_URL, Get)
 	router.POST(BASE_URL, Post)
-	//router.DELETE(BASE_URL, Delete)
+	router.DELETE(BASE_URL, Delete)
 }
 
 func Get(c *gin.Context) {
@@ -32,3 +32,12 @@ func Post(c *gin.Context) {
 	error = workspace.create()
 	util.SetResponseCode(workspace, error, c)
 }
+
+func Delete(c *gin.Context) {
+	workspace := Workspace{}
+	body, error := ioutil.ReadAll(c.Request.Body)
+	json.Unmarshal(body, &workspace)
+	error = workspace.delete()
+	util.SetResponseCode(nil, error, c)
+}
+

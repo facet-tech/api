@@ -56,16 +56,19 @@ func (workspace *Workspace) create() error {
 	return error
 }
 
-/*
-func Delete(id string) error {
+
+func (workspace *Workspace) delete() error {
 	input := &dynamodb.DeleteItemInput{
-		TableName: aws.String(SITE_TABLE_NAME),
+		TableName: aws.String(db.WorkspaceTableName),
 		Key: map[string]*dynamodb.AttributeValue{
+			"workspaceId": {
+				S: aws.String(workspace.Id),
+			},
 			"id": {
-				S: aws.String(id),
+				S: aws.String(workspace.Id),
 			},
 		},
 	}
 	_, err := db.Database.DeleteItem(input)
 	return err
-}*/
+}

@@ -67,3 +67,19 @@ func (domain *Domain) fetch() error {
 	}
 	return error
 }
+
+func (domain *Domain) delete() error {
+	input := &dynamodb.DeleteItemInput{
+		TableName: aws.String(db.WorkspaceTableName),
+		Key: map[string]*dynamodb.AttributeValue{
+			"workspaceId": {
+				S: aws.String(domain.WorkspaceId),
+			},
+			"id": {
+				S: aws.String(domain.Id),
+			},
+		},
+	}
+	_, err := db.Database.DeleteItem(input)
+	return err
+}

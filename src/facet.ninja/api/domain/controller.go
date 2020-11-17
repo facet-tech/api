@@ -16,7 +16,7 @@ const (
 func Route(router *gin.Engine) {
 	router.GET(BASE_URL, Get)
 	router.POST(BASE_URL, Post)
-	//router.DELETE(BASE_URL, Delete)
+	router.DELETE(BASE_URL, Delete)
 }
 
 func Get(c *gin.Context) {
@@ -33,4 +33,12 @@ func Post(c *gin.Context) {
 	json.Unmarshal(body, &domain)
 	error = domain.create()
 	util.SetResponseCode(domain, error, c)
+}
+
+func Delete(c *gin.Context) {
+	domain := Domain{}
+	body, error := ioutil.ReadAll(c.Request.Body)
+	json.Unmarshal(body, &domain)
+	error = domain.delete()
+	util.SetResponseCode(nil, error, c)
 }

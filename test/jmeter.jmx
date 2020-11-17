@@ -649,7 +649,7 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-	&quot;email&quot; 		: &quot;${__RandomString(10,abcdefghijklmnopqrstuvwxyz,)}-jemter@facet.ninja&quot;,&#xd;
+	&quot;id&quot; 		: &quot;${userId}&quot;,&#xd;
 	&quot;workspaceId&quot;  : &quot;${workspaceId}&quot;&#xd;
 }&#xd;
 </stringProp>
@@ -1159,32 +1159,19 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-  &quot;domainId&quot;: &quot;${__RandomString(10,abcdefghijklmnopqrstuvwxyz,)}.jmeter.facet.ninja&quot;,&#xd;
-  &quot;urlPath&quot;: &quot;/jmeter/eqnhhovyli&quot;,&#xd;
-  &quot;version&quot;: &quot;JMeter-0.0.1&quot;,&#xd;
-  &quot;facet&quot;: [&#xd;
-    {&#xd;
-      &quot;enabled&quot;: &quot;true&quot;,&#xd;
-      &quot;name&quot;: &quot;name-jmeter-facet1-uojngpnynp&quot;,&#xd;
-      &quot;domElement&quot;: [&#xd;
-        {&#xd;
-          &quot;name&quot;: &quot;name-domElement-jmeter-yxyfvrjruf&quot;,&#xd;
-          &quot;path&quot;: &quot;body&gt;div&gt;upmnjdgvet&quot;&#xd;
-        }&#xd;
-      ]&#xd;
-    },&#xd;
-    {&#xd;
-      &quot;enabled&quot;: &quot;true&quot;,&#xd;
-      &quot;name&quot;: &quot;name-jmeter-facet2-stwjximrvq&quot;,&#xd;
-      &quot;domElement&quot;: [&#xd;
-        {&#xd;
-          &quot;name&quot;: &quot;name-domElement-jmeter-qluhmrgaia&quot;,&#xd;
-          &quot;path&quot;: &quot;body&gt;div&gt;qlpsgkynld&quot;&#xd;
-        }&#xd;
-      ]&#xd;
-    }&#xd;
-  ]&#xd;
-}</stringProp>
+	&quot;domainId&quot;  : &quot;${domainId}&quot;,&#xd;
+	&quot;urlPath&quot;    : &quot;/jmeter/${__RandomString(10,abcdefghijklmnopqrstuvwxyz,)}&quot;,&#xd;
+	&quot;domElement&quot;: [&#xd;
+		{&#xd;
+      		&quot;enabled&quot;: &quot;true&quot;,&#xd;
+      		&quot;path&quot;: [&#xd;
+        			&quot;body&gt;div&gt;${__RandomString(10,abcdefghijklmnopqrstuvwxyz,)}&quot;,&#xd;
+        			&quot;body&gt;div&gt;${__RandomString(10,abcdefghijklmnopqrstuvwxyz,)}&quot;&#xd;
+      		]&#xd;
+    		}&#xd;
+  	]&#xd;
+}&#xd;
+</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
@@ -1253,7 +1240,7 @@
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Domain Assertion" enabled="true">
             <stringProp name="JSON_PATH">domainId</stringProp>
-            <stringProp name="EXPECTED_VALUE">${domainId}</stringProp>
+            <stringProp name="EXPECTED_VALUE">DOMAIN~.+</stringProp>
             <boolProp name="JSONVALIDATION">true</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
             <boolProp name="INVERT">false</boolProp>
@@ -1262,16 +1249,16 @@
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="UrlPath Assertion" enabled="true">
             <stringProp name="JSON_PATH">urlPath</stringProp>
-            <stringProp name="EXPECTED_VALUE">${urlPath}</stringProp>
+            <stringProp name="EXPECTED_VALUE">${facetUrlPath}</stringProp>
             <boolProp name="JSONVALIDATION">true</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
             <boolProp name="INVERT">false</boolProp>
             <boolProp name="ISREGEX">true</boolProp>
           </JSONPathAssertion>
           <hashTree/>
-          <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Facet Assertion" enabled="true">
-            <stringProp name="JSON_PATH">facet</stringProp>
-            <stringProp name="EXPECTED_VALUE">${facet}</stringProp>
+          <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="DomElement Assertion" enabled="true">
+            <stringProp name="JSON_PATH">domElement</stringProp>
+            <stringProp name="EXPECTED_VALUE">${facetDomElement}</stringProp>
             <boolProp name="JSONVALIDATION">true</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
             <boolProp name="INVERT">false</boolProp>
@@ -1279,11 +1266,11 @@
           </JSONPathAssertion>
           <hashTree/>
           <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
-            <stringProp name="JSONPostProcessor.referenceNames">domainId;urlPath;facet;version</stringProp>
-            <stringProp name="JSONPostProcessor.jsonPathExprs">domainId;urlPath;facet;version</stringProp>
+            <stringProp name="JSONPostProcessor.referenceNames">facetUrlPath;facetDomElement</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">urlPath;domElement</stringProp>
             <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
             <stringProp name="Sample.scope">all</stringProp>
-            <stringProp name="JSONPostProcessor.defaultValues">JMETER_ERROR;JEMETER_ERROR;JMETER_ERROR;JMETER_ERROR</stringProp>
+            <stringProp name="JSONPostProcessor.defaultValues">JMETER_ERROR;JEMETER_ERROR</stringProp>
           </JSONPostProcessor>
           <hashTree/>
           <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Duration Assertion" enabled="true">
@@ -1299,7 +1286,7 @@
           <stringProp name="HTTPSampler.port"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/facet?domainId=${domainId}&amp;urlPath=${urlPath}</stringProp>
+          <stringProp name="HTTPSampler.path">/facet?domainId=${domainId}&amp;urlPath=${facetUrlPath}</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1368,7 +1355,7 @@
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="UrlPath Assertion" enabled="true">
             <stringProp name="JSON_PATH">urlPath</stringProp>
-            <stringProp name="EXPECTED_VALUE">${urlPath}</stringProp>
+            <stringProp name="EXPECTED_VALUE">${facetUrlPath}</stringProp>
             <boolProp name="JSONVALIDATION">true</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
             <boolProp name="INVERT">false</boolProp>
@@ -1682,6 +1669,169 @@
           <hashTree/>
           <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Duration Assertion" enabled="true">
             <stringProp name="DurationAssertion.duration">${OPTIONS_DURATION_DEFAULT}</stringProp>
+          </DurationAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /domain" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+	&quot;workspaceId&quot; : &quot;${workspaceId}&quot;,&#xd;
+	&quot;id&quot;          : &quot;${domainId}&quot;&#xd;
+}&#xd;
+</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/domain</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="Result" enabled="true">
+            <boolProp name="ResultCollector.error_logging">false</boolProp>
+            <objProp>
+              <name>saveConfig</name>
+              <value class="SampleSaveConfiguration">
+                <time>true</time>
+                <latency>true</latency>
+                <timestamp>true</timestamp>
+                <success>true</success>
+                <label>true</label>
+                <code>true</code>
+                <message>true</message>
+                <threadName>true</threadName>
+                <dataType>true</dataType>
+                <encoding>false</encoding>
+                <assertions>true</assertions>
+                <subresults>true</subresults>
+                <responseData>false</responseData>
+                <samplerData>false</samplerData>
+                <xml>false</xml>
+                <fieldNames>true</fieldNames>
+                <responseHeaders>false</responseHeaders>
+                <requestHeaders>false</requestHeaders>
+                <responseDataOnError>false</responseDataOnError>
+                <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                <assertionsResultsToSave>0</assertionsResultsToSave>
+                <bytes>true</bytes>
+                <sentBytes>true</sentBytes>
+                <url>true</url>
+                <threadCounts>true</threadCounts>
+                <idleTime>true</idleTime>
+                <connectTime>true</connectTime>
+              </value>
+            </objProp>
+            <stringProp name="filename"></stringProp>
+          </ResultCollector>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="ResponseCode Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Duration Assertion" enabled="true">
+            <stringProp name="DurationAssertion.duration">${DELETE_DURATION_DEFAULT}</stringProp>
+          </DurationAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /workspace" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+	&quot;id&quot;  : &quot;${workspaceId}&quot;&#xd;
+}&#xd;
+</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/workspace</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="Result" enabled="true">
+            <boolProp name="ResultCollector.error_logging">false</boolProp>
+            <objProp>
+              <name>saveConfig</name>
+              <value class="SampleSaveConfiguration">
+                <time>true</time>
+                <latency>true</latency>
+                <timestamp>true</timestamp>
+                <success>true</success>
+                <label>true</label>
+                <code>true</code>
+                <message>true</message>
+                <threadName>true</threadName>
+                <dataType>true</dataType>
+                <encoding>false</encoding>
+                <assertions>true</assertions>
+                <subresults>true</subresults>
+                <responseData>false</responseData>
+                <samplerData>false</samplerData>
+                <xml>false</xml>
+                <fieldNames>true</fieldNames>
+                <responseHeaders>false</responseHeaders>
+                <requestHeaders>false</requestHeaders>
+                <responseDataOnError>false</responseDataOnError>
+                <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                <assertionsResultsToSave>0</assertionsResultsToSave>
+                <bytes>true</bytes>
+                <sentBytes>true</sentBytes>
+                <url>true</url>
+                <threadCounts>true</threadCounts>
+                <idleTime>true</idleTime>
+                <connectTime>true</connectTime>
+              </value>
+            </objProp>
+            <stringProp name="filename"></stringProp>
+          </ResultCollector>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="ResponseCode Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Duration Assertion" enabled="true">
+            <stringProp name="DurationAssertion.duration">${DELETE_DURATION_DEFAULT}</stringProp>
           </DurationAssertion>
           <hashTree/>
         </hashTree>

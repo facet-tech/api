@@ -61,7 +61,6 @@ func (user *User) fetch() error {
 }
 
 func (user *User) delete() error {
-	user.Id = db.CreateId(KEY_USER)
 	input := &dynamodb.DeleteItemInput{
 		TableName: aws.String(db.WorkspaceTableName),
 		Key: map[string]*dynamodb.AttributeValue{
