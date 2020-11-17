@@ -20,3 +20,4 @@ core/aws-lambda-go-api-proxy-core
 sample/main
 sample/output-sam.yaml
 test/results
+jmeter.log

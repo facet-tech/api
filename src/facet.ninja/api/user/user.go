@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"fmt"
 
 	"facet.ninja/api/db"
 	"facet.ninja/api/util"
@@ -27,9 +28,11 @@ const (
 )
 
 func (user *User) create() error {
+
 	user.Id = db.CreateId(KEY_USER)
 	user.Password = "" //not storing passwords
 	item, error := dynamodbattribute.MarshalMap(user)
+	fmt.Println("meta!?", item, error)
 	if error == nil {
 		input := &dynamodb.PutItemInput{
 			TableName: aws.String(db.WorkspaceTableName),
@@ -37,9 +40,10 @@ func (user *User) create() error {
 		}
 		_, error = db.Database.PutItem(input)
 	}
-	// if error == nil {
-	// 	return user.addUserToUserPool()
-	// }
+	fmt.Println("PRIN BWWW!", error)
+	if error == nil {
+		// return user.addUserToUserPool()
+	}
 	return error
 }
 
@@ -70,7 +74,7 @@ func (user *User) fetch() error {
 }
 
 func (user *User) addUserToUserPool() error {
-
+	fmt.Println("ELA MAN")
 	// Initialize a session that the SDK will use to load
 	// credentials from the shared credentials file ~/.aws/credentials.
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
