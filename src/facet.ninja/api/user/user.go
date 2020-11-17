@@ -6,6 +6,8 @@ import (
 	"facet.ninja/api/db"
 	"facet.ninja/api/util"
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/cognitoidentityprovider"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
@@ -15,6 +17,8 @@ type User struct {
 	WorkspaceId string                 `json:"workspaceId"`
 	Email       string                 `json:"email"`
 	Attribute   map[string]interface{} `json:"attribute,omitempty"`
+	Password    string                 `json:"password,omitempty"`
+	Username    string                 `json:"username,omitempty"`
 }
 
 const (
@@ -24,6 +28,7 @@ const (
 
 func (user *User) create() error {
 	user.Id = db.CreateId(KEY_USER)
+	user.Password = "" //not storing passwords
 	item, error := dynamodbattribute.MarshalMap(user)
 	if error == nil {
 		input := &dynamodb.PutItemInput{
@@ -32,6 +37,9 @@ func (user *User) create() error {
 		}
 		_, error = db.Database.PutItem(input)
 	}
+	// if error == nil {
+	// 	return user.addUserToUserPool()
+	// }
 	return error
 }
 
@@ -59,6 +67,34 @@ func (user *User) fetch() error {
 		}
 	}
 	return error
+}
+
+func (user *User) addUserToUserPool() error {
+
+	// Initialize a session that the SDK will use to load
+	// credentials from the shared credentials file ~/.aws/credentials.
+	sess := session.Must(session.NewSessionWithOptions(session.Options{
+		SharedConfigState: session.SharedConfigEnable,
+	}))
+
+	cognitoClient := cognitoidentityprovider.New(sess)
+
+	newUserData := &cognitoidentityprovider.AdminCreateUserInput{
+		DesiredDeliveryMediums: []*string{
+			aws.String("EMAIL"),
+		},
+		UserAttributes: []*cognitoidentityprovider.AttributeType{
+			{
+				Name:  aws.String("email"),
+				Value: aws.String(user.Email),
+			},
+		},
+	}
+	newUserData.SetUserPoolId("us-west-2_vnM0aVcxD") // TODO read from env variable
+	newUserData.SetUsername(user.Username)
+
+	_, err := cognitoClient.AdminCreateUser(newUserData)
+	return err
 }
 
 func (user *User) delete() error {
