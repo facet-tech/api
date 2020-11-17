@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+
 	"facet.ninja/api/db"
 	"facet.ninja/api/util"
 	"github.com/aws/aws-sdk-go/aws"
