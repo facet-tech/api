@@ -1,14 +1,16 @@
 package user
 
 import (
+	"sync"
 	"errors"
 	"fmt"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/cognitoidentityprovider"
+	cognito "github.com/aws/aws-sdk-go/service/cognitoidentityprovider"
 
 	"facet.ninja/api/db"
 	"facet.ninja/api/util"
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/cognitoidentityprovider"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
@@ -27,24 +29,33 @@ const (
 	EMAIL_INDEX = "email-index"
 )
 
-func (user *User) create() error {
+type IdentityMetadata struct {
+	CognitoClient   *cognito.CognitoIdentityProvider
+	UserPoolID      string
+	AppClientID     string
+	AppClientSecret string
+}
 
-	user.Id = db.CreateId(KEY_USER)
-	user.Password = "" //not storing passwords
-	item, error := dynamodbattribute.MarshalMap(user)
-	fmt.Println("meta!?", item, error)
-	if error == nil {
-		input := &dynamodb.PutItemInput{
-			TableName: aws.String(db.WorkspaceTableName),
-			Item:      item,
+var lock = &sync.Mutex{}
+var (
+	identityMetadata IdentityMetadata
+)
+
+func GetIdentityMetadata() IdentityMetadata {
+	var once sync.Once
+	once.Do(func() {
+		fmt.Println("ETREKSA")
+		sess := session.Must(session.NewSessionWithOptions(session.Options{
+			SharedConfigState: session.SharedConfigEnable,
+		}))
+		identityMetadata = IdentityMetadata{
+			CognitoClient:   cognito.New(sess),
+			UserPoolID:      "us-west-2_vnM0aVcxD",
+			AppClientID:     "not-added-yet",
+			AppClientSecret: "not-added-yet",
 		}
-		_, error = db.Database.PutItem(input)
-	}
-	fmt.Println("PRIN BWWW!", error)
-	if error == nil {
-		// return user.addUserToUserPool()
-	}
-	return error
+	})
+	return identityMetadata
 }
 
 func (user *User) fetch() error {
@@ -73,8 +84,24 @@ func (user *User) fetch() error {
 	return error
 }
 
+func (user *User) create() error {
+	user.Id = db.CreateId(KEY_USER)
+	user.Password = "" //not storing passwords
+	item, error := dynamodbattribute.MarshalMap(user)
+	if error == nil {
+		input := &dynamodb.PutItemInput{
+			TableName: aws.String(db.WorkspaceTableName),
+			Item:      item,
+		}
+		_, error = db.Database.PutItem(input)
+	}
+	if error == nil {
+		return user.addUserToUserPool()
+	}
+	return error
+}
+
 func (user *User) addUserToUserPool() error {
-	fmt.Println("ELA MAN")
 	// Initialize a session that the SDK will use to load
 	// credentials from the shared credentials file ~/.aws/credentials.
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
@@ -94,10 +121,41 @@ func (user *User) addUserToUserPool() error {
 			},
 		},
 	}
-	newUserData.SetUserPoolId("us-west-2_vnM0aVcxD") // TODO read from env variable
-	newUserData.SetUsername(user.Username)
+
+	// TODO read from env variable
+	newUserData.SetUserPoolId("us-west-2_vnM0aVcxD")
+	newUserData.SetUsername(user.Email)
 
 	_, err := cognitoClient.AdminCreateUser(newUserData)
+	return err
+}
+
+func (user *User) login() error {
+	identityMetadata = GetIdentityMetadata()
+	fmt.Println("CHECKAREME", identityMetadata)
+	const flowUsernamePassword = "USER_PASSWORD_AUTH"
+
+	username := user.Email
+	password := user.Password
+
+	flow := aws.String(flowUsernamePassword)
+	params := map[string]*string{
+		"USERNAME": aws.String(username),
+		"PASSWORD": aws.String(password),
+	}
+
+	authTry := &cognito.InitiateAuthInput{
+		AuthFlow:       flow,
+		AuthParameters: params,
+	}
+
+	res, err := identityMetadata.CognitoClient.InitiateAuth(authTry)
+	if err != nil {
+		fmt.Println(err)
+		//http.Redirect(w, r, fmt.Sprintf("/login?message=%s", err.Error()), http.StatusSeeOther)
+
+	}
+	fmt.Println(res)
 	return err
 }
 

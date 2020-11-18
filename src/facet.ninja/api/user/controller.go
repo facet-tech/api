@@ -10,12 +10,14 @@ import (
 
 const (
 	BASE_URL              = "/user"
+	LOGIN_URL             = "user/login"
 	EMAIL_QUERY_PARAMATER = "email"
 )
 
 func Route(router *gin.Engine) {
 	router.GET(BASE_URL, Get)
 	router.POST(BASE_URL, Post)
+	router.POST(LOGIN_URL, Login)
 	router.DELETE(BASE_URL, Delete)
 }
 
@@ -31,6 +33,20 @@ func Post(c *gin.Context) {
 	body, error := ioutil.ReadAll(c.Request.Body)
 	json.Unmarshal(body, &user)
 	error = user.create()
+	if error != nil {
+		// need to cancel all entries that were added
+	}
+	util.SetResponseCode(user, error, c)
+}
+
+func Login(c *gin.Context) {
+	user := User{}
+	body, error := ioutil.ReadAll(c.Request.Body)
+	json.Unmarshal(body, &user)
+	error = user.login()
+	if error != nil {
+		// need to cancel all entries that were previously added
+	}
 	util.SetResponseCode(user, error, c)
 }
 
