@@ -1,6 +1,9 @@
 package user
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/base64"
 	"sync"
 	"errors"
 	"fmt"
@@ -43,19 +46,29 @@ var (
 
 func GetIdentityMetadata() IdentityMetadata {
 	var once sync.Once
-	once.Do(func() {
-		fmt.Println("ETREKSA")
+	once.Do(func() { //
 		sess := session.Must(session.NewSessionWithOptions(session.Options{
 			SharedConfigState: session.SharedConfigEnable,
 		}))
 		identityMetadata = IdentityMetadata{
 			CognitoClient:   cognito.New(sess),
 			UserPoolID:      "us-west-2_vnM0aVcxD",
-			AppClientID:     "not-added-yet",
-			AppClientSecret: "not-added-yet",
+			AppClientID:     "1j7ufkr3pfj82o265ll6iqr6hp",
+			AppClientSecret: "lak12dk2c6knbqjnhln637l23041lfae6hthoh2fqdoj5vn6cjv",
 		}
 	})
 	return identityMetadata
+}
+
+// Secret hash is not a client secret itself, but a base64 encoded hmac-sha256
+// hash.
+// The actual AWS documentation on how to compute this hash is here:
+// https://docs.aws.amazon.com/cognito/latest/developerguide/signing-up-users-in-your-app.html#cognito-user-pools-computing-secret-hash
+func computeSecretHash(clientSecret string, username string, clientId string) string {
+	mac := hmac.New(sha256.New, []byte(clientSecret))
+	mac.Write([]byte(username + clientId))
+
+	return base64.StdEncoding.EncodeToString(mac.Sum(nil))
 }
 
 func (user *User) fetch() error {
@@ -126,17 +139,20 @@ func (user *User) addUserToUserPool() error {
 	newUserData.SetUserPoolId("us-west-2_vnM0aVcxD")
 	newUserData.SetUsername(user.Email)
 
-	_, err := cognitoClient.AdminCreateUser(newUserData)
+	res, err := cognitoClient.AdminCreateUser(newUserData)
+	fmt.Println("CHECK", res, "err", err)
 	return err
 }
 
 func (user *User) login() error {
 	identityMetadata = GetIdentityMetadata()
-	fmt.Println("CHECKAREME", identityMetadata)
+
 	const flowUsernamePassword = "USER_PASSWORD_AUTH"
 
 	username := user.Email
 	password := user.Password
+
+	fmt.Println("CHECKAREME", username, password)
 
 	flow := aws.String(flowUsernamePassword)
 	params := map[string]*string{
@@ -144,18 +160,43 @@ func (user *User) login() error {
 		"PASSWORD": aws.String(password),
 	}
 
+	if identityMetadata.AppClientSecret != "" {
+		secretHash := computeSecretHash(identityMetadata.AppClientSecret, username, identityMetadata.AppClientID)
+
+		params["SECRET_HASH"] = aws.String(secretHash)
+	}
+
 	authTry := &cognito.InitiateAuthInput{
 		AuthFlow:       flow,
 		AuthParameters: params,
+		ClientId:       aws.String(identityMetadata.AppClientID),
 	}
 
 	res, err := identityMetadata.CognitoClient.InitiateAuth(authTry)
+
 	if err != nil {
 		fmt.Println(err)
 		//http.Redirect(w, r, fmt.Sprintf("/login?message=%s", err.Error()), http.StatusSeeOther)
 
 	}
-	fmt.Println(res)
+
+	params["NEW_PASSWORD"] = aws.String(user.Password)
+
+	authChallenge := &cognito.RespondToAuthChallengeInput{
+		ChallengeName:      aws.String(cognito.ChallengeNameTypeNewPasswordRequired),
+		ChallengeResponses: params,
+		ClientId:           aws.String(identityMetadata.AppClientID),
+		Session:            res.Session,
+	}
+
+	fmt.Println("authChallenge", authChallenge)
+
+	req, output :=  identityMetadata.CognitoClient.RespondToAuthChallenge(authChallenge)
+
+	fmt.Println("req", req, "output: ",output)
+
+	fmt.Println("Final res", res)
+
 	return err
 }
 
