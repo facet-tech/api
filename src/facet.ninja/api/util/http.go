@@ -7,8 +7,6 @@ import (
 
 const GET = "GET"
 const POST = "POST"
-const DELETE = "DELETE"
-const OPTIONS = "OPTIONS"
 const NOT_FOUND = "NOT_FOUND"
 
 func SetResponseCode(result interface{}, error error, context *gin.Context) {

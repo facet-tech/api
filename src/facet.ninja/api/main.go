@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"facet.ninja/api/middleware"
 	"strings"
 
 	"facet.ninja/api/domain"
@@ -23,7 +24,12 @@ func main() {
 
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	if ginLambda == nil {
+		//var loginService service.LoginService = service.StaticLoginService()
+		//var jwtService service.JWTService = service.JWTAuthService()
+
 		router := gin.Default()
+		router.Use(middleware.AuthorizeJWT())
+
 		defaultRoutes(router)
 		facet.Route(router)
 		workspace.Route(router)

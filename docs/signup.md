@@ -1,5 +1,9 @@
 ## Signup
 
+Signup should not go through the API. It should directly go through cognito.
+
+Current state:
+
 ```plantuml
    @startuml
     !$CE = "client_email"

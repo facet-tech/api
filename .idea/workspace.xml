@@ -1,137 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="985512ff-6b51-44d4-a3f4-60f213162eba" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/domain/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/facet.ninja/api/domain/controller.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/domain/domain.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/facet.ninja/api/domain/domain.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/workspace/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/facet.ninja/api/workspace/controller.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/workspace/workspace.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/facet.ninja/api/workspace/workspace.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/jmeter.jmx" beforeDir="false" afterPath="$PROJECT_DIR$/test/jmeter.jmx" afterDir="false" />
+    <list default="true" id="c0bd9f28-3cd1-4302-acc5-b061988838e4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/facet.ninja/api/middleware/JWTMiddleware.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/facet.ninja/api/newnew/controller.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/facet.ninja/api/service/JWTAuthenticaiton.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/facet.ninja/api/service/LoginService.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/signup.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/signup.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/src/facet.ninja/api/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/go.sum" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/facet.ninja/api/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/user/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/facet.ninja/api/user/controller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/user/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/facet.ninja/api/user/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/util/http.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/facet.ninja/api/util/http.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Go File" />
-      </list>
-    </option>
-  </component>
-  <component name="GOROOT" path="/usr/local/Cellar/go/1.15.2/libexec" />
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="GoLibraries">
-    <option name="indexEntireGoPath" value="false" />
-  </component>
-  <component name="ProjectId" id="1kTX1U8t3AV7ZrVqGJIS8XXmWY7" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
-  <component name="ProjectViewState">
-    <option name="autoscrollFromSource" value="true" />
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="DefaultGoTemplateProperty" value="Go File" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="aspect.path.notification.shown" value="true" />
-    <property name="go.import.settings.migrated" value="true" />
-    <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="Settings.Markdown" />
-  </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/test" />
-    </key>
+    <property name="configurable.Global.GOPATH.is.expanded" value="true" />
+    <property name="configurable.Module.GOPATH.is.expanded" value="false" />
+    <property name="configurable.Project.GOPATH.is.expanded" value="true" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="com.goide.configuration.GoLibrariesConfigurableProvider" />
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="985512ff-6b51-44d4-a3f4-60f213162eba" name="Default Changelist" comment="" />
-      <created>1605725342051</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1605725342051</updated>
-      <workItem from="1605725344137" duration="31399000" />
-      <workItem from="1606028114850" duration="20056000" />
-    </task>
     <servers />
   </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="VgoProject">
-    <integration-enabled>true</integration-enabled>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2520" y="406" key="#GOROOT" timestamp="1605725376222">
+    <state x="2184" y="131" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1606427493952">
       <screen x="1440" y="-239" width="2560" height="1417" />
     </state>
-    <state x="2520" y="406" key="#GOROOT/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1605725376222" />
-    <state x="2520" y="310" key="#Go_Modules" timestamp="1605725393822">
+    <state x="2184" y="131" key="#com.intellij.execution.impl.EditConfigurationsDialog/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1606427493952" />
+    <state x="2208" y="51" key="SettingsEditor" timestamp="1606428025773">
       <screen x="1440" y="-239" width="2560" height="1417" />
     </state>
-    <state x="2520" y="310" key="#Go_Modules/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1605725393822" />
-    <state x="2466" y="278" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1606098980193">
+    <state x="2208" y="51" key="SettingsEditor/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1606428025773" />
+    <state x="2427" y="102" width="586" height="735" key="find.popup" timestamp="1606427447336">
       <screen x="1440" y="-239" width="2560" height="1417" />
     </state>
-    <state x="2466" y="278" key="#com.intellij.fileTypes.FileTypeChooser/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1606098980193" />
-    <state x="2504" y="183" key="#com.intellij.ide.util.MemberChooser" timestamp="1605736308864">
+    <state x="2427" y="102" width="586" height="735" key="find.popup/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1606427447336" />
+    <state x="2385" y="86" width="670" height="676" key="search.everywhere.popup" timestamp="1606428199952">
       <screen x="1440" y="-239" width="2560" height="1417" />
     </state>
-    <state x="2504" y="183" key="#com.intellij.ide.util.MemberChooser/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1605736308864" />
-    <state x="2229" y="108" key="SettingsEditor" timestamp="1605744044312">
-      <screen x="1440" y="-239" width="2560" height="1417" />
-    </state>
-    <state x="2229" y="108" key="SettingsEditor/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1605744044312" />
-    <state x="2500" y="201" key="com.goide.refactor.move.GoMoveDeclarationDialog" timestamp="1606084397559">
-      <screen x="1440" y="-239" width="2560" height="1417" />
-    </state>
-    <state x="2500" y="201" key="com.goide.refactor.move.GoMoveDeclarationDialog/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1606084397559" />
-    <state x="2533" y="390" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605746527248">
-      <screen x="1440" y="-239" width="2560" height="1417" />
-    </state>
-    <state x="2533" y="390" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1605746527248" />
-    <state x="2427" y="102" width="586" height="735" key="find.popup" timestamp="1606127584648">
-      <screen x="1440" y="-239" width="2560" height="1417" />
-    </state>
-    <state x="2427" y="102" width="586" height="735" key="find.popup/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1606127584648" />
-    <state x="2385" y="215" width="670" height="675" key="run.anything.popup" timestamp="1605726119609">
-      <screen x="1440" y="-239" width="2560" height="1417" />
-    </state>
-    <state x="2385" y="215" width="670" height="675" key="run.anything.popup/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1605726119609" />
-    <state x="2385" y="86" width="670" height="676" key="search.everywhere.popup" timestamp="1606159580163">
-      <screen x="1440" y="-239" width="2560" height="1417" />
-    </state>
-    <state x="2385" y="86" width="670" height="676" key="search.everywhere.popup/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1606159580163" />
-    <state x="2450" y="388" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1606034705592">
-      <screen x="1440" y="-239" width="2560" height="1417" />
-    </state>
-    <state x="2450" y="388" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1606034705592" />
+    <state x="2385" y="86" width="670" height="676" key="search.everywhere.popup/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1606428199952" />
   </component>
 </project>
