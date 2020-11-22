@@ -13,10 +13,10 @@ Current state:
     !$DB = "DynamoDB"
     !$CO = "Cognito"
 
-    $C-->>$API: Signup {email,workspaceId}
-    $API-->>$DB: UpdateDB {email,workspaceId}
-    $API-->>$CO: Update Cognito Pool
-    $API-->>$Admin: Check your email!
+    $C-->>$CO: Signup {email,workspaceId}
+    $CO-->>$API: TRIGGER UpdateDB {email,workspaceId}
+    $API-->>DB: UpdateDB {emain,workspaceId}
+    $CO-->>$C: Check your email!
     Note right of $CE: If either service is down,\n applied changes are undone
     $CO-->>$CE: temp PW
     $C<-->$CE: Retreive PW
@@ -24,3 +24,7 @@ Current state:
     $C-->>$Admin: Login {email, pw}
 @endtuml
 ```
+
+## Signup a test account
+
+// TODO script

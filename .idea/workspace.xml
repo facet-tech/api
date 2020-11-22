@@ -20,18 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c0bd9f28-3cd1-4302-acc5-b061988838e4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/facet.ninja/api/middleware/JWTMiddleware.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/facet.ninja/api/newnew/controller.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/facet.ninja/api/service/JWTAuthenticaiton.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/facet.ninja/api/service/LoginService.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/signup.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/signup.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/src/facet.ninja/api/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/go.sum" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/facet.ninja/api/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/user/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/facet.ninja/api/user/controller.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/user/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/facet.ninja/api/user/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/util/http.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/facet.ninja/api/util/http.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/src/facet.ninja/api/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/facet.ninja/api/middleware/JWTMiddleware.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/facet.ninja/api/middleware/JWTMiddleware.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
