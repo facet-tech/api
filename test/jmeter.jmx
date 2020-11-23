@@ -17,7 +17,7 @@
           <collectionProp name="Arguments.arguments"/>
         </elementProp>
         <stringProp name="HTTPSampler.domain">localhost</stringProp>
-        <stringProp name="HTTPSampler.port"></stringProp>
+        <stringProp name="HTTPSampler.port">3000</stringProp>
         <stringProp name="HTTPSampler.protocol">http</stringProp>
         <stringProp name="HTTPSampler.contentEncoding"></stringProp>
         <stringProp name="HTTPSampler.path"></stringProp>
@@ -46,6 +46,21 @@
           <elementProp name="DELETE_DURATION_DEFAULT" elementType="Argument">
             <stringProp name="Argument.name">DELETE_DURATION_DEFAULT</stringProp>
             <stringProp name="Argument.value">5000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="REQUEST_PROTOCOL" elementType="Argument">
+            <stringProp name="Argument.name">REQUEST_PROTOCOL</stringProp>
+            <stringProp name="Argument.value">http</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="BASE_URL" elementType="Argument">
+            <stringProp name="Argument.name">BASE_URL</stringProp>
+            <stringProp name="Argument.value">localhost</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="PORT" elementType="Argument">
+            <stringProp name="Argument.name">PORT</stringProp>
+            <stringProp name="Argument.value">3000</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -84,7 +99,7 @@
             </collectionProp>
           </elementProp>
           <stringProp name="HTTPSampler.domain">cognito-idp.us-west-2.amazonaws.com</stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.port"> </stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
           <stringProp name="HTTPSampler.path">/</stringProp>
@@ -198,9 +213,9 @@
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
-          <stringProp name="HTTPSampler.domain">localhost</stringProp>
-          <stringProp name="HTTPSampler.port">3000</stringProp>
-          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
           <stringProp name="HTTPSampler.path">/workspace</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -293,8 +308,23 @@
 sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quot;Authorization&quot;)));</stringProp>
           </BeanShellPreProcessor>
           <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="CORS Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1510473407">Access-Control-Allow-Origin: *</stringProp>
+              <stringProp name="1582906575">Access-Control-Allow-Methods: *</stringProp>
+              <stringProp name="-11560837">Access-Control-Allow-Headers: *</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="0"></stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /workspace" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /workspace" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -373,8 +403,36 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
             <stringProp name="DurationAssertion.duration">${GET_DURATION_DEFAULT}</stringProp>
           </DurationAssertion>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.protocol.http.control.Header;
+
+sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quot;Authorization&quot;)));</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="CORS Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1510473407">Access-Control-Allow-Origin: *</stringProp>
+              <stringProp name="1582906575">Access-Control-Allow-Methods: *</stringProp>
+              <stringProp name="-11560837">Access-Control-Allow-Headers: *</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="0"></stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /workspace 404" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /workspace 404" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -444,8 +502,36 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
             <stringProp name="DurationAssertion.duration">${GET_DURATION_DEFAULT}</stringProp>
           </DurationAssertion>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.protocol.http.control.Header;
+
+sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quot;Authorization&quot;)));</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="CORS Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1510473407">Access-Control-Allow-Origin: *</stringProp>
+              <stringProp name="1582906575">Access-Control-Allow-Methods: *</stringProp>
+              <stringProp name="-11560837">Access-Control-Allow-Headers: *</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="0"></stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="OPTIONS /workspace" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="OPTIONS /workspace" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -516,7 +602,7 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
           </DurationAssertion>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /user" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /user" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -614,8 +700,36 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
             <stringProp name="DurationAssertion.duration">${POST_DURATION_DEFAULT}</stringProp>
           </DurationAssertion>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.protocol.http.control.Header;
+
+sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quot;Authorization&quot;)));</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="CORS Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1510473407">Access-Control-Allow-Origin: *</stringProp>
+              <stringProp name="1582906575">Access-Control-Allow-Methods: *</stringProp>
+              <stringProp name="-11560837">Access-Control-Allow-Headers: *</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="0"></stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /user" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /user" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -712,8 +826,36 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
             <stringProp name="DurationAssertion.duration">${GET_DURATION_DEFAULT}</stringProp>
           </DurationAssertion>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.protocol.http.control.Header;
+
+sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quot;Authorization&quot;)));</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="CORS Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1510473407">Access-Control-Allow-Origin: *</stringProp>
+              <stringProp name="1582906575">Access-Control-Allow-Methods: *</stringProp>
+              <stringProp name="-11560837">Access-Control-Allow-Headers: *</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="0"></stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /user 404" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /user 404" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -783,8 +925,36 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
             <stringProp name="DurationAssertion.duration">${GET_DURATION_DEFAULT}</stringProp>
           </DurationAssertion>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.protocol.http.control.Header;
+
+sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quot;Authorization&quot;)));</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="CORS Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1510473407">Access-Control-Allow-Origin: *</stringProp>
+              <stringProp name="1582906575">Access-Control-Allow-Methods: *</stringProp>
+              <stringProp name="-11560837">Access-Control-Allow-Headers: *</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="0"></stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /user" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /user" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -865,8 +1035,36 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
             <stringProp name="DurationAssertion.duration">${DELETE_DURATION_DEFAULT}</stringProp>
           </DurationAssertion>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.protocol.http.control.Header;
+
+sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quot;Authorization&quot;)));</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="CORS Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1510473407">Access-Control-Allow-Origin: *</stringProp>
+              <stringProp name="1582906575">Access-Control-Allow-Methods: *</stringProp>
+              <stringProp name="-11560837">Access-Control-Allow-Headers: *</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="0"></stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="OPTIONS /user" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="OPTIONS /user" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -937,7 +1135,7 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
           </DurationAssertion>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /domain" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /domain" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -1053,8 +1251,36 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
             <stringProp name="DurationAssertion.duration">${POST_DURATION_DEFAULT}</stringProp>
           </DurationAssertion>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.protocol.http.control.Header;
+
+sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quot;Authorization&quot;)));</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="CORS Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1510473407">Access-Control-Allow-Origin: *</stringProp>
+              <stringProp name="1582906575">Access-Control-Allow-Methods: *</stringProp>
+              <stringProp name="-11560837">Access-Control-Allow-Headers: *</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="0"></stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /domain" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /domain" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -1151,8 +1377,36 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
             <stringProp name="DurationAssertion.duration">${GET_DURATION_DEFAULT}</stringProp>
           </DurationAssertion>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.protocol.http.control.Header;
+
+sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quot;Authorization&quot;)));</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="CORS Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1510473407">Access-Control-Allow-Origin: *</stringProp>
+              <stringProp name="1582906575">Access-Control-Allow-Methods: *</stringProp>
+              <stringProp name="-11560837">Access-Control-Allow-Headers: *</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="0"></stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /domain 404" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /domain 404" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -1222,8 +1476,36 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
             <stringProp name="DurationAssertion.duration">${GET_DURATION_DEFAULT}</stringProp>
           </DurationAssertion>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.protocol.http.control.Header;
+
+sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quot;Authorization&quot;)));</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="CORS Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1510473407">Access-Control-Allow-Origin: *</stringProp>
+              <stringProp name="1582906575">Access-Control-Allow-Methods: *</stringProp>
+              <stringProp name="-11560837">Access-Control-Allow-Headers: *</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="0"></stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="OPTIONS /domain" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="OPTIONS /domain" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -1294,7 +1576,7 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
           </DurationAssertion>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /facet" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /facet" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -1432,8 +1714,36 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
             <stringProp name="DurationAssertion.duration">${POST_DURATION_DEFAULT}</stringProp>
           </DurationAssertion>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.protocol.http.control.Header;
+
+sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quot;Authorization&quot;)));</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="CORS Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1510473407">Access-Control-Allow-Origin: *</stringProp>
+              <stringProp name="1582906575">Access-Control-Allow-Methods: *</stringProp>
+              <stringProp name="-11560837">Access-Control-Allow-Headers: *</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="0"></stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /facet" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /facet" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -1521,8 +1831,36 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
             <stringProp name="DurationAssertion.duration">${GET_DURATION_DEFAULT}</stringProp>
           </DurationAssertion>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.protocol.http.control.Header;
+
+sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quot;Authorization&quot;)));</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="CORS Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1510473407">Access-Control-Allow-Origin: *</stringProp>
+              <stringProp name="1582906575">Access-Control-Allow-Methods: *</stringProp>
+              <stringProp name="-11560837">Access-Control-Allow-Headers: *</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="0"></stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /facet 404" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /facet 404" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -1592,8 +1930,36 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
             <stringProp name="DurationAssertion.duration">${GET_DURATION_DEFAULT}</stringProp>
           </DurationAssertion>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.protocol.http.control.Header;
+
+sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quot;Authorization&quot;)));</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="CORS Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1510473407">Access-Control-Allow-Origin: *</stringProp>
+              <stringProp name="1582906575">Access-Control-Allow-Methods: *</stringProp>
+              <stringProp name="-11560837">Access-Control-Allow-Headers: *</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="0"></stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /facet" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /facet" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -1674,8 +2040,36 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
             <stringProp name="DurationAssertion.duration">${DELETE_DURATION_DEFAULT}</stringProp>
           </DurationAssertion>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.protocol.http.control.Header;
+
+sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quot;Authorization&quot;)));</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="CORS Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1510473407">Access-Control-Allow-Origin: *</stringProp>
+              <stringProp name="1582906575">Access-Control-Allow-Methods: *</stringProp>
+              <stringProp name="-11560837">Access-Control-Allow-Headers: *</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="0"></stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET facet.ninja.js" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET facet.ninja.js" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -1756,7 +2150,7 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="OPTIONS /facet" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="OPTIONS /facet" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -1827,11 +2221,15 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
           </DurationAssertion>
           <hashTree/>
         </hashTree>
+<<<<<<< a7ff3b46751d806f139c7f0d5a0a7de9fe6d1786
 <<<<<<< 83fd8729ff288715535d63f3b4286dbda8c02f85
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /domain" enabled="true">
 =======
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /domain" enabled="false">
 >>>>>>> save tmo
+=======
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /domain" enabled="true">
+>>>>>>> updated /DELETE methods
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -1912,12 +2310,44 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
             <stringProp name="DurationAssertion.duration">${DELETE_DURATION_DEFAULT}</stringProp>
           </DurationAssertion>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.protocol.http.control.Header;
+
+sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quot;Authorization&quot;)));</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="CORS Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1510473407">Access-Control-Allow-Origin: *</stringProp>
+              <stringProp name="1582906575">Access-Control-Allow-Methods: *</stringProp>
+              <stringProp name="-11560837">Access-Control-Allow-Headers: *</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="0"></stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
         </hashTree>
+<<<<<<< a7ff3b46751d806f139c7f0d5a0a7de9fe6d1786
 <<<<<<< 83fd8729ff288715535d63f3b4286dbda8c02f85
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /workspace" enabled="true">
 =======
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /workspace" enabled="false">
 >>>>>>> save tmo
+=======
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /workspace" enabled="true">
+>>>>>>> updated /DELETE methods
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -1997,21 +2427,71 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
             <stringProp name="DurationAssertion.duration">${DELETE_DURATION_DEFAULT}</stringProp>
           </DurationAssertion>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.protocol.http.control.Header;
+
+sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quot;Authorization&quot;)));</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="CORS Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1510473407">Access-Control-Allow-Origin: *</stringProp>
+              <stringProp name="1582906575">Access-Control-Allow-Methods: *</stringProp>
+              <stringProp name="-11560837">Access-Control-Allow-Headers: *</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="0"></stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
         </hashTree>
-        <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="CORS Assertion" enabled="false">
-          <collectionProp name="Asserion.test_strings">
-            <stringProp name="-1510473407">Access-Control-Allow-Origin: *</stringProp>
-            <stringProp name="1582906575">Access-Control-Allow-Methods: *</stringProp>
-            <stringProp name="-11560837">Access-Control-Allow-Headers: *</stringProp>
-            <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
-            <stringProp name="0"></stringProp>
-          </collectionProp>
-          <stringProp name="Assertion.custom_message"></stringProp>
-          <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
-          <boolProp name="Assertion.assume_success">false</boolProp>
-          <intProp name="Assertion.test_type">2</intProp>
-          <stringProp name="Assertion.scope">all</stringProp>
-        </ResponseAssertion>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
         <hashTree/>
       </hashTree>
     </hashTree>

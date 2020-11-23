@@ -2,6 +2,7 @@ package workspace
 
 import (
 	"errors"
+
 	"facet.ninja/api/db"
 	"facet.ninja/api/util"
 	"github.com/aws/aws-sdk-go/aws"
@@ -55,7 +56,6 @@ func (workspace *Workspace) create() error {
 	}
 	return error
 }
-
 
 func (workspace *Workspace) delete() error {
 	input := &dynamodb.DeleteItemInput{
