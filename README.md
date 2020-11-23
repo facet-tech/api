@@ -14,7 +14,7 @@ make
 2. Run sam from the root directory of the project: 
 
 ```
-sam local start-api --env-vars env.json
+sam local start-api
 ```
 
 ## Run tests
