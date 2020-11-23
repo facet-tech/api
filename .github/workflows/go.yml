@@ -64,7 +64,7 @@ jobs:
         outputReportsFolder: test/results/
 
     - name: Upload test results
-      uses: jakejarvis/s3-sync-action@v0.5.0
+      uses: jakejarvis/s3-sync-action@v0.5.1
       env:
         AWS_S3_BUCKET: cdn.facet.ninja
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -74,7 +74,7 @@ jobs:
         DEST_DIR: test/api/regression/$GITHUB_RUN_NUMBER/
 
     - name: Upload test results
-      uses: jakejarvis/s3-sync-action@v0.5.0
+      uses: jakejarvis/s3-sync-action@v0.5.1
       with:
         args: --delete
       env:
