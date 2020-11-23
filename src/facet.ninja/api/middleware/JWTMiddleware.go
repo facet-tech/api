@@ -11,16 +11,13 @@ import (
 
 func JWTVerify() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// TODO: cache valid JWTs https://github.com/facets-io/api/issues/14
 		tokenString := c.GetHeader("AccessToken")
 		_, err := jwt.Parse(tokenString, getKey)
 		if err != nil {
 			c.AbortWithStatus(http.StatusUnauthorized)
 		}
-		// TODO verify claims https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html
-		//claims := token.Claims.(jwt.MapClaims)
-		//for key, value := range claims {
-		//	fmt.Printf("%s\t%v\n", key, value)
-		//}
+		// TODO verify claims against the Cognito Pool https://github.com/facets-io/api/issues/13
 	}
 }
 
@@ -28,8 +25,6 @@ const jwksURL = `https://cognito-idp.us-west-2.amazonaws.com/us-west-2_oM4ne6cSf
 
 func getKey(token *jwt.Token) (interface{}, error) {
 
-	// TODO: cache response so we don't have to make a request every time
-	// we want to verify a JWT
 	set, err := jwk.FetchHTTP(jwksURL)
 	if err != nil {
 		return nil, err

@@ -31,9 +31,6 @@ func Post(c *gin.Context) {
 	body, error := ioutil.ReadAll(c.Request.Body)
 	json.Unmarshal(body, &user)
 	error = user.create()
-	if error != nil {
-		// need to cancel all entries that were added
-	}
 	util.SetResponseCode(user, error, c)
 }
 

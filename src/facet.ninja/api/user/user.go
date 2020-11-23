@@ -5,7 +5,6 @@ import (
 	"facet.ninja/api/db"
 	"facet.ninja/api/util"
 	"github.com/aws/aws-sdk-go/aws"
-	cognito "github.com/aws/aws-sdk-go/service/cognitoidentityprovider"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
@@ -15,21 +14,12 @@ type User struct {
 	WorkspaceId string                 `json:"workspaceId"`
 	Email       string                 `json:"email"`
 	Attribute   map[string]interface{} `json:"attribute,omitempty"`
-	Password    string                 `json:"password,omitempty"`
-	Username    string                 `json:"username,omitempty"`
 }
 
 const (
 	KEY_USER    = "USER"
 	EMAIL_INDEX = "email-index"
 )
-
-type IdentityMetadata struct {
-	CognitoClient   *cognito.CognitoIdentityProvider
-	UserPoolID      string
-	AppClientID     string
-	AppClientSecret string
-}
 
 func (user *User) fetch() error {
 	input := &dynamodb.QueryInput{
@@ -59,7 +49,6 @@ func (user *User) fetch() error {
 
 func (user *User) create() error {
 	user.Id = db.CreateId(KEY_USER)
-	user.Password = "" //not storing passwords
 	item, error := dynamodbattribute.MarshalMap(user)
 	if error == nil {
 		input := &dynamodb.PutItemInput{
