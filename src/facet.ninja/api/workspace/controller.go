@@ -2,9 +2,11 @@ package workspace
 
 import (
 	"encoding/json"
+	"io/ioutil"
+
+	"facet.ninja/api/middleware"
 	"facet.ninja/api/util"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
 )
 
 const (
@@ -13,9 +15,9 @@ const (
 )
 
 func Route(router *gin.Engine) {
-	router.GET(BASE_URL, Get)
-	router.POST(BASE_URL, Post)
-	router.DELETE(BASE_URL, Delete)
+	router.GET(BASE_URL, middleware.JWTVerify(), Get)
+	router.POST(BASE_URL, middleware.JWTVerify(), Post)
+	router.DELETE(BASE_URL, middleware.JWTVerify(), Delete)
 }
 
 func Get(c *gin.Context) {
@@ -40,4 +42,3 @@ func Delete(c *gin.Context) {
 	error = workspace.delete()
 	util.SetResponseCode(nil, error, c)
 }
-
