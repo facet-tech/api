@@ -15,7 +15,7 @@ const (
 	WORKSAPCE_ID_PATH_QUERY_PARAMATER = "workspaceId"
 )
 
-func Route(router *gin.Engine) {
+func AuthenticatedRoute(router *gin.Engine) {
 	router.GET(BASE_URL, middleware.JWTVerify(), Get)
 	router.POST(BASE_URL, middleware.JWTVerify(), Post)
 	router.DELETE(BASE_URL, middleware.JWTVerify(), Delete)

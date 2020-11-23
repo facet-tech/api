@@ -2221,15 +2221,7 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
           </DurationAssertion>
           <hashTree/>
         </hashTree>
-<<<<<<< a7ff3b46751d806f139c7f0d5a0a7de9fe6d1786
-<<<<<<< 83fd8729ff288715535d63f3b4286dbda8c02f85
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /domain" enabled="true">
-=======
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /domain" enabled="false">
->>>>>>> save tmo
-=======
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /domain" enabled="true">
->>>>>>> updated /DELETE methods
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -2339,15 +2331,7 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
-<<<<<<< a7ff3b46751d806f139c7f0d5a0a7de9fe6d1786
-<<<<<<< 83fd8729ff288715535d63f3b4286dbda8c02f85
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /workspace" enabled="true">
-=======
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /workspace" enabled="false">
->>>>>>> save tmo
-=======
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DELETE /workspace" enabled="true">
->>>>>>> updated /DELETE methods
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">

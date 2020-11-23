@@ -14,7 +14,7 @@ const (
 	ID_QUERY_PARAMATER = "id"
 )
 
-func Route(router *gin.Engine) {
+func AuthenticatedRoute(router *gin.Engine) {
 	router.GET(BASE_URL, middleware.JWTVerify(), Get)
 	router.POST(BASE_URL, middleware.JWTVerify(), Post)
 	router.DELETE(BASE_URL, middleware.JWTVerify(), Delete)
