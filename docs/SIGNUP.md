@@ -9,26 +9,21 @@ The JWT is verified utilizing the common AWS guidelines, [stated here](https://d
 Sequence diagram Signup:
 
 ```plantuml
-   @startuml
+    @startuml
     !$CE = "client_email"
     !$C = "User"
     !$Admin = "FN_Application"
     !$API = "FN_API"
     !$DB = "DynamoDB"
     !$CO = "Cognito"
-
+    
     $C-->>$CO: Signup {email,workspaceId}
-    $CO-->>$API: TRIGGER UpdateDB λ function
+    $CO-->>$API: TRIGGER UpdateDB λ function \nTODO https://github.com/facets-io/api/issues/12
     $API-->>DB: UpdateDB {emain,workspaceId}
-    $CO-->>$C: Verification Email!
-    Note right of $CE: If either service is down, applied \nchanges are undone (cascade)
-    $CO-->>$CE: temp PW
-    $C<-->$CE: Retreive PW
-    $C-->>$Admin: setup PW
+    $CO-->>$C: Verification Email {verification code}
+    Note right of $CE: If either service is down, applied changes\n are undone in all the affiliated systems
+    
+    $C-->>$Admin: setup PW {verification code}
     $C-->>$Admin: Login {email, pw}
 @endtuml
 ```
-
-## Signup a test account
-
-// TODO script

@@ -29,9 +29,13 @@
 =======
     <list default="true" id="985512ff-6b51-44d4-a3f4-60f213162eba" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< be06763101a90f0c5861b373faab3599e18de3ab
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/env.json" beforeDir="false" />
 >>>>>>> updated jmeter
+=======
+      <change beforePath="$PROJECT_DIR$/docs/SIGNUP.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/SIGNUP.md" afterDir="false" />
+>>>>>>> updated docs
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,10 +116,10 @@
     <state x="2385" y="86" width="670" height="676" key="search.everywhere.popup" timestamp="1606428199952">
 =======
     <state x="2385" y="215" width="670" height="675" key="run.anything.popup/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1605726119609" />
-    <state x="2385" y="86" width="670" height="676" key="search.everywhere.popup" timestamp="1606163115050">
+    <state x="2385" y="86" width="670" height="676" key="search.everywhere.popup" timestamp="1606163393823">
       <screen x="1440" y="-239" width="2560" height="1417" />
     </state>
-    <state x="2385" y="86" width="670" height="676" key="search.everywhere.popup/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1606163115050" />
+    <state x="2385" y="86" width="670" height="676" key="search.everywhere.popup/51.23.1389.877/1440.-239.2560.1417@1440.-239.2560.1417" timestamp="1606163393823" />
     <state x="2450" y="388" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1606034705592">
 >>>>>>> updated jmeter
       <screen x="1440" y="-239" width="2560" height="1417" />
