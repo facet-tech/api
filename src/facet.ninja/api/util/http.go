@@ -3,12 +3,11 @@ package util
 import (
 	"github.com/gin-gonic/gin"
 	"log"
+	"net/http"
 )
 
 const GET = "GET"
 const POST = "POST"
-const DELETE = "DELETE"
-const OPTIONS = "OPTIONS"
 const NOT_FOUND = "NOT_FOUND"
 
 func SetResponseCode(result interface{}, error error, context *gin.Context) {
@@ -16,15 +15,15 @@ func SetResponseCode(result interface{}, error error, context *gin.Context) {
 	if error != nil {
 		log.Print(error)
 		if error.Error() == NOT_FOUND {
-			context.JSON(404, error)
+			context.JSON(http.StatusNotFound, error)
 		} else {
-			context.JSON(500, error.Error())
+			context.JSON(http.StatusInternalServerError, error.Error())
 		}
 
 	} else if context.Request.Method == POST {
-		context.JSON(201, result)
+		context.JSON(http.StatusCreated, result)
 	} else {
-		context.JSON(200, result)
+		context.JSON(http.StatusOK, result)
 	}
 }
 

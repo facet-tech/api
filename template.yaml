@@ -1,7 +1,13 @@
-AWSTemplateFormatVersion : '2010-09-09'
+AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description:
   Facet.ninja rest API
+
+Parameters:
+  COGNITO_JWKS_URL:
+    Type: String
+    Description: Cognito JWKS URL
+
 Resources:
   API:
     Type: AWS::Serverless::Function
@@ -10,6 +16,9 @@ Resources:
       CodeUri: ./build/main.zip
       Runtime: go1.x
       Timeout: 5
+      Environment:
+        Variables:
+          COGNITO_JWKS_URL: !Ref COGNITO_JWKS_URL
       Events:
         ProxyApiGreedy:
           Type: Api

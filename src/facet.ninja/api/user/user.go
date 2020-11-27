@@ -21,19 +21,6 @@ const (
 	EMAIL_INDEX = "email-index"
 )
 
-func (user *User) create() error {
-	user.Id = db.CreateId(KEY_USER)
-	item, error := dynamodbattribute.MarshalMap(user)
-	if error == nil {
-		input := &dynamodb.PutItemInput{
-			TableName: aws.String(db.WorkspaceTableName),
-			Item:      item,
-		}
-		_, error = db.Database.PutItem(input)
-	}
-	return error
-}
-
 func (user *User) fetch() error {
 	input := &dynamodb.QueryInput{
 		TableName: aws.String(db.WorkspaceTableName),
@@ -56,6 +43,19 @@ func (user *User) fetch() error {
 		} else {
 			error = dynamodbattribute.UnmarshalMap(result.Items[0], user)
 		}
+	}
+	return error
+}
+
+func (user *User) create() error {
+	user.Id = db.CreateId(KEY_USER)
+	item, error := dynamodbattribute.MarshalMap(user)
+	if error == nil {
+		input := &dynamodb.PutItemInput{
+			TableName: aws.String(db.WorkspaceTableName),
+			Item:      item,
+		}
+		_, error = db.Database.PutItem(input)
 	}
 	return error
 }

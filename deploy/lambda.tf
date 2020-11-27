@@ -5,5 +5,7 @@ module "lambda" {
   filename                    = var.filename
   runtime                     = var.runtime
   environment                 = var.environment
-  environment_variables       = {}
+  environment_variables       = {
+    COGNITO_JWKS_URL = "https://cognito-idp.us-west-2.amazonaws.com/us-west-2_oM4ne6cSf/.well-known/jwks.json"
+  }
 }

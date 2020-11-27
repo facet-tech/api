@@ -2,9 +2,10 @@ package workspace
 
 import (
 	"encoding/json"
+	"io/ioutil"
+
 	"facet.ninja/api/util"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
 )
 
 const (
@@ -40,4 +41,3 @@ func Delete(c *gin.Context) {
 	error = workspace.delete()
 	util.SetResponseCode(nil, error, c)
 }
-
