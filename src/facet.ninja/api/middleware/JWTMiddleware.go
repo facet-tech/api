@@ -18,7 +18,7 @@ func JWTVerify() gin.HandlerFunc {
 		if err != nil {
 			c.AbortWithStatus(http.StatusUnauthorized)
 		}
-		// TODO verify claims against the Cognito Pool https://github.com/facets-io/api/issues/13
+		// TODO: verify claims against the Cognito Pool https://github.com/facets-io/api/issues/13
 	}
 }
 

@@ -26,7 +26,6 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 	if ginLambda == nil {
 		router := gin.Default()
 		defaultRoutes(router)
-		// TODO add authentication mechanism for facet.ninja.js https://github.com/facets-io/api/issues/11
 		router.GET("/facet.ninja.js", getJs)
 		// authenticated routes
 		router.Group("/")
