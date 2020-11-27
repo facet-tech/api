@@ -2,10 +2,9 @@ package user
 
 import (
 	"encoding/json"
-	"facet.ninja/api/middleware"
-	"io/ioutil"
 	"facet.ninja/api/util"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
 )
 
 const (
@@ -13,10 +12,10 @@ const (
 	EMAIL_QUERY_PARAMATER = "email"
 )
 
-func AuthenticatedRoute(router *gin.Engine) {
-	router.GET(BASE_URL, middleware.JWTVerify(), Get)
-	router.POST(BASE_URL, middleware.JWTVerify(), Post)
-	router.DELETE(BASE_URL, middleware.JWTVerify(), Delete)
+func Route(router *gin.Engine) {
+	router.GET(BASE_URL, Get)
+	router.POST(BASE_URL, Post)
+	router.DELETE(BASE_URL, Delete)
 }
 
 func Get(c *gin.Context) {

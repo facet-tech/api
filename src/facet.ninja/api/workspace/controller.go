@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	"facet.ninja/api/middleware"
 	"facet.ninja/api/util"
 	"github.com/gin-gonic/gin"
 )
@@ -14,10 +13,10 @@ const (
 	ID_QUERY_PARAMATER = "id"
 )
 
-func AuthenticatedRoute(router *gin.Engine) {
-	router.GET(BASE_URL, middleware.JWTVerify(), Get)
-	router.POST(BASE_URL, middleware.JWTVerify(), Post)
-	router.DELETE(BASE_URL, middleware.JWTVerify(), Delete)
+func Route(router *gin.Engine) {
+	router.GET(BASE_URL, Get)
+	router.POST(BASE_URL, Post)
+	router.DELETE(BASE_URL, Delete)
 }
 
 func Get(c *gin.Context) {

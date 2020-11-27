@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"facet.ninja/api/middleware"
 	"strings"
 
 	"facet.ninja/api/domain"
@@ -25,14 +26,18 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 	if ginLambda == nil {
 		router := gin.Default()
 		defaultRoutes(router)
-		facet.AuthenticatedRoute(router)
-		workspace.AuthenticatedRoute(router)
-		domain.AuthenticatedRoute(router)
-		user.AuthenticatedRoute(router)
 		// TODO add authentication mechanism for facet.ninja.js https://github.com/facets-io/api/issues/11
 		router.GET("/facet.ninja.js", getJs)
+		// authenticated routes
+		router.Group("/")
+		{
+			router.Use(middleware.JWTVerify())
+			facet.Route(router)
+			workspace.Route(router)
+			domain.Route(router)
+			user.Route(router)
+		}
 		ginLambda = ginadapter.New(router)
-
 	}
 	return ginLambda.ProxyWithContext(ctx, req)
 }
