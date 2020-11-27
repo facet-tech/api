@@ -21,3 +21,9 @@ sample/main
 sample/output-sam.yaml
 test/results
 jmeter.log
+
+# SAM environment variables
+env.json
+
+# IDEA
+.idea

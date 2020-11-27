@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/lestrrat-go/jwx/jwk"
 	"net/http"
+	"os"
 )
 
 func JWTVerify() gin.HandlerFunc {
@@ -21,7 +22,7 @@ func JWTVerify() gin.HandlerFunc {
 	}
 }
 
-const jwksURL = `https://cognito-idp.us-west-2.amazonaws.com/us-west-2_oM4ne6cSf/.well-known/jwks.json`
+const jwksURL = os.Getenv("COGNITO_JWKS_URL")
 
 func getKey(token *jwt.Token) (interface{}, error) {
 
