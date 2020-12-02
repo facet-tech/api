@@ -1,4 +1,4 @@
-## Facet.Ninja Frontend API
+## Facet Frontend API
 
 API consumed from Facet.Ninja Frontend applications.
 
@@ -75,3 +75,13 @@ environment_variables       = {
 ```
 
 Read [here](https://github.com/aws/aws-sam-cli/issues/1163) for more about this pattern.
+
+Everytime there is an environment variable change, please add its name and description at [env-example-template.json](./env-example-template.json).
+
+## System requirements
+
+```
+Go: 1.15.2
+Java: 15
+Docker desktop: 2.5
+```

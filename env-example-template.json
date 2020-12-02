@@ -1,5 +1,5 @@
 {
   "API": {
-    "SOME_VAR": "This is an example variable"
+    "COGNITO_JWKS_URL": "Cognito JWKS URL"
   }
 }
