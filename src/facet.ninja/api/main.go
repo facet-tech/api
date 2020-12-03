@@ -107,19 +107,36 @@ GO_ARRAY_REPLACE_ME
 
 var facetedNodes = new Set()
 
-const callback = async function(mutationsList, observer) {
-    if ((typeof disableHideFacetNinja === 'undefined' || disableHideFacetNinja === null || disableHideFacetNinja === false) && data.has(window.location.pathname)) {
-        let nodesToRemove = data.get(window.location.pathname)       
-        for(let mutation of mutationsList) {
-            let domPath = getDomPath(mutation.target)
-	        if(nodesToRemove.has(domPath) && !facetedNodes.has(domPath)) {
-	        	facetedNodes.add(domPath)
-                mutation.target.style.display = "none"
-	        	mutation.target.style.setProperty("display", "none", "important");
+// TODO avoid iterating over subtrees that are not included https://github.com/facets-io/api/issues/29
+const callback = async function (mutationsList, observer) {
+    try {
+        if ((typeof disableHideFacetNinja === 'undefined' || disableHideFacetNinja === null || disableHideFacetNinja === false) && data.has(window.location.pathname)) {
+            let nodesToRemove = data.get(window.location.pathname) || new Map();
+            for (let mutation of mutationsList) {
+                let domPath = getDomPath(mutation.target);
+                if (nodesToRemove.has(domPath) && !facetedNodes.has(domPath)) {
+                    facetedNodes.add(domPath);
+                    mutation.target.style.display = "none"
+                    mutation.target.style.setProperty("display", "none", "important");
+                    continue;
+                }
+                
+                const childDoms = mutation && mutation.target && mutation.target.children;
+                for(child of childDoms) {
+                    const childDomPath = getDomPath(child);
+                    if (nodesToRemove.has(childDomPath) && !facetedNodes.has(childDomPath)) {
+                        facetedNodes.add(childDomPath);
+                        child.style.display = "none"
+                        child.style.setProperty("display", "none", "important");
+                        continue;
+                    }
+                }
             }
-            //console.log(getDomPath(mutation.target))
         }
+    } catch (e) {
+        console.log('[ERROR]', e);
     }
+
 };
 
 const targetNode = document
