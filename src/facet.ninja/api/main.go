@@ -120,7 +120,7 @@ let nodesToRemove = data.get(window.location.pathname) || new Map();
 const callback = async function (mutationsList) {
     try {
 		
-        if (data.has(window.location.pathname)||true) {
+        if ((typeof disableHideFacetNinja === 'undefined' || disableHideFacetNinja === null || disableHideFacetNinja === false) && data.has(window.location.pathname)) {
             for (let mutation of mutationsList) {
                 // TODO avoid iterating over subtrees that are not included
                 if (mutation && mutation.target && mutation.target.children) {
