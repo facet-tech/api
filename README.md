@@ -4,6 +4,9 @@ API consumed from Facet.Ninja Frontend applications.
 
 ## Getting started
 
+Creating an executable zip file and uploading the file via terraform to AWS. AWS requires the executable location in the
+file.
+
 1. Run make:
 
 ```
@@ -11,11 +14,14 @@ cd /src/facet.ninja/api
 make
 ```
 
-2. Run [AWS Serverless Application Model (SAM)](https://aws.amazon.com/serverless/sam/) from the *root directory* of the project: 
+2. Run [AWS Serverless Application Model (SAM)](https://aws.amazon.com/serverless/sam/) from the *root directory* of the
+   project:
 
 ```
 sam local start-api --env-vars env.json
 ```
+
+3. Terraform is called a GH action.
 
 ## Run tests
 
@@ -23,11 +29,14 @@ sam local start-api --env-vars env.json
 
 ## Access JMeter results produced through CI
 
-You can access JMeter tests via the S3 link: `https://cdn.facet.ninja/test/api/regression/PUT_THE_CI_NUMBER_HERE/index.html`, i.e: https://cdn.facet.ninja/test/api/regression/88/index.html.
+You can access JMeter tests via the S3
+link: `https://cdn.facet.ninja/test/api/regression/PUT_THE_CI_NUMBER_HERE/index.html`,
+i.e: https://cdn.facet.ninja/test/api/regression/88/index.html.
 
 ## Environment Variables
 
-Environment variables are declared in both SAM (local development) and terraform modules (all the other environments). These are the steps to declare an environment variable:
+Environment variables are declared in both SAM (local development) and terraform modules (all the other environments).
+These are the steps to declare an environment variable:
 
 1. Declaring the variable under *Parameters*:
 
@@ -76,7 +85,8 @@ environment_variables       = {
 
 Read [here](https://github.com/aws/aws-sam-cli/issues/1163) for more about this pattern.
 
-Everytime there is an environment variable change, please add its name and description at [env-example-template.json](./env-example-template.json).
+Everytime there is an environment variable change, please add its name and description
+at [env-example-template.json](./env-example-template.json).
 
 ## System requirements
 

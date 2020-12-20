@@ -2,9 +2,12 @@ package main
 
 import (
 	"context"
-	"strings"
-
 	"facet.ninja/api/middleware"
+	"fmt"
+	"html/template"
+	"io"
+	"net/http"
+	"os"
 
 	"facet.ninja/api/domain"
 	"facet.ninja/api/facet"
@@ -47,31 +50,39 @@ func defaultRoutes(route *gin.Engine) {
 }
 
 func getJs(c *gin.Context) {
+	fmt.Println("ELA MAN")
 	util.SetCorsHeaders(c)
-	var commaSeperatedIdsString string
-	javascript := js()
-	site := c.Request.URL.Query().Get("id")
-	if &site != nil {
-		facets, error := facet.FetchAll(site)
-		for _, facetDto := range *facets {
-			commaSeperatedIdsString += "\t['" + facetDto.UrlPath + "',new Set(["
-			for _, facet := range facetDto.Facet {
-				for _, domElement := range facet.DomElement {
-					commaSeperatedIdsString += "'" + domElement.Path + "',"
-				}
-			}
-			commaSeperatedIdsString = strings.TrimSuffix(commaSeperatedIdsString, ",")
-			commaSeperatedIdsString += "])],\n"
-		}
-		javascript = strings.Replace(javascript, "GO_ARRAY_REPLACE_ME", strings.TrimSuffix(commaSeperatedIdsString, ",\n"), -1)
-		if error == nil {
-			c.Data(200, "text/javascript", []byte(javascript))
-		} else {
-			c.JSON(500, error)
-		}
-	} else {
-		c.JSON(400, "id is required")
-	}
+	t, err := template.ParseFiles("./resources/templates/mutationObserver.js") // Parse template file.
+	fmt.Println("ELA22", t, err)
+	f, _ := os.Open("./resources/templates/mutationObserver.js")
+	fmt.Println("GG", f)
+
+	io.Copy(os.Stdout, f)
+	c.JSON(http.StatusAccepted, f)
+	//var commaSeperatedIdsString string
+	//javascript := js()
+	//site := c.Request.URL.Query().Get("id")
+	//if &site != nil {Ø
+	//	facets, error := facet.FetchAll(site)
+	//	for _, facetDto := range *facets {
+	//		commaSeperatedIdsString += "\t['" + facetDto.UrlPath + "',new Set(["
+	//		for _, facet := range facetDto.Facet {
+	//			for _, domElement := range facet.DomElement {
+	//				commaSeperatedIdsString += "'" + domElement.Path + "',"
+	//			}
+	//		}
+	//		commaSeperatedIdsString = strings.TrimSuffix(commaSeperatedIdsString, ",")
+	//		commaSeperatedIdsString += "])],\n"
+	//	}
+	//	javascript = strings.Replace(javascript, "GO_ARRAY_REPLACE_ME", strings.TrimSuffix(commaSeperatedIdsString, ",\n"), -1)
+	//	if error == nil {
+	//		c.Data(200, "text/javascript", []byte(javascript))
+	//	} else {
+	//		c.JSON(500, error)
+	//	}
+	//} else {
+	//	c.JSON(400, "id is required")
+	//}
 }
 
 func js() string {
