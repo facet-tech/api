@@ -4,8 +4,7 @@ API consumed from Facet.Ninja Frontend applications.
 
 ## Getting started
 
-Creating an executable zip file and uploading the file via terraform to AWS. AWS requires the executable location in the
-file.
+Creating an executable zip file and uploading the file via terraform to AWS.
 
 1. Run make:
 

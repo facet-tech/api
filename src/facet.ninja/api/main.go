@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"facet.ninja/api/middleware"
-	"fmt"
 	"log"
 	"strings"
 	"text/template"
@@ -55,14 +54,11 @@ var mutationObserverTemplate *template.Template
 func getJs(c *gin.Context) {
 	util.SetCorsHeaders(c)
 	if mutationObserverTemplate == nil {
-		fmt.Println("I AM NOT CACHING")
 		t, err := template.ParseFiles("./resources/templates/mutationObserver.js") // Parse template file.
 		if err != nil {
 			log.Print(err)
 		}
 		mutationObserverTemplate = t
-	} else {
-		fmt.Println("CACHING MAN!")
 	}
 
 	var commaSeperatedIdsString string
