@@ -90,13 +90,11 @@ at [env-example-template.json](./env-example-template.json).
 Go: 1.15.2
 Java: 15
 Docker desktop: 2.5
+TF version: 0.13.5
+
 ```
 
 ## Terrafom Deployment
-
-```
-TF version: 0.13.5
-```
 
 For deploying to the `test` environment, run `terraform apply` with current directory being `./deploy`. You will need to
 have preconfigured SSH keys to access GH
