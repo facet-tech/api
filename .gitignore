@@ -27,3 +27,6 @@ env.json
 
 # IDEA
 .idea
+
+# terraform
+.terraform

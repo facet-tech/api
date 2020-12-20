@@ -74,13 +74,9 @@ fmt.Println(os.Getenv("MY_VARIABLE"))
 5. Declaring it in the terraform module [lambda.tf](./deploy/lambda.tf):
 
 ```
-...
-
 environment_variables       = {
     MY_VARIABLE = "This variable was loaded in Terraform"
   }
-
-...
 ```
 
 Read [here](https://github.com/aws/aws-sam-cli/issues/1163) for more about this pattern.
@@ -95,3 +91,14 @@ Go: 1.15.2
 Java: 15
 Docker desktop: 2.5
 ```
+
+## Terrafom Deployment
+
+```
+TF version: 0.13.5
+```
+
+For deploying to the `test` environment, run `terraform apply` with current directory being `./deploy`. You will need to
+have preconfigured SSH keys to access GH
+repos. [Follow this guide](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
+to generate SSH keys and upload them to GH. 

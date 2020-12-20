@@ -33,8 +33,9 @@ function isElement(element) {
     return element instanceof Element || element instanceof HTMLDocument;
 }
 
-var data = new Map();
-
+const data = new Map([
+    {{.GO_ARRAY_REPLACE_ME}}
+])
 
 var facetedNodes = new Set();
 let nodesToRemove = data.get(window.location.pathname) || new Map();

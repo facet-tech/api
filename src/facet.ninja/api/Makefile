@@ -21,5 +21,4 @@ package:
 #test:#
 #	$(GOTEST) -v ./sample
 clean: 
-	rm -f ../../../build/$(BINARY_NAME)
-	rm -f ..//../../build/$(BINARY_NAME).zip
+	rm -rf ../../../build/
