@@ -21,7 +21,6 @@ sam local start-api --env-vars env.json
 
 `go test`
 
-
 ## Access JMeter results produced through CI
 
 You can access JMeter tests via the S3 link: `https://cdn.facet.ninja/test/api/regression/PUT_THE_CI_NUMBER_HERE/index.html`, i.e: https://cdn.facet.ninja/test/api/regression/88/index.html.
