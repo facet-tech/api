@@ -30,3 +30,6 @@ env.json
 
 # terraform
 .terraform
+
+#debugging folder
+debugging

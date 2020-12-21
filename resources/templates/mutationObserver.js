@@ -1,3 +1,10 @@
+/**
+ * Returns the DOM path of the element
+ *
+ * @param el
+ * @returns {string}
+ *
+ */
 function getDomPath(el) {
     // returns empty path for non valid element
     if (!isElement(el)) {
@@ -29,6 +36,12 @@ function getDomPath(el) {
     return res.replace(/\s+/g, '');
 }
 
+/**
+ * Returns whether a given element in an HTML element or not
+ *
+ * @param element
+ * @returns {boolean}
+ */
 function isElement(element) {
     return element instanceof Element || element instanceof HTMLDocument;
 }
@@ -37,15 +50,40 @@ const data = new Map([
     {{.GO_ARRAY_REPLACE_ME}}
 ])
 
-var facetedNodes = new Set();
+
+let facetedNodes = new Set();
 let nodesToRemove = data.get(window.location.pathname) || new Map();
+
+/**
+ * Computes whether the element's path is in the Set
+ *
+ * @param {*} element
+ */
+const inHashMap = (element) => {
+    const domPath = getDomPath(element);
+    const inputSet = data.get(window.location.pathname);
+    if (!inputSet) {
+        return false;
+    }
+    let exists = false;
+    inputSet.forEach(path => {
+        if (domPath.includes(path)) {
+            exists = true;
+            return;
+        }
+    });
+    return exists;
+}
 
 const callback = async function (mutationsList) {
     try {
         if (data.has(window.location.pathname)) {
             for (let mutation of mutationsList) {
-                // TODO avoid iterating over subtrees that are not included
                 if (mutation && mutation.target && mutation.target.children) {
+                    const subPathContainedInMap = inHashMap(mutation.target);
+                    if (!subPathContainedInMap) {
+                        continue;
+                    }
                     domPathHide(mutation, mutation.target.children)
                 }
             }
@@ -54,6 +92,7 @@ const callback = async function (mutationsList) {
         console.log('[ERROR]', e);
     }
 };
+
 
 /**
  * Recursive function that iterates among DOM children
@@ -68,6 +107,7 @@ const domPathHide = (mutation, mutationChildren) => {
     for (child of mutationChildren) {
         const childDomPath = getDomPath(child);
         if (nodesToRemove.has(childDomPath) && !facetedNodes.has(childDomPath)) {
+            nodesToRemove.delete(childDomPath);
             facetedNodes.add(childDomPath);
             child.style.display = "none";
             child.style.setProperty("display", "none", "important");
@@ -75,7 +115,6 @@ const domPathHide = (mutation, mutationChildren) => {
         domPathHide(mutation, child.childNodes);
     }
 }
-
 
 const targetNode = document
 const config = {subtree: true, childList: true, attributes: true};
