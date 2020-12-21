@@ -12,7 +12,7 @@ Resources:
   API:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: ./build/main
+      Handler: ./main
       CodeUri: ./build/main.zip
       Runtime: go1.x
       Timeout: 5

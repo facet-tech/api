@@ -27,3 +27,9 @@ env.json
 
 # IDEA
 .idea
+
+# terraform
+.terraform
+
+#debugging folder
+debugging

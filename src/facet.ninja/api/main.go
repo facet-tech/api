@@ -1,10 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"context"
-	"strings"
-
 	"facet.ninja/api/middleware"
+	"log"
+	"strings"
+	"text/template"
 
 	"facet.ninja/api/domain"
 	"facet.ninja/api/facet"
@@ -25,6 +27,7 @@ func main() {
 
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	if ginLambda == nil {
+		log.Printf("Gin cold start")
 		router := gin.Default()
 		defaultRoutes(router)
 		router.GET("/facet.ninja.js", getJs)
@@ -46,10 +49,19 @@ func defaultRoutes(route *gin.Engine) {
 	route.OPTIONS("/*anyPath", util.Options)
 }
 
+var mutationObserverTemplate *template.Template
+
 func getJs(c *gin.Context) {
 	util.SetCorsHeaders(c)
+	if mutationObserverTemplate == nil {
+		t, err := template.ParseFiles("./resources/templates/mutationObserver.js") // Parse template file.
+		if err != nil {
+			log.Print(err)
+		}
+		mutationObserverTemplate = t
+	}
+
 	var commaSeperatedIdsString string
-	javascript := js()
 	site := c.Request.URL.Query().Get("id")
 	if &site != nil {
 		facets, error := facet.FetchAll(site)
@@ -63,102 +75,25 @@ func getJs(c *gin.Context) {
 			commaSeperatedIdsString = strings.TrimSuffix(commaSeperatedIdsString, ",")
 			commaSeperatedIdsString += "])],\n"
 		}
-		javascript = strings.Replace(javascript, "GO_ARRAY_REPLACE_ME", strings.TrimSuffix(commaSeperatedIdsString, ",\n"), -1)
+		wantedString := strings.TrimSuffix(commaSeperatedIdsString, ",\n")
+
+		config := map[string]string{
+			"GO_ARRAY_REPLACE_ME": wantedString,
+		}
+
+		var tpl bytes.Buffer
+		if err := mutationObserverTemplate.Execute(&tpl, config); err != nil {
+			log.Print(err)
+		}
+
+		result := tpl.String()
+
 		if error == nil {
-			c.Data(200, "text/javascript", []byte(javascript))
+			c.Data(200, "text/javascript", []byte(result))
 		} else {
 			c.JSON(500, error)
 		}
 	} else {
 		c.JSON(400, "id is required")
 	}
-}
-
-func js() string {
-	script := `function getDomPath(el) {
-		// returns empty path for non valid element
-		if (!isElement(el)) {
-			return '';
-		}
-		var stack = [];
-		while (el.parentNode != null) {
-			var sibCount = 0;
-			var sibIndex = 0;
-			for (var i = 0; i < el.parentNode.childNodes.length; i++) {
-				var sib = el.parentNode.childNodes[i];
-				if (sib.nodeName == el.nodeName) {
-					if (sib === el) {
-						sibIndex = sibCount;
-					}
-					sibCount++;
-				}
-			}
-			if (el.hasAttribute('id') && el.id != '') {
-				stack.unshift(el.nodeName.toLowerCase() + '#' + el.id);
-			} else if (sibCount > 1) {
-				stack.unshift(el.nodeName.toLowerCase() + ':eq(' + sibIndex + ')');
-			} else {
-				stack.unshift(el.nodeName.toLowerCase());
-			}
-			el = el.parentNode;
-		}
-		var res = stack.slice(1).join(' > '); // removes the html element
-		return res.replace(/\s+/g, '');
-	}
-	
-	function isElement(element) {
-		return element instanceof Element || element instanceof HTMLDocument;
-	}	
-
-var data = new Map([
-GO_ARRAY_REPLACE_ME
-])
-
-var facetedNodes = new Set();
-let nodesToRemove = data.get(window.location.pathname) || new Map();
-
-const callback = async function (mutationsList) {
-    try {
-		
-        if ((typeof disableHideFacetNinja === 'undefined' || disableHideFacetNinja === null || disableHideFacetNinja === false) && data.has(window.location.pathname)) {
-            for (let mutation of mutationsList) {
-                // TODO avoid iterating over subtrees that are not included
-                if (mutation && mutation.target && mutation.target.children) {
-                    domPathHide(mutation, mutation.target.children)
-                }
-            }
-        }
-    } catch (e) {
-        console.log('[ERROR]', e);
-    }
-};
-
-/**
- * Recursive function that iterates among DOM children
- * 
- * @param {*} mutation 
- * @param {*} mutationChildren 
- */
-const domPathHide = (mutation, mutationChildren) => {
-    if (!mutationChildren) {
-        return;
-    }
-    for (child of mutationChildren) {
-        const childDomPath = getDomPath(child);
-        if (nodesToRemove.has(childDomPath) && !facetedNodes.has(childDomPath)) {
-            facetedNodes.add(childDomPath);
-            child.style.display = "none"
-            child.style.setProperty("display", "none", "important");
-        }
-        domPathHide(mutation, child.childNodes);
-    }
-}
-
-
-const targetNode = document
-const config = { subtree: true, childList: true, attributes: true };
-const observer = new MutationObserver(callback);
-observer.observe(targetNode, config);
-`
-	return script
 }
