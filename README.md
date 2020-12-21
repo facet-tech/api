@@ -90,7 +90,6 @@ Go: 1.15.2
 Java: 15
 Docker desktop: 2.5
 TF version: 0.13.5
-
 ```
 
 ## Terrafom Deployment

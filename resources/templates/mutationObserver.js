@@ -69,7 +69,7 @@ const domPathHide = (mutation, mutationChildren) => {
         const childDomPath = getDomPath(child);
         if (nodesToRemove.has(childDomPath) && !facetedNodes.has(childDomPath)) {
             facetedNodes.add(childDomPath);
-            child.style.display = "none"
+            child.style.display = "none";
             child.style.setProperty("display", "none", "important");
         }
         domPathHide(mutation, child.childNodes);
