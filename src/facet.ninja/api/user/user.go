@@ -47,8 +47,10 @@ func (user *User) fetch() error {
 	return error
 }
 
-func (user *User) create() error {
-	user.Id = db.CreateId(KEY_USER)
+func (user *User) Update() error {
+	if len(user.Id) == 0 {
+		user.Id = db.CreateId(KEY_USER)
+	}
 	item, error := dynamodbattribute.MarshalMap(user)
 	if error == nil {
 		input := &dynamodb.PutItemInput{
