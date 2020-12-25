@@ -48,8 +48,8 @@ func (user *User) fetch() error {
 }
 
 func (user *User) Update() error {
-	if user.Id == "" {
-		db.CreateId(KEY_USER)
+	if len(user.Id) == 0 {
+		user.Id = db.CreateId(KEY_USER)
 	}
 	item, error := dynamodbattribute.MarshalMap(user)
 	if error == nil {
