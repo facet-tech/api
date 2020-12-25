@@ -29,7 +29,7 @@ func Post(c *gin.Context) {
 	user := User{}
 	body, error := ioutil.ReadAll(c.Request.Body)
 	json.Unmarshal(body, &user)
-	error = user.create()
+	error = user.Update()
 	util.SetResponseCode(user, error, c)
 }
 
