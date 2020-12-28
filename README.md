@@ -97,4 +97,10 @@ TF version: 0.13.5
 For deploying to the `test` environment, run `terraform apply` with current directory being `./deploy`. You will need to
 have preconfigured SSH keys to access GH
 repos. [Follow this guide](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
-to generate SSH keys and upload them to GH. 
+to generate SSH keys and upload them to GH.
+
+## Local Website Debugging (mutation-observer script)
+
+Setup Tomcat server for locally debugging the https://github.com/facets-io/my-website-facets.io. Use Intellij's Artifact
+plugin and run it through the Tomcat debugger. Change the `hosts` file to map localhost with an example domain
+i.e.: `127.0.0.1 example-website.facet.run`. 
