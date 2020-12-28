@@ -48,7 +48,7 @@ function isElement(element) {
 
 const data = new Map([
     {{.GO_ARRAY_REPLACE_ME}}
-])
+]);
 
 
 let facetedNodes = new Set();
@@ -67,7 +67,7 @@ const inHashMap = (element) => {
     }
     let exists = false;
     inputSet.forEach(path => {
-        if (domPath.includes(path)) {
+        if (path.includes(domPath)) {
             exists = true;
             return;
         }
@@ -93,7 +93,6 @@ const callback = async function (mutationsList) {
     }
 };
 
-
 /**
  * Recursive function that iterates among DOM children
  *
@@ -104,13 +103,14 @@ const domPathHide = (mutation, mutationChildren) => {
     if (!mutationChildren) {
         return;
     }
-    for (child of mutationChildren) {
+    for (const child of mutationChildren) {
         const childDomPath = getDomPath(child);
-        if (nodesToRemove.has(childDomPath) && !facetedNodes.has(childDomPath)) {
-            nodesToRemove.delete(childDomPath);
-            facetedNodes.add(childDomPath);
+        if (nodesToRemove.has(childDomPath) && !facetedNodes.has(childDomPath) && child.style) {
             child.style.display = "none";
             child.style.setProperty("display", "none", "important");
+            nodesToRemove.delete(childDomPath);
+            facetedNodes.add(childDomPath);
+
         }
         domPathHide(mutation, child.childNodes);
     }
