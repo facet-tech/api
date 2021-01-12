@@ -48,11 +48,25 @@ function isElement(element) {
 
 const data = new Map([
     {{.GO_ARRAY_REPLACE_ME}}
-]);
-
+])
+;
 
 let facetedNodes = new Set();
 let nodesToRemove = data.get(window.location.pathname) || new Map();
+let transformedData;
+
+/**
+ * IIFE transforming data object into an array, treating facets as global, regardless of the pathname which they were created.
+ */
+(() => {
+    let result = [];
+    for (const [key, value] of data.entries()) {
+        const arr = Array.from(value);
+        result.push(arr);
+    }
+    transformedData = [].concat.apply([], result);
+    console.log('transformedData!', transformedData)
+})();
 
 /**
  * Computes whether the element's path is in the Set
@@ -61,33 +75,21 @@ let nodesToRemove = data.get(window.location.pathname) || new Map();
  */
 const inHashMap = (element) => {
     const domPath = getDomPath(element);
-    const inputSet = data.get(window.location.pathname);
-    if (!inputSet) {
-        return false;
-    }
-    let exists = false;
-    inputSet.forEach(path => {
-        if (path.includes(domPath)) {
-            exists = true;
-            return;
-        }
-    });
-    return exists;
+    return transformedData.includes(domPath);
 }
 
 const callback = async function (mutationsList) {
     try {
-        if (data.has(window.location.pathname)) {
-            for (let mutation of mutationsList) {
-                if (mutation && mutation.target && mutation.target.children) {
-                    const subPathContainedInMap = inHashMap(mutation.target);
-                    if (!subPathContainedInMap) {
-                        continue;
-                    }
-                    domPathHide(mutation, mutation.target.children)
+        for (let mutation of mutationsList) {
+            if (mutation && mutation.target && mutation.target.children) {
+                const subPathContainedInMap = inHashMap(mutation.target);
+                if (!subPathContainedInMap) {
+                    continue;
                 }
+                domPathHide(mutation, mutation.target.children)
             }
         }
+
     } catch (e) {
         console.log('[ERROR]', e);
     }
@@ -105,12 +107,15 @@ const domPathHide = (mutation, mutationChildren) => {
     }
     for (const child of mutationChildren) {
         const childDomPath = getDomPath(child);
-        if (nodesToRemove.has(childDomPath) && !facetedNodes.has(childDomPath) && child.style) {
+        if (transformedData.includes(childDomPath)) {
+            console.log('MPIKA!',child);
+            if(!child.style) {
+                console.log('RETURNARW');
+                return;
+            }
             child.style.display = "none";
-            child.style.setProperty("display", "none", "important");
-            nodesToRemove.delete(childDomPath);
+            // child.style.setProperty("display", "none", "important");
             facetedNodes.add(childDomPath);
-
         }
         domPathHide(mutation, child.childNodes);
     }
