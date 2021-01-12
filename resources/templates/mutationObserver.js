@@ -51,7 +51,7 @@ const data = new Map([
 ]);
 
 /**
- * IIME for transforming domainpath-specific data into global facets
+ * IIFE for transforming domainpath-specific data into global facets
  */
 (() => {
     let result = [];
