@@ -71,6 +71,7 @@ let nodesToRemove = data.get(window.location.pathname) || new Map();
  */
 const inHashMap = (element) => {
     const domPath = getDomPath(element);
+    let exists = false;
     transformedData.forEach(path => {
         if (path.includes(domPath)) {
             exists = true;
