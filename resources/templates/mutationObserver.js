@@ -50,8 +50,18 @@ const data = new Map([
     {{.GO_ARRAY_REPLACE_ME}}
 ]);
 
+/**
+ * IIFE for transforming domainpath-specific data into global facets
+ */
+(() => {
+    let result = [];
+    for (const [_, value] of data.entries()) {
+        const arr = Array.from(value);
+        result.push(arr);
+    }
+    transformedData = [].concat.apply([], result);
+})();
 
-let facetedNodes = new Set();
 let nodesToRemove = data.get(window.location.pathname) || new Map();
 
 /**
@@ -61,12 +71,8 @@ let nodesToRemove = data.get(window.location.pathname) || new Map();
  */
 const inHashMap = (element) => {
     const domPath = getDomPath(element);
-    const inputSet = data.get(window.location.pathname);
-    if (!inputSet) {
-        return false;
-    }
     let exists = false;
-    inputSet.forEach(path => {
+    transformedData.forEach(path => {
         if (path.includes(domPath)) {
             exists = true;
             return;
@@ -77,7 +83,6 @@ const inHashMap = (element) => {
 
 const callback = async function (mutationsList) {
     try {
-        if (data.has(window.location.pathname)) {
             for (let mutation of mutationsList) {
                 if (mutation && mutation.target && mutation.target.children) {
                     const subPathContainedInMap = inHashMap(mutation.target);
@@ -86,7 +91,6 @@ const callback = async function (mutationsList) {
                     }
                     domPathHide(mutation, mutation.target.children)
                 }
-            }
         }
     } catch (e) {
         console.log('[ERROR]', e);
@@ -105,12 +109,9 @@ const domPathHide = (mutation, mutationChildren) => {
     }
     for (const child of mutationChildren) {
         const childDomPath = getDomPath(child);
-        if (nodesToRemove.has(childDomPath) && !facetedNodes.has(childDomPath) && child.style) {
+        if (transformedData.includes(childDomPath) && child.style) {
             child.style.display = "none";
             child.style.setProperty("display", "none", "important");
-            nodesToRemove.delete(childDomPath);
-            facetedNodes.add(childDomPath);
-
         }
         domPathHide(mutation, child.childNodes);
     }
