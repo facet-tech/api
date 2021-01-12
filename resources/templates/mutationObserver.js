@@ -50,19 +50,19 @@ const data = new Map([
     {{.GO_ARRAY_REPLACE_ME}}
 ]);
 
+/**
+ * IIME for transforming domainpath-specific data into global facets
+ */
 (() => {
     let result = [];
-    for (const [key, value] of data.entries()) {
+    for (const [_, value] of data.entries()) {
         const arr = Array.from(value);
         result.push(arr);
     }
     transformedData = [].concat.apply([], result);
-    // console.log('transformedData!', transformedData)
 })();
 
-let facetedNodes = new Set();
 let nodesToRemove = data.get(window.location.pathname) || new Map();
-
 
 /**
  * Computes whether the element's path is in the Set
@@ -90,7 +90,6 @@ const callback = async function (mutationsList) {
                     }
                     domPathHide(mutation, mutation.target.children)
                 }
-
         }
     } catch (e) {
         console.log('[ERROR]', e);
@@ -112,9 +111,6 @@ const domPathHide = (mutation, mutationChildren) => {
         if (transformedData.includes(childDomPath) && child.style) {
             child.style.display = "none";
             child.style.setProperty("display", "none", "important");
-            // nodesToRemove.delete(childDomPath);
-            // facetedNodes.add(childDomPath);
-
         }
         domPathHide(mutation, child.childNodes);
     }
