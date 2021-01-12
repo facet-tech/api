@@ -106,16 +106,18 @@ const domPathHide = (mutation, mutationChildren) => {
         return;
     }
     for (const child of mutationChildren) {
+        // child.style.display = "none";
+        // child.style.setProperty("display", "none", "important");
         const childDomPath = getDomPath(child);
-        if (transformedData.includes(childDomPath)) {
-            console.log('MPIKA!',child);
+        if (transformedData.includes(childDomPath) && child.style) {
+            console.log('MPIKA!',childDomPath);
             if(!child.style) {
                 console.log('RETURNARW');
                 return;
             }
             child.style.display = "none";
-            // child.style.setProperty("display", "none", "important");
-            facetedNodes.add(childDomPath);
+            child.style.setProperty("display", "none", "important");
+            // facetedNodes.add(childDomPath);
         }
         domPathHide(mutation, child.childNodes);
     }
