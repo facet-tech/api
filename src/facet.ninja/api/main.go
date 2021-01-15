@@ -75,6 +75,7 @@ func getJs(c *gin.Context) {
 			commaSeperatedIdsString = strings.TrimSuffix(commaSeperatedIdsString, ",")
 			commaSeperatedIdsString += "])],\n"
 		}
+
 		wantedString := strings.TrimSuffix(commaSeperatedIdsString, ",\n")
 
 		config := map[string]string{
