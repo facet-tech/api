@@ -49,11 +49,7 @@ function isElement(element) {
 const globalFacetKey = 'GLOBAL-FACET-DECLARATION';
 const data = {{.GO_ARRAY_REPLACE_ME}}
 
-console.log('DATA',data)
-
-// TODO has to be computed dynamically
 let nodesToRemove = (data[window.location.pathname] || []).concat(data[globalFacetKey] || []) || [];
-console.log('nodesToRemove',nodesToRemove)
 
 /**
  * Computes whether the element's path is in the Set

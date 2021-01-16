@@ -85,7 +85,7 @@ func getJs(c *gin.Context) {
 
 	util.SetCorsHeaders(c)
 	if mutationObserverTemplate == nil {
-		t, err := template.ParseFiles("./resources/templates/mutationObserver.js") // Parse template file.
+		t, err := template.ParseFiles("./resources/templates/mutationObserver.js")
 		if err != nil {
 			log.Print(err)
 		}
