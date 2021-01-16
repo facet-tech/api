@@ -46,9 +46,7 @@ function isElement(element) {
     return element instanceof Element || element instanceof HTMLDocument;
 }
 
-const data = new Map([
-    {{.GO_ARRAY_REPLACE_ME}}
-]);
+const data = {{.GO_ARRAY_REPLACE_ME}}
 
 /**
  * IIFE for transforming domainpath-specific data into global facets
@@ -62,6 +60,7 @@ const data = new Map([
     transformedData = [].concat.apply([], result);
 })();
 
+// TODO has to be computed dynamically
 let nodesToRemove = data.get(window.location.pathname) || new Map();
 
 /**

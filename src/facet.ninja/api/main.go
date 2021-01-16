@@ -3,9 +3,10 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"facet.ninja/api/middleware"
 	"log"
-	"strings"
+	"net/http"
 	"text/template"
 
 	"facet.ninja/api/domain"
@@ -49,9 +50,39 @@ func defaultRoutes(route *gin.Engine) {
 	route.OPTIONS("/*anyPath", util.Options)
 }
 
+func computeFacetMap(site string) (string, error) {
+	globalFacetKey := "GLOBAL-FACET-DECLARATION"
+	facetMap := map[string][]string{}
+	var err error
+	if &site != nil {
+		facets, errFetch := facet.FetchAll(site)
+		if errFetch != nil {
+			return "{}", errFetch
+		}
+		for _, facetDto := range *facets {
+			for _, facetElement := range facetDto.Facet {
+				if facetElement.Enabled == false {
+					continue
+				}
+				for _, domElement := range facetElement.DomElement {
+					if facetElement.Global {
+						facetMap[globalFacetKey] = append(facetMap[globalFacetKey], domElement.Path)
+					} else {
+						facetMap[facetDto.UrlPath] = append(facetMap[facetDto.UrlPath], domElement.Path)
+					}
+				}
+			}
+		}
+	}
+	facetMapJSON, _ := json.Marshal(facetMap)
+	facetMapJSONString := string(facetMapJSON)
+	return facetMapJSONString, err
+}
+
 var mutationObserverTemplate *template.Template
 
 func getJs(c *gin.Context) {
+
 	util.SetCorsHeaders(c)
 	if mutationObserverTemplate == nil {
 		t, err := template.ParseFiles("./resources/templates/mutationObserver.js") // Parse template file.
@@ -61,40 +92,27 @@ func getJs(c *gin.Context) {
 		mutationObserverTemplate = t
 	}
 
-	var commaSeperatedIdsString string
 	site := c.Request.URL.Query().Get("id")
-	if &site != nil {
-		facets, error := facet.FetchAll(site)
-		for _, facetDto := range *facets {
-			commaSeperatedIdsString += "\t['" + facetDto.UrlPath + "',new Set(["
-			for _, facet := range facetDto.Facet {
-				for _, domElement := range facet.DomElement {
-					commaSeperatedIdsString += "'" + domElement.Path + "',"
-				}
-			}
-			commaSeperatedIdsString = strings.TrimSuffix(commaSeperatedIdsString, ",")
-			commaSeperatedIdsString += "])],\n"
-		}
+	if &site == nil {
+		c.JSON(http.StatusNotFound, "id is required")
+		return
+	}
 
-		wantedString := strings.TrimSuffix(commaSeperatedIdsString, ",\n")
+	facetMap, error := computeFacetMap(site)
+	config := map[string]string{
+		"GO_ARRAY_REPLACE_ME": facetMap,
+	}
 
-		config := map[string]string{
-			"GO_ARRAY_REPLACE_ME": wantedString,
-		}
+	var tpl bytes.Buffer
+	if err := mutationObserverTemplate.Execute(&tpl, config); err != nil {
+		log.Print(err)
+	}
 
-		var tpl bytes.Buffer
-		if err := mutationObserverTemplate.Execute(&tpl, config); err != nil {
-			log.Print(err)
-		}
+	result := tpl.String()
 
-		result := tpl.String()
-
-		if error == nil {
-			c.Data(200, "text/javascript", []byte(result))
-		} else {
-			c.JSON(500, error)
-		}
+	if error == nil {
+		c.Data(http.StatusOK, "text/javascript", []byte(result))
 	} else {
-		c.JSON(400, "id is required")
+		c.JSON(http.StatusInternalServerError, error)
 	}
 }
