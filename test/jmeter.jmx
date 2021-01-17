@@ -1810,7 +1810,7 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
           </ResponseAssertion>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Domain Assertion" enabled="true">
-            <stringProp name="JSON_PATH">domainId</stringProp>
+            <stringProp name="JSON_PATH">$.[0].domainId</stringProp>
             <stringProp name="EXPECTED_VALUE">${domainId}</stringProp>
             <boolProp name="JSONVALIDATION">true</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
@@ -1819,7 +1819,7 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
           </JSONPathAssertion>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="UrlPath Assertion" enabled="true">
-            <stringProp name="JSON_PATH">urlPath</stringProp>
+            <stringProp name="JSON_PATH">$.[0].urlPath</stringProp>
             <stringProp name="EXPECTED_VALUE">${urlPath}</stringProp>
             <boolProp name="JSONVALIDATION">true</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
