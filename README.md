@@ -30,7 +30,7 @@ sam local start-api --env-vars env.json
 
 You can access JMeter tests via the S3
 link: `https://cdn.facet.ninja/test/api/regression/PUT_THE_CI_NUMBER_HERE/index.html`,
-i.e: https://cdn.facet.ninja/test/api/regression/88/index.html.
+i.e: `https://cdn.facet.ninja/test/api/regression/88/index.html`.
 
 ## Environment Variables
 
@@ -73,7 +73,7 @@ fmt.Println(os.Getenv("MY_VARIABLE"))
 5. Declaring it in the terraform module [lambda.tf](./deploy/lambda.tf):
 
 ```
-environment_variables       = {
+environment_variables = {
     MY_VARIABLE = "This variable was loaded in Terraform"
   }
 ```
