@@ -46,23 +46,10 @@ function isElement(element) {
     return element instanceof Element || element instanceof HTMLDocument;
 }
 
-const data = new Map([
-    {{.GO_ARRAY_REPLACE_ME}}
-]);
+const globalFacetKey = 'GLOBAL-FACET-DECLARATION';
+const data = {{.GO_ARRAY_REPLACE_ME}}
 
-/**
- * IIFE for transforming domainpath-specific data into global facets
- */
-(() => {
-    let result = [];
-    for (const [_, value] of data.entries()) {
-        const arr = Array.from(value);
-        result.push(arr);
-    }
-    transformedData = [].concat.apply([], result);
-})();
-
-let nodesToRemove = data.get(window.location.pathname) || new Map();
+let nodesToRemove = (data[window.location.pathname] || []).concat(data[globalFacetKey] || []) || [];
 
 /**
  * Computes whether the element's path is in the Set
@@ -72,7 +59,8 @@ let nodesToRemove = data.get(window.location.pathname) || new Map();
 const inHashMap = (element) => {
     const domPath = getDomPath(element);
     let exists = false;
-    transformedData.forEach(path => {
+    nodesToRemove.forEach(path => {
+
         if (path.includes(domPath)) {
             exists = true;
             return;
@@ -83,14 +71,14 @@ const inHashMap = (element) => {
 
 const callback = async function (mutationsList) {
     try {
-            for (let mutation of mutationsList) {
-                if (mutation && mutation.target && mutation.target.children) {
-                    const subPathContainedInMap = inHashMap(mutation.target);
-                    if (!subPathContainedInMap) {
-                        continue;
-                    }
-                    domPathHide(mutation, mutation.target.children)
+        for (let mutation of mutationsList) {
+            if (mutation && mutation.target && mutation.target.children) {
+                const subPathContainedInMap = inHashMap(mutation.target);
+                if (!subPathContainedInMap) {
+                    continue;
                 }
+                domPathHide(mutation, mutation.target.children)
+            }
         }
     } catch (e) {
         console.log('[ERROR]', e);
@@ -109,7 +97,7 @@ const domPathHide = (mutation, mutationChildren) => {
     }
     for (const child of mutationChildren) {
         const childDomPath = getDomPath(child);
-        if (transformedData.includes(childDomPath) && child.style) {
+        if (nodesToRemove.includes(childDomPath) && child.style) {
             child.style.display = "none";
             child.style.setProperty("display", "none", "important");
         }
