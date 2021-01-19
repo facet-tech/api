@@ -50,9 +50,14 @@ func defaultRoutes(route *gin.Engine) {
 	route.OPTIONS("/*anyPath", util.Options)
 }
 
+type FacetMapValue struct {
+	Path      string `json:"path"`
+	DomRemove bool   `json:"domRemove"`
+}
+
 func computeFacetMap(site string) (string, error) {
 	globalFacetKey := "GLOBAL-FACET-DECLARATION"
-	facetMap := map[string][]string{}
+	facetMap := map[string][]FacetMapValue{}
 	var err error
 	if &site != nil {
 		facets, errFetch := facet.FetchAll(site)
@@ -65,10 +70,14 @@ func computeFacetMap(site string) (string, error) {
 					continue
 				}
 				for _, domElement := range facetElement.DomElement {
+					element := FacetMapValue{
+						Path:      domElement.Path,
+						DomRemove: facetElement.DomRemove,
+					}
 					if facetElement.Global {
-						facetMap[globalFacetKey] = append(facetMap[globalFacetKey], domElement.Path)
+						facetMap[globalFacetKey] = append(facetMap[globalFacetKey], element)
 					} else {
-						facetMap[facetDto.UrlPath] = append(facetMap[facetDto.UrlPath], domElement.Path)
+						facetMap[facetDto.UrlPath] = append(facetMap[facetDto.UrlPath], element)
 					}
 				}
 			}

@@ -50,6 +50,9 @@ const globalFacetKey = 'GLOBAL-FACET-DECLARATION';
 const data = {{.GO_ARRAY_REPLACE_ME}}
 
 let nodesToRemove = (data[window.location.pathname] || []).concat(data[globalFacetKey] || []) || [];
+console.log('nodesToRemove',nodesToRemove);
+
+let pathsAlreadyRemoved = [];
 
 /**
  * Computes whether the element's path is in the Set
@@ -59,9 +62,9 @@ let nodesToRemove = (data[window.location.pathname] || []).concat(data[globalFac
 const inHashMap = (element) => {
     const domPath = getDomPath(element);
     let exists = false;
-    nodesToRemove.forEach(path => {
+    nodesToRemove.forEach(nodeElement => {
 
-        if (path.includes(domPath)) {
+        if (nodeElement.path.includes(domPath)) {
             exists = true;
             return;
         }
@@ -96,10 +99,26 @@ const domPathHide = (mutation, mutationChildren) => {
         return;
     }
     for (const child of mutationChildren) {
-        const childDomPath = getDomPath(child);
-        if (nodesToRemove.includes(childDomPath) && child.style) {
-            child.style.display = "none";
-            child.style.setProperty("display", "none", "important");
+        const childDomPath = getDomPath(child)
+        const wantedElement = nodesToRemove.filter(e => e.path === childDomPath);
+        console.log('ee',wantedElement);
+        if(!wantedElement || !wantedElement[0] || pathsAlreadyRemoved.includes(wantedElement[0].path)) {
+            continue;
+        }
+        console.log('PERASA!', wantedElement[0]);
+        if (wantedElement && wantedElement[0]) {
+            console.log('wantedElement[0]',wantedElement[0]);
+            if (wantedElement[0].domRemove) {
+                child.style.display = "none";
+                child.style.setProperty("display", "none", "important");
+
+                child.remove()
+                pathsAlreadyRemoved.push(childDomPath);
+                continue;
+            } else {
+                child.style.display = "none";
+                child.style.setProperty("display", "none", "important");
+            }
         }
         domPathHide(mutation, child.childNodes);
     }
@@ -107,5 +126,13 @@ const domPathHide = (mutation, mutationChildren) => {
 
 const targetNode = document
 const config = {subtree: true, childList: true, attributes: true};
-const observer = new MutationObserver(callback);
-observer.observe(targetNode, config);
+
+/*
+ * disableMutationObserver can be passed through the facet-extension to override this behavior
+ */
+if( typeof window.disableMutationObserverScript === 'undefined' || window.disableMutationObserverScript === undefined ) {
+    const observer = new MutationObserver(callback);
+    observer.observe(targetNode, config);
+} else {
+    console.log('Facet extension is enabled. Blocking script execution.');
+}

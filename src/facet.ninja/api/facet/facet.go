@@ -19,7 +19,10 @@ type Facet struct {
 	Enabled    bool         `json:"enabled"`
 	Name       string       `json:"name"`
 	DomElement []DomElement `json:"domElement"`
-	Global     bool         `json:"global"`
+	// facet should be visible throughout the domain navigation (regardless pathname)
+	Global bool `json:"global"`
+	// should remove facet from the DOM (as opposed to simple display: 'none')
+	DomRemove bool `json:"domRemove"`
 }
 
 type FacetDTO struct {
