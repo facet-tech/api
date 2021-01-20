@@ -2,6 +2,7 @@ package facet
 
 import (
 	"errors"
+	"fmt"
 
 	"facet.ninja/api/db"
 	"facet.ninja/api/util"
@@ -78,6 +79,7 @@ func (facet *FacetDTO) fetch() error {
 }
 
 func (facet *FacetDTO) create() error {
+	fmt.Println("CHECKME",facet)
 	item, error := dynamodbattribute.MarshalMap(facet)
 	if error == nil {
 		input := &dynamodb.PutItemInput{

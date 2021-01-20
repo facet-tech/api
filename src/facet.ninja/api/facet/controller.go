@@ -2,6 +2,7 @@ package facet
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"io/ioutil"
 
@@ -41,6 +42,7 @@ func Post(c *gin.Context) {
 	body, error := ioutil.ReadAll(c.Request.Body)
 	json.Unmarshal(body, &facet)
 	error = facet.create()
+	fmt.Println("ERR",error)
 	util.SetResponseCode(facet, error, c)
 }
 

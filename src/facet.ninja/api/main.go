@@ -4,13 +4,9 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"facet.ninja/api/middleware"
-	"log"
-	"net/http"
-	"text/template"
-
 	"facet.ninja/api/domain"
 	"facet.ninja/api/facet"
+	"facet.ninja/api/middleware"
 	"facet.ninja/api/user"
 	"facet.ninja/api/util"
 	"facet.ninja/api/workspace"
@@ -18,6 +14,9 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
 	"github.com/gin-gonic/gin"
+	"log"
+	"net/http"
+	"text/template"
 )
 
 var ginLambda *ginadapter.GinLambda
@@ -118,7 +117,6 @@ func getJs(c *gin.Context) {
 	}
 
 	result := tpl.String()
-
 	if error == nil {
 		c.Data(http.StatusOK, "text/javascript", []byte(result))
 	} else {

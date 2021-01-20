@@ -50,12 +50,11 @@ const globalFacetKey = 'GLOBAL-FACET-DECLARATION';
 const data = {{.GO_ARRAY_REPLACE_ME}};
 
 let nodesToRemove = (data[window.location.pathname] || []).concat(data[globalFacetKey] || []) || [];
-console.log('nodesToRemove', nodesToRemove);
-
 let pathsAlreadyRemoved = [];
+let tmpSet  = new Set([]);
 
 /**
- * Computes whether the element's path is in the Set
+ * Computes whether the element's path is in the nodesToRemove array.
  *
  * @param {*} element
  */
@@ -82,6 +81,12 @@ const callback = async function (mutationsList) {
                 domPathHide(mutation, mutation.target.children)
             }
         }
+        console.log('BGIKA!',tmpSet);
+        //  tmpArr = Array.from(tmpSet);
+        // console.log('TMPARR',tmpArr);
+        // tmpArr.forEach(e => {
+        //     e.remove();
+        // })
     } catch (e) {
         console.log('[ERROR]', e);
     }
@@ -99,16 +104,37 @@ const domPathHide = (mutation, mutationChildren) => {
     }
     for (const child of mutationChildren) {
         const childDomPath = getDomPath(child);
+        let exists = false;
+        pathsAlreadyRemoved.forEach(nodeElement => {
+            if (childDomPath.includes(nodeElement)) {
+                exists = true;
+                return;
+            }
+        });
+        if(exists) {
+            console.log('REMOVING CHGILDDD!',childDomPath);
+            // child.remove();
+            // child.style.display = "none";
+            // child.style.setProperty("display", "none", "important");
+            tmpSet.add(child);
+            // continue;
+        }
+
         const wantedElement = nodesToRemove.filter(e => e.path === childDomPath);
-        if (!wantedElement || !wantedElement[0] || pathsAlreadyRemoved.includes(wantedElement[0].path)) {
+        // console.log('wantedElem',childDomPath);
+        if (!wantedElement || !wantedElement[0]) {
             domPathHide(mutation, child.childNodes);
             continue;
         }
+        // console.log('aawdwa',wantedElement, child);
         if (wantedElement[0].domRemove) {
-            child.remove()
+            console.log('REMOVED',childDomPath)
+            //
+            // child.remove()
+            tmpSet.add(child);
             pathsAlreadyRemoved.push(childDomPath);
-            continue;
         } else {
+            console.log('HIDE')
             child.style.display = "none";
             child.style.setProperty("display", "none", "important");
         }
@@ -123,8 +149,9 @@ const config = {subtree: true, childList: true, attributes: true};
  * disableMutationObserver can be passed through the facet-extension to override this behavior
  */
 if (typeof window.disableMutationObserverScript === 'undefined' || window.disableMutationObserverScript === undefined) {
+    console.log('LOADING mo')
     const observer = new MutationObserver(callback);
     observer.observe(targetNode, config);
 } else {
-    console.log('Facet extension is enabled. Blocking script execution.');
+    console.log('[Facet Script] Facet extension is enabled. Blocking script execution.');
 }
