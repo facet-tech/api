@@ -101,3 +101,16 @@ func (facet *FacetDTO) delete() error {
 	_, error := db.Database.DeleteItem(input)
 	return error
 }
+
+func (facet *FacetDTO) deleteAll(siteId string) error {
+	input := &dynamodb.DeleteItemInput{
+		TableName: aws.String(db.FacetTableName),
+		Key: map[string]*dynamodb.AttributeValue{
+			"domainId": {
+				S: aws.String(siteId),
+			},
+		},
+	}
+	_, error := db.Database.DeleteItem(input)
+	return error
+}
