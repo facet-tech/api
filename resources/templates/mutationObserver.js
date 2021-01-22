@@ -48,9 +48,8 @@ function isElement(element) {
 
 const globalFacetKey = 'GLOBAL-FACET-DECLARATION';
 const data = {{.GO_ARRAY_REPLACE_ME}};
-
 let nodesToRemove = (data[window.location.pathname] || []).concat(data[globalFacetKey] || []) || [];
-console.log(nodesToRemove);
+
 /**
  * Computes whether the element's path is in the nodesToRemove array
  *
