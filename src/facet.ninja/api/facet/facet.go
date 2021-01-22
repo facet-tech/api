@@ -2,7 +2,6 @@ package facet
 
 import (
 	"errors"
-
 	"facet.ninja/api/db"
 	"facet.ninja/api/util"
 	"github.com/aws/aws-sdk-go/aws"
@@ -102,12 +101,12 @@ func (facet *FacetDTO) delete() error {
 	return error
 }
 
-func (facet *FacetDTO) deleteAll(siteId string) error {
+func (facet *FacetDTO) deleteAll() error {
 	input := &dynamodb.DeleteItemInput{
 		TableName: aws.String(db.FacetTableName),
 		Key: map[string]*dynamodb.AttributeValue{
 			"domainId": {
-				S: aws.String(siteId),
+				S: aws.String(facet.DomainId),
 			},
 		},
 	}
