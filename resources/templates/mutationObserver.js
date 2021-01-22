@@ -6,17 +6,13 @@
  *
  */
 function getDomPath(el) {
-    // returns empty path for non valid element
-    if (!isElement(el)) {
+    if(!isElement(el)) {
         return '';
     }
     var stack = [];
-    var isShadow = false;
     while (el.parentNode != null) {
-        // console.log(el.nodeName);
-        var sibCount = 0;
-        var sibIndex = 0;
-        // get sibling indexes
+        var sibCount = 1;
+        var sibIndex = 1;
         for (var i = 0; i < el.parentNode.childNodes.length; i++) {
             var sib = el.parentNode.childNodes[i];
             if (sib.nodeName == el.nodeName) {
@@ -26,27 +22,18 @@ function getDomPath(el) {
                 sibCount++;
             }
         }
-        // if ( el.hasAttribute('id') && el.id != '' ) { no id shortcuts, ids are not unique in shadowDom
-        //   stack.unshift(el.nodeName.toLowerCase() + '#' + el.id);
-        // } else
-        var nodeName = el.nodeName.toLowerCase();
-        if (isShadow) {
-            nodeName += "::shadow";
-            isShadow = false;
-        }
-        if (sibCount > 1) {
-            stack.unshift(nodeName + ':nth-of-type(' + (sibIndex + 1) + ')');
+        if (el.hasAttribute('id') && el.id != '') {
+            stack.unshift(el.nodeName.toLowerCase() + '#' + el.id);
+        } else if (sibCount > 2) {
+            stack.unshift(el.nodeName.toLowerCase() + ':nth-child(' + sibIndex + ')');
         } else {
-            stack.unshift(nodeName);
+            stack.unshift(el.nodeName.toLowerCase());
         }
         el = el.parentNode;
-        if (el.nodeType === 11) { // for shadow dom, we
-            isShadow = true;
-            el = el.host;
-        }
     }
-    stack.splice(0, 1); // removes the html element
-    return stack.join(' > ').replace(/ /g, "");
+    var res = stack.slice(1).join(' > ');
+    var withoutSpaces = res.replace(/ /g, "");
+    return withoutSpaces;
 }
 
 /**
@@ -60,12 +47,12 @@ function isElement(element) {
 }
 
 const globalFacetKey = 'GLOBAL-FACET-DECLARATION';
-const data = {{.GO_ARRAY_REPLACE_ME}}
+const data = {{.GO_ARRAY_REPLACE_ME}};
 
 let nodesToRemove = (data[window.location.pathname] || []).concat(data[globalFacetKey] || []) || [];
-
+console.log(nodesToRemove);
 /**
- * Computes whether the element's path is in the Set
+ * Computes whether the element's path is in the nodesToRemove array
  *
  * @param {*} element
  */
@@ -73,7 +60,6 @@ const inHashMap = (element) => {
     const domPath = getDomPath(element);
     let exists = false;
     nodesToRemove.forEach(path => {
-
         if (path.includes(domPath)) {
             exists = true;
             return;
@@ -118,7 +104,17 @@ const domPathHide = (mutation, mutationChildren) => {
     }
 }
 
-const targetNode = document
+const targetNode = document;
 const config = {subtree: true, childList: true, attributes: true};
-const observer = new MutationObserver(callback);
-observer.observe(targetNode, config);
+
+/*
+ * disableMutationObserver can be passed through the facet-extension to override this behavior
+ */
+if (typeof window.disableMutationObserverScript === 'undefined'
+    || window.disableMutationObserverScript === undefined
+    || window.disableMutationObserverScript === false) {
+    const observer = new MutationObserver(callback);
+    observer.observe(targetNode, config);
+} else {
+    console.log('[Facet Script] Facet extension is enabled. Blocking script execution.');
+}

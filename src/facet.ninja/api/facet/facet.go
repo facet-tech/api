@@ -19,6 +19,7 @@ type Facet struct {
 	Enabled    bool         `json:"enabled"`
 	Name       string       `json:"name"`
 	DomElement []DomElement `json:"domElement"`
+
 	Global     bool         `json:"global"`
 }
 
