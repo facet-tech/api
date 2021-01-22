@@ -2,11 +2,9 @@ package facet
 
 import (
 	"encoding/json"
-
-	"io/ioutil"
-
 	"facet.ninja/api/util"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
 )
 
 const (
@@ -48,6 +46,14 @@ func Delete(c *gin.Context) {
 	facet := FacetDTO{}
 	body, error := ioutil.ReadAll(c.Request.Body)
 	json.Unmarshal(body, &facet)
-	error = facet.delete()
+	if facet.UrlPath == "" {
+		facetArray, _ := FetchAll(facet.DomainId)
+		for _, facetDto := range *facetArray {
+			error = facetDto.delete()
+		}
+	} else {
+		error = facet.delete()
+	}
+
 	util.SetResponseCode(nil, error, c)
 }
