@@ -17,7 +17,7 @@ make
    project:
 
 ```
-sam local start-api --env-vars env.json
+sam local start-api --port 3002 --env-vars env.json
 ```
 
 3. Terraform is called a GH action.
