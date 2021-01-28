@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description:
-  Facet.ninja rest API
+  Facet rest API
 
 Parameters:
   COGNITO_JWKS_URL:

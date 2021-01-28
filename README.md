@@ -1,6 +1,4 @@
-## Facet Frontend API
-
-API consumed from Facet.Ninja Frontend applications.
+# Facet API
 
 ## Getting started
 
@@ -9,7 +7,7 @@ Creating an executable zip file and uploading the file via terraform to AWS.
 1. Run make:
 
 ```
-cd /src/facet.ninja/api
+cd /src/facet/api
 make
 ```
 

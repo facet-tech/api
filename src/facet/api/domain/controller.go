@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	"facet.ninja/api/util"
+	"facet/api/util"
 	"github.com/gin-gonic/gin"
 )
 

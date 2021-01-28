@@ -2,7 +2,7 @@ package facet
 
 import (
 	"encoding/json"
-	"facet.ninja/api/util"
+	"facet/api/util"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 )

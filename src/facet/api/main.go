@@ -4,16 +4,16 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"facet.ninja/api/middleware"
+	"facet/api/middleware"
 	"log"
 	"net/http"
 	"text/template"
 
-	"facet.ninja/api/domain"
-	"facet.ninja/api/facet"
-	"facet.ninja/api/user"
-	"facet.ninja/api/util"
-	"facet.ninja/api/workspace"
+	"facet/api/domain"
+	"facet/api/facet"
+	"facet/api/user"
+	"facet/api/util"
+	"facet/api/workspace"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
@@ -31,7 +31,7 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 		log.Printf("Gin cold start")
 		router := gin.Default()
 		defaultRoutes(router)
-		router.GET("/facet.ninja.js", getJs)
+		router.GET("/js", getJs)
 		// authenticated routes
 		router.Group("/")
 		{

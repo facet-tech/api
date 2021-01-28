@@ -10,7 +10,6 @@ BINARY_NAME=main
     
 all: clean build package
 build: 
-	#cd src/facet.ninja/api
 	cd ../../.. && rm -rf ./build/
 	$(GOBUILD) ./...
 	$(GOBUILD) -o ../../../build/$(BINARY_NAME)

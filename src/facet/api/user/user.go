@@ -2,8 +2,8 @@ package user
 
 import (
 	"errors"
-	"facet.ninja/api/db"
-	"facet.ninja/api/util"
+	"facet/api/db"
+	"facet/api/util"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"

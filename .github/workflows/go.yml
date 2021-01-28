@@ -22,14 +22,14 @@ jobs:
 
     - name: Get dependencies
       run: |
-        cd src/facet.ninja/api && go get -v -t -d ./...
+        cd src/facet/api && go get -v -t -d ./...
         if [ -f Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
             dep ensure
         fi
 
     - name: build
-      run: cd src/facet.ninja/api && make
+      run: cd src/facet/api && make
 
     - name: Setup SSH Keys and known_hosts
       env:

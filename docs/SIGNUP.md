@@ -4,7 +4,7 @@ AWS Congito is used for authentication. Clients utilize Cognito directly to be a
 
 The generated tokens (ID Token,  Access Token, Refresh Token, JWT) are used to authenticate users into the API endpoints. 
 
-The JWT is verified utilizing the common AWS guidelines, [stated here](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html). The logic is implemented through the [JWTMiddleware](../src/facet.ninja/api/middleware/JWTMiddleware.go).
+The JWT is verified utilizing the common AWS guidelines, [stated here](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html). The logic is implemented through the [JWTMiddleware](../src/facet/api/middleware/JWTMiddleware.go).
 
 Sequence diagram Signup:
 
