@@ -1,4 +1,4 @@
-module facet.ninja/api
+module facet/api
 
 go 1.12
 
