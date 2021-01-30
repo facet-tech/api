@@ -110,6 +110,8 @@ const domPathHide = (mutation, mutationChildren) => {
 const targetNode = document;
 const config = {subtree: true, childList: true, attributes: true};
 
+
+console.log('MO disableMutationObserverScript',window.disableMutationObserverScript);
 /*
  * disableMutationObserver can be passed through the facet-extension to override this behavior
  */
