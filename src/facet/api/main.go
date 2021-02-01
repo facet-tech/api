@@ -4,13 +4,10 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"facet/api/middleware"
-	"log"
-	"net/http"
-	"text/template"
-
 	"facet/api/domain"
 	"facet/api/facet"
+	"facet/api/middleware"
+	"facet/api/notification"
 	"facet/api/user"
 	"facet/api/util"
 	"facet/api/workspace"
@@ -18,6 +15,9 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
 	"github.com/gin-gonic/gin"
+	"log"
+	"net/http"
+	"text/template"
 )
 
 var ginLambda *ginadapter.GinLambda
@@ -31,7 +31,12 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 		log.Printf("Gin cold start")
 		router := gin.Default()
 		defaultRoutes(router)
-		router.GET("/js", getJs)
+		router.Group("/")
+		{
+			router.GET("/js", getJs)
+			notification.Route(router)
+		}
+
 		// authenticated routes
 		router.Group("/")
 		{
