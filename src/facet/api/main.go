@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"facet/api/domain"
 	"facet/api/facet"
@@ -13,7 +14,6 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"text/template"
@@ -66,7 +66,15 @@ func getFacetMap(c *gin.Context) {
 }
 
 func getJs(c *gin.Context) {
+
 	util.SetCorsHeaders(c)
+	if mutationObserverTemplate == nil {
+		t, err := template.ParseFiles("./resources/templates/mutationObserver.js")
+		if err != nil {
+			log.Print(err)
+		}
+		mutationObserverTemplate = t
+	}
 
 	site := c.Request.URL.Query().Get("id")
 	if &site == nil {
@@ -74,14 +82,21 @@ func getJs(c *gin.Context) {
 		return
 	}
 
-	var err error
-	if mutationObserverTemplate == nil {
-		moFile, err = ioutil.ReadFile("./resources/templates/mutationObserver.js")
-		if err != nil {
-			log.Print(err)
-		}
+	facetMap, error := facet.ComputeMutationObserverFacetMap(site)
+	config := map[string]string{
+		"GO_ARRAY_REPLACE_ME": facetMap,
 	}
 
-	c.Data(http.StatusOK, "text/javascript", moFile)
+	var tpl bytes.Buffer
+	if err := mutationObserverTemplate.Execute(&tpl, config); err != nil {
+		log.Print(err)
+	}
 
+	result := tpl.String()
+
+	if error == nil {
+		c.Data(http.StatusOK, "text/javascript", []byte(result))
+	} else {
+		c.JSON(http.StatusInternalServerError, error)
+	}
 }
