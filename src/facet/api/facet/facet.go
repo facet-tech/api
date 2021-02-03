@@ -1,6 +1,7 @@
 package facet
 
 import (
+	"encoding/json"
 	"errors"
 	"facet/api/db"
 	"facet/api/util"
@@ -48,6 +49,38 @@ func FetchAll(siteId string) (*[]FacetDTO, error) {
 		error = dynamodbattribute.UnmarshalListOfMaps(result.Items, facets)
 	}
 	return facets, error
+}
+
+/*
+ * Computes facet map structures used by the mutationObserver script.
+ */
+func ComputeMutationObserverFacetMap(site string) (string, error) {
+	globalFacetKey := "GLOBAL-FACET-DECLARATION"
+	facetMap := map[string][]string{}
+	var err error
+	if &site != nil {
+		facets, errFetch := FetchAll(site)
+		if errFetch != nil {
+			return "{}", errFetch
+		}
+		for _, facetDto := range *facets {
+			for _, facetElement := range facetDto.Facet {
+				if facetElement.Enabled == false {
+					continue
+				}
+				for _, domElement := range facetElement.DomElement {
+					if facetElement.Global {
+						facetMap[globalFacetKey] = append(facetMap[globalFacetKey], domElement.Path)
+					} else {
+						facetMap[facetDto.UrlPath] = append(facetMap[facetDto.UrlPath], domElement.Path)
+					}
+				}
+			}
+		}
+	}
+	facetMapJSON, _ := json.Marshal(facetMap)
+	facetMapJSONString := string(facetMapJSON)
+	return facetMapJSONString, err
 }
 
 func (facet *FacetDTO) fetch() error {

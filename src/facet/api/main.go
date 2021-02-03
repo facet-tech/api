@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"facet/api/domain"
 	"facet/api/facet"
 	"facet/api/middleware"
@@ -34,6 +33,7 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 		router.Group("/")
 		{
 			router.GET("/js", getJs)
+			router.GET("/js/facetmap", getFacetMap)
 			notification.Route(router)
 		}
 
@@ -55,36 +55,15 @@ func defaultRoutes(route *gin.Engine) {
 	route.OPTIONS("/*anyPath", util.Options)
 }
 
-func computeFacetMap(site string) (string, error) {
-	globalFacetKey := "GLOBAL-FACET-DECLARATION"
-	facetMap := map[string][]string{}
-	var err error
-	if &site != nil {
-		facets, errFetch := facet.FetchAll(site)
-		if errFetch != nil {
-			return "{}", errFetch
-		}
-		for _, facetDto := range *facets {
-			for _, facetElement := range facetDto.Facet {
-				if facetElement.Enabled == false {
-					continue
-				}
-				for _, domElement := range facetElement.DomElement {
-					if facetElement.Global {
-						facetMap[globalFacetKey] = append(facetMap[globalFacetKey], domElement.Path)
-					} else {
-						facetMap[facetDto.UrlPath] = append(facetMap[facetDto.UrlPath], domElement.Path)
-					}
-				}
-			}
-		}
-	}
-	facetMapJSON, _ := json.Marshal(facetMap)
-	facetMapJSONString := string(facetMapJSON)
-	return facetMapJSONString, err
-}
-
 var mutationObserverTemplate *template.Template
+var moFile []byte
+
+func getFacetMap(c *gin.Context) {
+	util.SetCorsHeaders(c)
+	domainId := c.Request.URL.Query().Get("id")
+	facetMapJsonString, err := facet.ComputeMutationObserverFacetMap(domainId)
+	util.SetResponseCode(facetMapJsonString, err, c)
+}
 
 func getJs(c *gin.Context) {
 
@@ -103,7 +82,7 @@ func getJs(c *gin.Context) {
 		return
 	}
 
-	facetMap, error := computeFacetMap(site)
+	facetMap, error := facet.ComputeMutationObserverFacetMap(site)
 	config := map[string]string{
 		"GO_ARRAY_REPLACE_ME": facetMap,
 	}
