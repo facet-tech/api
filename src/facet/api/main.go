@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"facet/api/domain"
 	"facet/api/facet"
 	"facet/api/middleware"
@@ -10,7 +9,6 @@ import (
 	"facet/api/user"
 	"facet/api/util"
 	"facet/api/workspace"
-	"fmt"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
@@ -35,7 +33,7 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 		router.Group("/")
 		{
 			router.GET("/js", getJs)
-			router.GET("/js/computefacetmap", computeFacetMap)
+			router.GET("/js/facetmap", getFacetMap)
 			notification.Route(router)
 		}
 
@@ -57,50 +55,20 @@ func defaultRoutes(route *gin.Engine) {
 	route.OPTIONS("/*anyPath", util.Options)
 }
 
-// TODO refactor and call this method through facet entity
-func computeFacetMap(c *gin.Context) {
-	util.SetCorsHeaders(c)
-	fmt.Println("MPIADWADWWA")
-	site := c.Request.URL.Query().Get("id")
-	fmt.Println("SITE",site)
-	globalFacetKey := "GLOBAL-FACET-DECLARATION"
-	facetMap := map[string][]string{}
-	if &site != nil {
-		facets, errFetch := facet.FetchAll(site)
-		fmt.Println("ela man",facets)
-		if errFetch != nil {
-			return
-		}
-		for _, facetDto := range *facets {
-			for _, facetElement := range facetDto.Facet {
-				if facetElement.Enabled == false {
-					continue
-				}
-				for _, domElement := range facetElement.DomElement {
-					if facetElement.Global {
-						facetMap[globalFacetKey] = append(facetMap[globalFacetKey], domElement.Path)
-					} else {
-						facetMap[facetDto.UrlPath] = append(facetMap[facetDto.UrlPath], domElement.Path)
-					}
-				}
-			}
-		}
-	}
-	fmt.Println(facetMap)
-	facetMapJSON, _ := json.Marshal(facetMap)
-	facetMapJSONString := string(facetMapJSON)
-	c.Data(http.StatusOK, "text/javascript", []byte(facetMapJSONString))
-}
-
 var mutationObserverTemplate *template.Template
 var moFile []byte
+
+func getFacetMap(c *gin.Context) {
+	util.SetCorsHeaders(c)
+	domainId := c.Request.URL.Query().Get("id")
+	facetMapJsonString, err := facet.ComputeMutationObserverFacetMap(domainId)
+	util.SetResponseCode(facetMapJsonString, err, c)
+}
 
 func getJs(c *gin.Context) {
 	util.SetCorsHeaders(c)
 
-	fmt.Println("mMPIKAAA")
 	site := c.Request.URL.Query().Get("id")
-	fmt.Println("mMPIKAAA", site)
 	if &site == nil {
 		c.JSON(http.StatusNotFound, "id is required")
 		return

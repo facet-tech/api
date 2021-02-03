@@ -110,8 +110,6 @@
     }
 
     const config = {subtree: true, childList: true, attributes: true};
-
-    console.log('TRIGGERING MO');
     const observer = new MutationObserver(callback);
     observer.observe(targetNode, config);
 
