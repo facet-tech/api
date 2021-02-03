@@ -53,6 +53,7 @@
 
     const globalFacetKey = 'GLOBAL-FACET-DECLARATION';
     const data = {{.GO_ARRAY_REPLACE_ME}};
+
     let nodesToRemove = (data[window.location.pathname] || []).concat(data[globalFacetKey] || []) || [];
 
     /**
@@ -108,39 +109,11 @@
         }
     }
 
-    const keys = {
-        'FACET_EXTENSION_DISABLE_MO': 'FACET_EXTENSION_DISABLE_MO',
-        'FACET_EXTENSION_PREVIEW_TAB_ID': 'FACET_EXTENSION_PREVIEW_TAB_ID',
-        'FACET_EXTENSION_ALREADY_INTEGRATED': 'FACET_EXTENSION_ALREADY_INTEGRATED',
-    }
-
-    function getFacetExtensionCookie(key) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${key}=`);
-        if (parts.length === 2) {
-            return  parts.pop().split(';').shift();
-        }
-    }
-
-    const targetNode = document;
     const config = {subtree: true, childList: true, attributes: true};
 
-    const previewTabId = getFacetExtensionCookie(keys["FACET_EXTENSION_PREVIEW_TAB_ID"]);
-    const disableMO = getFacetExtensionCookie(keys["FACET_EXTENSION_DISABLE_MO"]) === 'true';
-    const alreadyIntegrated = getFacetExtensionCookie(keys["FACET_EXTENSION_ALREADY_INTEGRATED"]) === 'true';
+    console.log('TRIGGERING MO');
+    const observer = new MutationObserver(callback);
+    observer.observe(targetNode, config);
 
-    console.log('disableMO', disableMO);
-    console.log('previewTabId', previewTabId);
-    console.log('alreadyIntegrated', alreadyIntegrated);
-    /*
-     * disableMutationObserver can be passed through the facet-extension to override this behavior
-     */
-    if (!disableMO) {
-        console.log('TRIGGERING MO');
-        const observer = new MutationObserver(callback);
-        observer.observe(targetNode, config);
-    } else {
-        console.log('[Facet Script] Facet extension is enabled. Blocking script execution.');
-    }
 })();
 

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"facet/api/domain"
@@ -11,10 +10,12 @@ import (
 	"facet/api/user"
 	"facet/api/util"
 	"facet/api/workspace"
+	"fmt"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"text/template"
@@ -34,6 +35,7 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 		router.Group("/")
 		{
 			router.GET("/js", getJs)
+			router.GET("/js/computefacetmap", computeFacetMap)
 			notification.Route(router)
 		}
 
@@ -55,14 +57,19 @@ func defaultRoutes(route *gin.Engine) {
 	route.OPTIONS("/*anyPath", util.Options)
 }
 
-func computeFacetMap(site string) (string, error) {
+// TODO refactor and call this method through facet entity
+func computeFacetMap(c *gin.Context) {
+	util.SetCorsHeaders(c)
+	fmt.Println("MPIADWADWWA")
+	site := c.Request.URL.Query().Get("id")
+	fmt.Println("SITE",site)
 	globalFacetKey := "GLOBAL-FACET-DECLARATION"
 	facetMap := map[string][]string{}
-	var err error
 	if &site != nil {
 		facets, errFetch := facet.FetchAll(site)
+		fmt.Println("ela man",facets)
 		if errFetch != nil {
-			return "{}", errFetch
+			return
 		}
 		for _, facetDto := range *facets {
 			for _, facetElement := range facetDto.Facet {
@@ -79,45 +86,34 @@ func computeFacetMap(site string) (string, error) {
 			}
 		}
 	}
+	fmt.Println(facetMap)
 	facetMapJSON, _ := json.Marshal(facetMap)
 	facetMapJSONString := string(facetMapJSON)
-	return facetMapJSONString, err
+	c.Data(http.StatusOK, "text/javascript", []byte(facetMapJSONString))
 }
 
 var mutationObserverTemplate *template.Template
+var moFile []byte
 
 func getJs(c *gin.Context) {
-
 	util.SetCorsHeaders(c)
-	if mutationObserverTemplate == nil {
-		t, err := template.ParseFiles("./resources/templates/mutationObserver.js")
-		if err != nil {
-			log.Print(err)
-		}
-		mutationObserverTemplate = t
-	}
 
+	fmt.Println("mMPIKAAA")
 	site := c.Request.URL.Query().Get("id")
+	fmt.Println("mMPIKAAA", site)
 	if &site == nil {
 		c.JSON(http.StatusNotFound, "id is required")
 		return
 	}
 
-	facetMap, error := computeFacetMap(site)
-	config := map[string]string{
-		"GO_ARRAY_REPLACE_ME": facetMap,
+	var err error
+	if mutationObserverTemplate == nil {
+		moFile, err = ioutil.ReadFile("./resources/templates/mutationObserver.js")
+		if err != nil {
+			log.Print(err)
+		}
 	}
 
-	var tpl bytes.Buffer
-	if err := mutationObserverTemplate.Execute(&tpl, config); err != nil {
-		log.Print(err)
-	}
+	c.Data(http.StatusOK, "text/javascript", moFile)
 
-	result := tpl.String()
-
-	if error == nil {
-		c.Data(http.StatusOK, "text/javascript", []byte(result))
-	} else {
-		c.JSON(http.StatusInternalServerError, error)
-	}
 }
