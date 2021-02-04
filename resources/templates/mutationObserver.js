@@ -111,7 +111,7 @@
 
     const config = {subtree: true, childList: true, attributes: true};
     const observer = new MutationObserver(callback);
-    observer.observe(targetNode, config);
+    observer.observe(document, config);
 
 })();
 
