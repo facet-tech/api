@@ -53,7 +53,6 @@
 
     const globalFacetKey = 'GLOBAL-FACET-DECLARATION';
     const data = {{.GO_ARRAY_REPLACE_ME}};
-
     let nodesToRemove = (data[window.location.pathname] || []).concat(data[globalFacetKey] || []) || [];
 
     /**
@@ -109,9 +108,23 @@
         }
     }
 
-    const config = {subtree: true, childList: true, attributes: true};
-    const observer = new MutationObserver(callback);
-    observer.observe(document, config);
+    function getFacetExtensionCookie(key) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${key}=`);
+        if (parts.length === 2) {
+            return parts.pop().split(';').shift();
+        }
+    }
 
+    const facetExtensionDisableMo = getFacetExtensionCookie("FACET_EXTENSION_DISABLE_MO") === 'true';
+    console.log('facetExtensionDisableMo',facetExtensionDisableMo);
+
+    if(!facetExtensionDisableMo) {
+        const config = {subtree: true, childList: true, attributes: true};
+        const observer = new MutationObserver(callback);
+        observer.observe(document, config);
+    } else {
+        console.log('[Facet][API][mutationObserver.js] Script Disabled');
+    }
 })();
 
