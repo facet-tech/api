@@ -44,7 +44,7 @@ func (notification *Notification) createSlackMessage() SlackMessage  {
 		slackBold(notification.Subject) + slackFormatBlock +
 				slackField("Company", notification.Company) +
 				slackField("FirstName", notification.FirstName) +
-			    slackField("FirstName", notification.LastName) +
+			    slackField("LastName", notification.LastName) +
 				slackField("Contact", notification.Contact) +
 				slackField("Message", notification.Message)}
 }
