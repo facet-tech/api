@@ -105,4 +105,4 @@ i.e.: `127.0.0.1 example-website.facet.run`.
 
 # Timestamp
 
-Timestamp is declared in UTC, using the ISO 8601 (`time.RFC3339`) format.
+Timestamp is declared in UTC, using the ISO 8601 [(RFC3339)](https://golang.org/pkg/time/#pkg-constants) format.
