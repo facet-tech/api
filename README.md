@@ -102,3 +102,7 @@ to generate SSH keys and upload them to GH.
 Setup Tomcat server for locally debugging the https://github.com/facets-io/my-website-facets.io. Use Intellij's Artifact
 plugin and run it through the Tomcat debugger. Change the `hosts` file to map localhost with an example domain
 i.e.: `127.0.0.1 example-website.facet.run`. 
+
+# Timestamp
+
+Timestamp is declared in UTC, using the ISO 8601 (`time.RFC3339`) format.

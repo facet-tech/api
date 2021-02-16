@@ -7,6 +7,7 @@ import (
 	"facet/api/facet"
 	"facet/api/middleware"
 	"facet/api/notification"
+	"facet/api/pricing"
 	"facet/api/user"
 	"facet/api/util"
 	"facet/api/workspace"
@@ -76,13 +77,13 @@ func getJs(c *gin.Context) {
 		mutationObserverTemplate = t
 	}
 
-	site := c.Request.URL.Query().Get("id")
-	if &site == nil {
+	domainId := c.Request.URL.Query().Get("id")
+	if &domainId == nil {
 		c.JSON(http.StatusNotFound, "id is required")
 		return
 	}
 
-	facetMap, error := facet.ComputeMutationObserverFacetMap(site)
+	facetMap, error := facet.ComputeMutationObserverFacetMap(domainId)
 	config := map[string]string{
 		"GO_ARRAY_REPLACE_ME": facetMap,
 	}
@@ -95,7 +96,14 @@ func getJs(c *gin.Context) {
 	result := tpl.String()
 
 	if error == nil {
+		ua := c.Request.Header.Get("User-Agent")
+		pricingElement := pricing.Pricing{
+			DomainId:  domainId,
+			UserAgent: ua,
+		}
+		go pricingElement.Create()
 		c.Data(http.StatusOK, "text/javascript", []byte(result))
+
 	} else {
 		c.JSON(http.StatusInternalServerError, error)
 	}
