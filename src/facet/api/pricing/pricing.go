@@ -2,7 +2,6 @@ package pricing
 
 import (
 	"facet/api/db"
-	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
@@ -17,11 +16,9 @@ type Pricing struct {
 }
 
 func (pricing *Pricing) Create() error {
-	time.Sleep(15000)
 	pricing.RequestId = db.CreateId(db.PricingTableName)
 	pricing.Timestamp = time.Now().UTC().Format(time.RFC3339)
 	item, e := dynamodbattribute.MarshalMap(pricing)
-	fmt.Println("ela", item)
 	if e == nil {
 		input := &dynamodb.PutItemInput{
 			TableName: aws.String(db.PricingTableName),
@@ -32,9 +29,9 @@ func (pricing *Pricing) Create() error {
 	return e
 }
 
-func FetchAll(domainId string) (*[]Pricing, error) {
+func Count(domainId string) (*int64, error) {
 	input := &dynamodb.QueryInput{
-		TableName: aws.String(db.FacetTableName),
+		TableName: aws.String(db.PricingTableName),
 		KeyConditions: map[string]*dynamodb.Condition{
 			"domainId": {
 				ComparisonOperator: aws.String("EQ"),
@@ -46,28 +43,6 @@ func FetchAll(domainId string) (*[]Pricing, error) {
 			},
 		},
 	}
-	result, error := db.Database.Query(input)
-	pricingRecords := new([]Pricing)
-	if error == nil && result.Items != nil {
-		error = dynamodbattribute.UnmarshalListOfMaps(result.Items, pricingRecords)
-	}
-	return pricingRecords, error
-}
-
-func Fetch(workspaceId string) (*Pricing, error) {
-	pricingElement := new(Pricing)
-	input := &dynamodb.GetItemInput{
-		TableName: aws.String(db.PricingTableName),
-		Key: map[string]*dynamodb.AttributeValue{
-			"domainId": {
-				S: aws.String(workspaceId),
-			},
-		},
-	}
-	result, err := db.Database.GetItem(input)
-	if err == nil && result != nil {
-		err = dynamodbattribute.UnmarshalMap(result.Item, pricingElement)
-	}
-
-	return pricingElement, err
+	result, err := db.Database.Query(input)
+	return result.ScannedCount, err
 }
