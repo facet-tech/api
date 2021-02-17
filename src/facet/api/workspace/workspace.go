@@ -6,17 +6,15 @@ import (
 	"facet/api/domain"
 	"facet/api/pricing"
 	"facet/api/util"
-	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
 
 type WorkspaceDto struct {
-	DomainId    string `json:"domainId"`
-	WorkspaceId string `json:"workspaceId,omitempty"`
-	Counter     *int64 `json:"counter"`
-	Domain      string `json:"Domain"`
+	DomainId string `json:"domainId"`
+	Counter  *int64 `json:"counter"`
+	Domain   string `json:"Domain"`
 }
 
 type Workspace struct {
@@ -30,7 +28,6 @@ const (
 )
 
 func (workspace *Workspace) fetchAll() ([]WorkspaceDto, error) {
-	fmt.Println("QUERING", workspace)
 	input := &dynamodb.QueryInput{
 		TableName: aws.String(db.WorkspaceTableName),
 		KeyConditions: map[string]*dynamodb.Condition{
@@ -52,9 +49,9 @@ func (workspace *Workspace) fetchAll() ([]WorkspaceDto, error) {
 			},
 		},
 	}
-	result, error := db.Database.Query(input)
+	result, err := db.Database.Query(input)
 	workspaces := new([]Workspace)
-	error = dynamodbattribute.UnmarshalListOfMaps(result.Items, workspaces)
+	err = dynamodbattribute.UnmarshalListOfMaps(result.Items, workspaces)
 
 	var resultArr []WorkspaceDto
 
@@ -62,14 +59,16 @@ func (workspace *Workspace) fetchAll() ([]WorkspaceDto, error) {
 		domainElement, _ := domain.Fetch(workspace.WorkspaceId, workspace.Id)
 		counter, _ := pricing.Count(workspace.Id)
 		workspaceDto := WorkspaceDto{
-			WorkspaceId: workspace.WorkspaceId,
-			DomainId:    workspace.Id,
-			Counter:     counter,
-			Domain:      domainElement.Domain,
+			DomainId: workspace.Id,
+			Counter:  counter,
+			Domain:   domainElement.Domain,
 		}
 		resultArr = append(resultArr, workspaceDto)
 	}
-	return resultArr, error
+	if len(resultArr) == 0 {
+		err = errors.New(util.NOT_FOUND)
+	}
+	return resultArr, err
 
 }
 

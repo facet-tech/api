@@ -27,8 +27,10 @@ sam local start-api --port 3002 --env-vars env.json
 ## Access JMeter results produced through CI
 
 You can access JMeter tests via the S3
-link: `https://cdn.facet.ninja/test/api/regression/PUT_THE_CI_NUMBER_HERE/index.html`,
-i.e: `https://cdn.facet.ninja/test/api/regression/88/index.html`.
+link: `https://cdn.facet.run/test/api/regression/PUT_THE_CI_NUMBER_HERE/index.html`,
+i.e: `https://cdn.facet.run/test/api/regression/88/index.html`.
+
+Find the `PUT_THE_CI_NUMBER_HERE` by navigating to the "Actions" section in GitHub and get the build number.
 
 ## Environment Variables
 

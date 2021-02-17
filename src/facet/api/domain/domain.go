@@ -2,8 +2,6 @@ package domain
 
 import (
 	"errors"
-	"fmt"
-
 	"facet/api/db"
 	"facet/api/util"
 	"github.com/aws/aws-sdk-go/aws"
@@ -67,7 +65,6 @@ func Fetch(workspaceId string, domainId string) (*Domain, error) {
 			error = dynamodbattribute.UnmarshalMap(result.Items[0], resultDomain)
 		}
 	}
-	fmt.Println("ELA MAN", resultDomain)
 	return resultDomain, error
 }
 
