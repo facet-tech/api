@@ -21,9 +21,10 @@ func Route(router *gin.Engine) {
 
 func Get(c *gin.Context) {
 	workspace := Workspace{}
+	workspace.WorkspaceId = c.Request.URL.Query().Get(ID_QUERY_PARAMATER)
 	workspace.Id = c.Request.URL.Query().Get(ID_QUERY_PARAMATER)
-	error := workspace.fetch()
-	util.SetResponseCode(workspace, error, c)
+	workspaces, error := workspace.fetchAll()
+	util.SetResponseCode(workspaces, error, c)
 }
 
 func Post(c *gin.Context) {

@@ -2,6 +2,7 @@ package domain
 
 import (
 	"errors"
+	"fmt"
 
 	"facet/api/db"
 	"facet/api/util"
@@ -33,6 +34,25 @@ func (domain *Domain) create() error {
 		_, error = db.Database.PutItem(input)
 	}
 	return error
+}
+
+func FetchAll(domainId string) (*[]Domain, error) {
+	input := &dynamodb.QueryInput{
+		TableName: aws.String(db.FacetTableName),
+		KeyConditions: map[string]*dynamodb.Condition{
+			"domainId": {
+				ComparisonOperator: aws.String("EQ"),
+				AttributeValueList: []*dynamodb.AttributeValue{
+					{
+						S: aws.String(domainId),
+					},
+				},
+			},
+		},
+	}
+	result, error := db.Database.Query(input)
+	fmt.Println("ELA MAN", result)
+	return nil, error
 }
 
 func (domain *Domain) fetch() error {

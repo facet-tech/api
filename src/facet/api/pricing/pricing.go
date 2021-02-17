@@ -31,3 +31,43 @@ func (pricing *Pricing) Create() error {
 	}
 	return e
 }
+
+func FetchAll(domainId string) (*[]Pricing, error) {
+	input := &dynamodb.QueryInput{
+		TableName: aws.String(db.FacetTableName),
+		KeyConditions: map[string]*dynamodb.Condition{
+			"domainId": {
+				ComparisonOperator: aws.String("EQ"),
+				AttributeValueList: []*dynamodb.AttributeValue{
+					{
+						S: aws.String(domainId),
+					},
+				},
+			},
+		},
+	}
+	result, error := db.Database.Query(input)
+	pricingRecords := new([]Pricing)
+	if error == nil && result.Items != nil {
+		error = dynamodbattribute.UnmarshalListOfMaps(result.Items, pricingRecords)
+	}
+	return pricingRecords, error
+}
+
+func Fetch(workspaceId string) (*Pricing, error) {
+	pricingElement := new(Pricing)
+	input := &dynamodb.GetItemInput{
+		TableName: aws.String(db.PricingTableName),
+		Key: map[string]*dynamodb.AttributeValue{
+			"domainId": {
+				S: aws.String(workspaceId),
+			},
+		},
+	}
+	result, err := db.Database.GetItem(input)
+	if err == nil && result != nil {
+		err = dynamodbattribute.UnmarshalMap(result.Item, pricingElement)
+	}
+
+	return pricingElement, err
+}

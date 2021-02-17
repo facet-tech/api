@@ -29,7 +29,7 @@ type FacetDTO struct {
 	Version  string  `json:"version"`
 }
 
-func FetchAll(siteId string) (*[]FacetDTO, error) {
+func FetchAll(domainId string) (*[]FacetDTO, error) {
 	input := &dynamodb.QueryInput{
 		TableName: aws.String(db.FacetTableName),
 		KeyConditions: map[string]*dynamodb.Condition{
@@ -37,7 +37,7 @@ func FetchAll(siteId string) (*[]FacetDTO, error) {
 				ComparisonOperator: aws.String("EQ"),
 				AttributeValueList: []*dynamodb.AttributeValue{
 					{
-						S: aws.String(siteId),
+						S: aws.String(domainId),
 					},
 				},
 			},
