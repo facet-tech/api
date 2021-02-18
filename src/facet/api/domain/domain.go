@@ -34,6 +34,8 @@ func (domain *Domain) create() error {
 	return error
 }
 
+
+
 func Fetch(workspaceId string, domainId string) (*Domain, error) {
 	input := &dynamodb.QueryInput{
 		TableName: aws.String(db.WorkspaceTableName),

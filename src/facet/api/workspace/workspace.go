@@ -33,6 +33,10 @@ const (
 )
 
 func (workspace *Workspace) fetchAll() (WorkspaceEntityDto, error) {
+	existsErr := workspace.fetch()
+	if existsErr != nil {
+		return WorkspaceEntityDto{}, existsErr
+	}
 	input := &dynamodb.QueryInput{
 		TableName: aws.String(db.WorkspaceTableName),
 		KeyConditions: map[string]*dynamodb.Condition{
