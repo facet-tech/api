@@ -19,6 +19,7 @@ Resources:
       Environment:
         Variables:
           COGNITO_JWKS_URL: !Ref COGNITO_JWKS_URL
+          SKIP_AUTHENTICATION: !Ref SKIP_AUTHENTICATION
       Events:
         ProxyApiGreedy:
           Type: Api

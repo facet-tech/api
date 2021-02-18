@@ -8,11 +8,16 @@ import (
 	"github.com/lestrrat-go/jwx/jwk"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 func JWTVerify() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// TODO: cache valid JWTs https://github.com/facets-io/api/issues/14
+		skipAuthentication,_ := strconv.ParseBool(os.Getenv("SKIP_AUTHENTICATION"))
+		if skipAuthentication {
+			return
+		}
 		tokenString := c.GetHeader("AccessToken")
 		_, err := jwt.Parse(tokenString, getKey)
 		if err != nil {
