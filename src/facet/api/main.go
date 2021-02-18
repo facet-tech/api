@@ -5,6 +5,7 @@ import (
 	"context"
 	"facet/api/domain"
 	"facet/api/facet"
+	"facet/api/middleware"
 	"facet/api/notification"
 	"facet/api/pricing"
 	"facet/api/user"
@@ -40,7 +41,7 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 		// authenticated routes
 		router.Group("/")
 		{
-			//router.Use(middleware.JWTVerify())
+			router.Use(middleware.JWTVerify())
 			facet.Route(router)
 			workspace.Route(router)
 			domain.Route(router)
