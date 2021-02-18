@@ -17,6 +17,11 @@ type WorkspaceDto struct {
 	Domain   string `json:"Domain"`
 }
 
+type WorkspaceEntityDto struct {
+	WorkspaceId string         `json:"workspaceId,omitempty"`
+	Workspaces  []WorkspaceDto `json:"workspaces,omitempty"`
+}
+
 type Workspace struct {
 	Id          string                 `json:"id"`
 	WorkspaceId string                 `json:"workspaceId,omitempty"`
@@ -27,7 +32,7 @@ const (
 	KEY_WORKSPACE = "WORKSPACE"
 )
 
-func (workspace *Workspace) fetchAll() ([]WorkspaceDto, error) {
+func (workspace *Workspace) fetchAll() (WorkspaceEntityDto, error) {
 	input := &dynamodb.QueryInput{
 		TableName: aws.String(db.WorkspaceTableName),
 		KeyConditions: map[string]*dynamodb.Condition{
@@ -49,12 +54,13 @@ func (workspace *Workspace) fetchAll() ([]WorkspaceDto, error) {
 			},
 		},
 	}
+
 	result, err := db.Database.Query(input)
 	workspaces := new([]Workspace)
 	err = dynamodbattribute.UnmarshalListOfMaps(result.Items, workspaces)
+	resultArr := make([]WorkspaceDto, 0)
 
-	var resultArr []WorkspaceDto
-
+	// TODO This needs to be decoupled/paginated. Danger of OOT exception
 	for _, workspace := range *workspaces {
 		domainElement, _ := domain.Fetch(workspace.WorkspaceId, workspace.Id)
 		counter, _ := pricing.Count(workspace.Id)
@@ -65,10 +71,8 @@ func (workspace *Workspace) fetchAll() ([]WorkspaceDto, error) {
 		}
 		resultArr = append(resultArr, workspaceDto)
 	}
-	if len(resultArr) == 0 {
-		err = errors.New(util.NOT_FOUND)
-	}
-	return resultArr, err
+	resultObj := WorkspaceEntityDto{WorkspaceId: workspace.WorkspaceId, Workspaces: resultArr}
+	return resultObj, err
 
 }
 

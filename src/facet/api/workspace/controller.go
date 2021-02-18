@@ -2,10 +2,9 @@ package workspace
 
 import (
 	"encoding/json"
-	"io/ioutil"
-
 	"facet/api/util"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
 )
 
 const (
@@ -23,6 +22,7 @@ func Get(c *gin.Context) {
 	workspace := Workspace{}
 	workspace.WorkspaceId = c.Request.URL.Query().Get(ID_QUERY_PARAMATER)
 	workspace.Id = c.Request.URL.Query().Get(ID_QUERY_PARAMATER)
+
 	workspaces, error := workspace.fetchAll()
 	util.SetResponseCode(workspaces, error, c)
 }
