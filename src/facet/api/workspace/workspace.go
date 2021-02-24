@@ -44,7 +44,7 @@ func (workspace *Workspace) fetch() error {
 }
 
 func (workspace *Workspace) create() error {
-	workspace.Id = db.CreateId(KEY_WORKSPACE)
+	workspace.Id = db.CreateRandomId(KEY_WORKSPACE)
 	workspace.WorkspaceId = workspace.Id
 	item, error := dynamodbattribute.MarshalMap(workspace)
 	if error == nil {

@@ -49,7 +49,7 @@ func (user *User) fetch() error {
 
 func (user *User) Update() error {
 	if len(user.Id) == 0 {
-		user.Id = db.CreateId(KEY_USER)
+		user.Id = db.CreateRandomId(KEY_USER)
 	}
 	item, error := dynamodbattribute.MarshalMap(user)
 	if error == nil {

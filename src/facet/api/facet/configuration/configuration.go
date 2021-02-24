@@ -25,6 +25,7 @@ func (configuration *Configuration) fetch() error {
 			"id": {
 				S: aws.String(configuration.Id),
 			},
+
 		},
 	}
 	result, error := db.Database.GetItem(input)

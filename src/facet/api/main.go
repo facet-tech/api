@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"facet/api/app"
 	"facet/api/domain"
 	"facet/api/facet"
 	"facet/api/facet/configuration"
@@ -43,6 +44,7 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 		router.Group("/")
 		{
 			router.Use(middleware.JWTVerify())
+			app.Route(router)
 			backend.Route(router)
 			configuration.Route(router)
 			facet.Route(router)

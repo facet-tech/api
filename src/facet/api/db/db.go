@@ -9,13 +9,17 @@ import (
 
 var Database = dynamodb.New(session.New(), aws.NewConfig().WithRegion("us-west-2"))
 
-func CreateId(key string) string {
+func CreateRandomId(key string) string {
 	return key + "~" + util.GenerateBase64UUID()
 }
 
+func CreateId(key string, id string) string {
+	return key + "~" + id
+}
+
 const (
-	WorkspaceTableName = "workspace-prod"
-	FacetTableName     = "facet-prod"
-	BackendTableName   = "facet-backend-prod"
-	ConfigurationTableName   = "facet-configuration"
+	WorkspaceTableName     = "workspace-prod"
+	FacetTableName         = "facet-prod"
+	BackendTableName       = "facet-backend-prod"
+	ConfigurationTableName = "facet-configuration"
 )

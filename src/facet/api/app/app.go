@@ -1,4 +1,4 @@
-package domain
+package app
 
 import (
 	"errors"
@@ -10,21 +10,21 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
 
-type Domain struct {
+type App struct {
 	Attribute   map[string]interface{} `json:"attribute,omitempty"`
-	Domain      string                 `json:"domain"`
+	Name        string                 `json:"name"`
 	Id          string                 `json:"id"`
+	Environment string                 `json:"environment"`
 	WorkspaceId string                 `json:"workspaceId"`
 }
 
 const (
-	KEY_DOMAIN      = "DOMAIN"
-	DOMAIN_ID_INDEX = "domain-workspaceId-index"
+	keyApp = "APP"
 )
 
-func (domain *Domain) create() error {
-	domain.Id = db.CreateRandomId(KEY_DOMAIN)
-	item, error := dynamodbattribute.MarshalMap(domain)
+func (app *App) create() error {
+	app.Id = db.CreateId(keyApp,app.Name)
+	item, error := dynamodbattribute.MarshalMap(app)
 	if error == nil {
 		input := &dynamodb.PutItemInput{
 			TableName: aws.String(db.WorkspaceTableName),
@@ -35,24 +35,26 @@ func (domain *Domain) create() error {
 	return error
 }
 
-func (domain *Domain) fetch() error {
+func (app *App) fetch() error {
+	if app.Id == "" {
+		app.Id = db.CreateId(keyApp,app.Name)
+	}
 	input := &dynamodb.QueryInput{
 		TableName: aws.String(db.WorkspaceTableName),
-		IndexName: aws.String(DOMAIN_ID_INDEX),
 		KeyConditions: map[string]*dynamodb.Condition{
 			"workspaceId": {
 				ComparisonOperator: aws.String("EQ"),
 				AttributeValueList: []*dynamodb.AttributeValue{
 					{
-						S: aws.String(domain.WorkspaceId),
+						S: aws.String(app.WorkspaceId),
 					},
 				},
 			},
-			"domain": {
+			"id": {
 				ComparisonOperator: aws.String("EQ"),
 				AttributeValueList: []*dynamodb.AttributeValue{
 					{
-						S: aws.String(domain.Domain),
+						S: aws.String(app.Id),
 					},
 				},
 			},
@@ -63,21 +65,21 @@ func (domain *Domain) fetch() error {
 		if len(result.Items) == 0 {
 			error = errors.New(util.NOT_FOUND)
 		} else {
-			error = dynamodbattribute.UnmarshalMap(result.Items[0], domain)
+			error = dynamodbattribute.UnmarshalMap(result.Items[0], app)
 		}
 	}
 	return error
 }
 
-func (domain *Domain) delete() error {
+func (app *App) delete() error {
 	input := &dynamodb.DeleteItemInput{
 		TableName: aws.String(db.WorkspaceTableName),
 		Key: map[string]*dynamodb.AttributeValue{
 			"workspaceId": {
-				S: aws.String(domain.WorkspaceId),
+				S: aws.String(app.WorkspaceId),
 			},
 			"id": {
-				S: aws.String(domain.Id),
+				S: aws.String(app.Id),
 			},
 		},
 	}
