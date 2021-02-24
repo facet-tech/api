@@ -17,6 +17,10 @@ func CreateId(key string, id string) string {
 	return key + "~" + id
 }
 
+func CreateKey(name string) string {
+	return name + "~"
+}
+
 const (
 	WorkspaceTableName     = "workspace-prod"
 	FacetTableName         = "facet-prod"

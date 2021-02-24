@@ -28,8 +28,15 @@ func Get(c *gin.Context) {
 	app.WorkspaceId = c.Request.URL.Query().Get(WorkspaceIdPathQueryParameter)
 	app.Name =  c.Request.URL.Query().Get(NameQueryParameter)
 	app.Environment =  c.Request.URL.Query().Get(EnvironmentIdQueryParameter)
-	error := app.fetch()
-	util.SetResponseCode(app, error, c)
+	var appArray *[]App
+	var error error
+	if app.Name == "" && app.Id == "" {
+		appArray, error = FetchAll(app.WorkspaceId)
+	} else {
+		error = app.fetch()
+		appArray = &[]App{app}
+	}
+	util.SetResponseCode(appArray, error, c)
 }
 
 func Post(c *gin.Context) {

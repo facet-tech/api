@@ -35,6 +35,37 @@ func (app *App) create() error {
 	return error
 }
 
+func FetchAll(workspaceId string) (*[]App, error) {
+	input := &dynamodb.QueryInput{
+		TableName: aws.String(db.WorkspaceTableName),
+		KeyConditions: map[string]*dynamodb.Condition{
+			"workspaceId": {
+				ComparisonOperator: aws.String("EQ"),
+				AttributeValueList: []*dynamodb.AttributeValue{
+					{
+						S: aws.String(workspaceId),
+					},
+				},
+			},
+			"id": {
+				ComparisonOperator: aws.String("BEGINS_WITH"),
+				AttributeValueList: []*dynamodb.AttributeValue{
+					{
+						S: aws.String(db.CreateKey(keyApp)),
+					},
+				},
+			},
+
+		},
+	}
+	result, error := db.Database.Query(input)
+	appArray := new([]App)
+	if error == nil && result.Items != nil {
+		error = dynamodbattribute.UnmarshalListOfMaps(result.Items, appArray)
+	}
+	return appArray, error
+}
+
 func (app *App) fetch() error {
 	if app.Id == "" {
 		app.Id = db.CreateId(keyApp,app.Name)
