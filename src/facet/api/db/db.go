@@ -16,4 +16,6 @@ func CreateId(key string) string {
 const (
 	WorkspaceTableName = "workspace-prod"
 	FacetTableName     = "facet-prod"
+	BackendTableName   = "facet-backend-prod"
+	ConfigurationTableName   = "facet-configuration"
 )

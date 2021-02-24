@@ -5,11 +5,13 @@ import (
 	"context"
 	"facet/api/domain"
 	"facet/api/facet"
+	"facet/api/facet/configuration"
 	"facet/api/middleware"
 	"facet/api/notification"
 	"facet/api/user"
 	"facet/api/util"
 	"facet/api/workspace"
+	"facet/api/facet/backend"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
@@ -41,6 +43,8 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 		router.Group("/")
 		{
 			router.Use(middleware.JWTVerify())
+			backend.Route(router)
+			configuration.Route(router)
 			facet.Route(router)
 			workspace.Route(router)
 			domain.Route(router)
