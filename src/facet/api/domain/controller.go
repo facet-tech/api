@@ -24,8 +24,17 @@ func Get(c *gin.Context) {
 	domain := Domain{}
 	domain.Domain = c.Request.URL.Query().Get(DOMAIN_QUERY_PARAMATER)
 	domain.WorkspaceId = c.Request.URL.Query().Get(WORKSAPCE_ID_PATH_QUERY_PARAMATER)
-	error := domain.fetch()
-	util.SetResponseCode(domain, error, c)
+
+	var array *[]Domain
+	var error error
+	if domain.Domain == "" {
+		array, error = FetchAll(domain.WorkspaceId)
+	} else {
+		error = domain.fetch()
+		array = &[]Domain{domain}
+	}
+
+	util.SetResponseCode(array, error, c)
 }
 
 func Post(c *gin.Context) {
