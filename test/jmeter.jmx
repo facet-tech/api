@@ -1347,7 +1347,7 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
           </ResponseAssertion>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Id Assertion" enabled="true">
-            <stringProp name="JSON_PATH">id</stringProp>
+            <stringProp name="JSON_PATH">$.[0].id</stringProp>
             <stringProp name="EXPECTED_VALUE">DOMAIN~.+</stringProp>
             <boolProp name="JSONVALIDATION">true</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
@@ -1356,7 +1356,7 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
           </JSONPathAssertion>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Domain  Assertion" enabled="true">
-            <stringProp name="JSON_PATH">domain</stringProp>
+            <stringProp name="JSON_PATH">$.[0].domain</stringProp>
             <stringProp name="EXPECTED_VALUE">${domain}</stringProp>
             <boolProp name="JSONVALIDATION">true</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
@@ -1365,7 +1365,7 @@ sampler.getHeaderManager().add(new Header(&quot;AccessToken&quot;, vars.get(&quo
           </JSONPathAssertion>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="WorkspaceId Assertion" enabled="true">
-            <stringProp name="JSON_PATH">workspaceId</stringProp>
+            <stringProp name="JSON_PATH">$.[0].workspaceId</stringProp>
             <stringProp name="EXPECTED_VALUE">${workspaceId}</stringProp>
             <boolProp name="JSONVALIDATION">true</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
