@@ -9,6 +9,11 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
 
+type Annotation struct {
+	Name    string            `json:"name"`
+	Parameters map[string]string `json:"parameters,omitempty"`
+}
+
 type Framework struct {
 	Name    string `json:"name"`
 	Version string `json:"version"`
@@ -25,11 +30,12 @@ type Parameter struct {
 }
 
 type Signature struct {
-	Enabled    bool        `json:"enabled"`
-	Name       string      `json:"name"`
-	Signature  string      `json:"signature"`
-	Parameter  []Parameter `json:"parameter"`
-	ReturnType string      `json:"returnType"`
+	Enabled    bool         `json:"enabled"`
+	Name       string       `json:"name"`
+	Signature  string       `json:"signature"`
+	Parameter  []Parameter  `json:"parameter"`
+	ReturnType string       `json:"returnType"`
+	Annotation []Annotation `json:"annotation,omitempty"`
 }
 
 type DTO struct {
@@ -43,6 +49,7 @@ type DTO struct {
 	InterfaceSignature []string               `json:"interfaceSignature,omitempty"`
 	Type               string                 `json:"type,omitempty"`
 	ParentSignature    string                 `json:"parentSignature,omitempty"`
+	Annotation         []Annotation           `json:"annotation,omitempty"`
 }
 
 func FetchAll(AppId string) (*[]DTO, error) {
