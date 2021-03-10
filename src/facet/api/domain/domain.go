@@ -35,6 +35,37 @@ func (domain *Domain) create() error {
 	return error
 }
 
+func FetchAll(workspaceId string) (*[]Domain, error) {
+	input := &dynamodb.QueryInput{
+		TableName: aws.String(db.WorkspaceTableName),
+		KeyConditions: map[string]*dynamodb.Condition{
+			"workspaceId": {
+				ComparisonOperator: aws.String("EQ"),
+				AttributeValueList: []*dynamodb.AttributeValue{
+					{
+						S: aws.String(workspaceId),
+					},
+				},
+			},
+			"id": {
+				ComparisonOperator: aws.String("BEGINS_WITH"),
+				AttributeValueList: []*dynamodb.AttributeValue{
+					{
+						S: aws.String(db.CreateKey(KEY_DOMAIN)),
+					},
+				},
+			},
+
+		},
+	}
+	result, error := db.Database.Query(input)
+	array := new([]Domain)
+	if error == nil && result.Items != nil {
+		error = dynamodbattribute.UnmarshalListOfMaps(result.Items, array)
+	}
+	return array, error
+}
+
 func (domain *Domain) fetch() error {
 	input := &dynamodb.QueryInput{
 		TableName: aws.String(db.WorkspaceTableName),
