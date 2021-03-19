@@ -6,13 +6,13 @@ import (
 	"facet/api/app"
 	"facet/api/domain"
 	"facet/api/facet"
+	"facet/api/facet/backend"
 	"facet/api/facet/configuration"
 	"facet/api/middleware"
 	"facet/api/notification"
 	"facet/api/user"
 	"facet/api/util"
 	"facet/api/workspace"
-	"facet/api/facet/backend"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
@@ -31,12 +31,16 @@ func main() {
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	if ginLambda == nil {
 		log.Printf("Gin cold start")
+		gin.SetMode(gin.ReleaseMode)
 		router := gin.Default()
 		defaultRoutes(router)
 		router.Group("/")
 		{
 			router.GET("/js", getJs)
 			router.GET("/js/facetmap", getFacetMap)
+			app.Route(router)
+			backend.Route(router)
+			configuration.Route(router)
 			notification.Route(router)
 		}
 
@@ -44,9 +48,6 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 		router.Group("/")
 		{
 			router.Use(middleware.JWTVerify())
-			app.Route(router)
-			backend.Route(router)
-			configuration.Route(router)
 			facet.Route(router)
 			workspace.Route(router)
 			domain.Route(router)

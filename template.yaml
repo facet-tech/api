@@ -15,7 +15,7 @@ Resources:
       Handler: ./main
       CodeUri: ./build/main.zip
       Runtime: go1.x
-      Timeout: 5
+      Timeout: 15
       Environment:
         Variables:
           COGNITO_JWKS_URL: !Ref COGNITO_JWKS_URL
