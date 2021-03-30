@@ -19,6 +19,7 @@ type User struct {
 const (
 	KEY_USER    = "USER"
 	EMAIL_INDEX = "email-index"
+	APIKEY_INDEX = "apiKey-index"
 )
 
 func (user *User) fetch() error {

@@ -13,6 +13,7 @@ import (
 type Workspace struct {
 	Id          string                 `json:"id"`
 	WorkspaceId string                 `json:"workspaceId,omitempty"`
+	ApiKey      string                 `json:"apiKey"`
 	Attribute   map[string]interface{} `json:"attribute,omitempty"`
 }
 

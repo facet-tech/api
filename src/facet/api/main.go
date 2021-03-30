@@ -38,13 +38,18 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 		{
 			router.GET("/js", getJs)
 			router.GET("/js/facetmap", getFacetMap)
+		}
+		// backend routes
+		router.Group("/")
+		{
+			router.Use(middleware.APIKeyVerify())
 			app.Route(router)
 			backend.Route(router)
 			configuration.Route(router)
 			notification.Route(router)
 		}
 
-		// authenticated routes
+		// frontend routes
 		router.Group("/")
 		{
 			router.Use(middleware.JWTVerify())
