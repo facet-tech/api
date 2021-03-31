@@ -3,7 +3,6 @@ package middleware
 import (
 	"facet/api/db"
 	"facet/api/user"
-	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/gin-gonic/gin"
@@ -22,7 +21,6 @@ func APIKeyVerify() gin.HandlerFunc {
 		apiKey := c.GetHeader("ApiKey")
 		containsApiKey, _ := fetchApiKey(apiKey)
 		if !containsApiKey {
-			fmt.Println("PAKETO BACKEND")
 			c.AbortWithStatus(http.StatusUnauthorized)
 		}
 		// TODO: verify claims against the Cognito Pool https://github.com/facets-io/api/issues/13
