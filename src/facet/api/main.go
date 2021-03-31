@@ -42,7 +42,7 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 		// backend routes
 		router.Group("/")
 		{
-			router.Use(middleware.APIKeyVerify())
+			//router.Use(middleware.APIKeyVerify())
 			app.Route(router)
 			backend.Route(router)
 			configuration.Route(router)

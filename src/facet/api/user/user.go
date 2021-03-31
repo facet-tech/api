@@ -16,9 +16,17 @@ type User struct {
 	Attribute   map[string]interface{} `json:"attribute,omitempty"`
 }
 
+type WorkspaceUser struct {
+	Id          string                 `json:"id"`
+	WorkspaceId string                 `json:"workspaceId,omitempty"`
+	ApiKey      string                 `json:"apiKey"`
+	User        string                 `json:"user"`
+	Attribute   map[string]interface{} `json:"attribute,omitempty"`
+}
+
 const (
-	KEY_USER    = "USER"
-	EMAIL_INDEX = "email-index"
+	KEY_USER     = "USER"
+	EMAIL_INDEX  = "email-index"
 	APIKEY_INDEX = "apiKey-index"
 )
 
@@ -52,7 +60,32 @@ func (user *User) Update() error {
 	if len(user.Id) == 0 {
 		user.Id = db.CreateRandomId(KEY_USER)
 	}
+	// TODO need to check if userId already exists ..
+	apiKey := util.GenerateBase64UUID()
+	userWorkspace := WorkspaceUser{
+		Id:          user.Id + ":apiKey~" + apiKey,
+		WorkspaceId: user.WorkspaceId,
+		ApiKey:      apiKey,
+		User:        user.Id,
+		Attribute:   nil,
+	}
+	err := createUserWorkspace(&userWorkspace)
+	if err != nil {
+		return err
+	}
 	item, error := dynamodbattribute.MarshalMap(user)
+	if error == nil {
+		input := &dynamodb.PutItemInput{
+			TableName: aws.String(db.WorkspaceTableName),
+			Item:      item,
+		}
+		_, error = db.Database.PutItem(input)
+	}
+	return error
+}
+
+func createUserWorkspace(workspace *WorkspaceUser) error {
+	item, error := dynamodbattribute.MarshalMap(workspace)
 	if error == nil {
 		input := &dynamodb.PutItemInput{
 			TableName: aws.String(db.WorkspaceTableName),

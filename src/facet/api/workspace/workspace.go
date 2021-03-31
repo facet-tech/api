@@ -2,7 +2,6 @@ package workspace
 
 import (
 	"errors"
-
 	"facet/api/db"
 	"facet/api/util"
 	"github.com/aws/aws-sdk-go/aws"
@@ -13,7 +12,6 @@ import (
 type Workspace struct {
 	Id          string                 `json:"id"`
 	WorkspaceId string                 `json:"workspaceId,omitempty"`
-	ApiKey      string                 `json:"apiKey"`
 	Attribute   map[string]interface{} `json:"attribute,omitempty"`
 }
 
