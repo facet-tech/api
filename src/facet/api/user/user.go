@@ -118,17 +118,12 @@ func (user *User) delete() error {
 		},
 	}
 	_, err := db.Database.DeleteItem(input)
-	//TODO Delete WorkspaceUser
+	// TODO Delete WorkspaceUser
 	return err
 }
 
 func (user *User) getWorkspaceUserByUserId() (WorkspaceUser, error) {
-	// condition represents the boolean condition of whether the item
-	// attribute "CodeName" starts with the substring "Ben"
 	condition := expression.Contains(expression.Name("id"), user.Id)
-
-	//filt := expression.Name("Artist").Equal(expression.Value("No One You Know"))
-	//proj := expression.NamesList(expression.Name("SongTitle"), expression.Name("AlbumTitle"))
 	expr, err := expression.NewBuilder().WithFilter(condition).Build()
 	if err != nil {
 		fmt.Println(err)
