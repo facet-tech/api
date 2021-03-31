@@ -4,9 +4,11 @@ import (
 	"errors"
 	"facet/api/db"
 	"facet/api/util"
+	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
+	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
 )
 
 type User struct {
@@ -19,9 +21,10 @@ type User struct {
 type WorkspaceUser struct {
 	Id          string                 `json:"id"`
 	WorkspaceId string                 `json:"workspaceId,omitempty"`
-	ApiKey      string                 `json:"apiKey"`
+	ApiKey      string                 `json:"apiKey,omitempty"`
 	User        string                 `json:"user"`
 	Attribute   map[string]interface{} `json:"attribute,omitempty"`
+	Email       string                 `json:"email,omitempty"`
 }
 
 const (
@@ -30,7 +33,7 @@ const (
 	APIKEY_INDEX = "apiKey-index"
 )
 
-func (user *User) fetch() error {
+func (user *User) fetch() (WorkspaceUser, error) {
 	input := &dynamodb.QueryInput{
 		TableName: aws.String(db.WorkspaceTableName),
 		IndexName: aws.String(EMAIL_INDEX),
@@ -53,7 +56,13 @@ func (user *User) fetch() error {
 			error = dynamodbattribute.UnmarshalMap(result.Items[0], user)
 		}
 	}
-	return error
+	workspaceUser, _ := user.getWorkspaceUserByUserId()
+	workspaceUser.Email = user.Email
+	workspaceUser.Id = user.Id
+	workspaceUser.WorkspaceId = user.WorkspaceId
+	workspaceUser.Attribute = user.Attribute
+
+	return workspaceUser, error
 }
 
 func (user *User) Update() error {
@@ -109,5 +118,40 @@ func (user *User) delete() error {
 		},
 	}
 	_, err := db.Database.DeleteItem(input)
+	//TODO Delete WorkspaceUser
 	return err
+}
+
+func (user *User) getWorkspaceUserByUserId() (WorkspaceUser, error) {
+	// condition represents the boolean condition of whether the item
+	// attribute "CodeName" starts with the substring "Ben"
+	condition := expression.Contains(expression.Name("id"), user.Id)
+
+	//filt := expression.Name("Artist").Equal(expression.Value("No One You Know"))
+	//proj := expression.NamesList(expression.Name("SongTitle"), expression.Name("AlbumTitle"))
+	expr, err := expression.NewBuilder().WithFilter(condition).Build()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	input := &dynamodb.ScanInput{
+		ExpressionAttributeNames:  expr.Names(),
+		ExpressionAttributeValues: expr.Values(),
+		FilterExpression:          expr.Filter(),
+		TableName:                 aws.String(db.WorkspaceTableName),
+		IndexName:                 aws.String(APIKEY_INDEX),
+	}
+
+	result, err := db.Database.Scan(input)
+	workspaceUser := new([]WorkspaceUser)
+	if err == nil && result != nil {
+		if len(result.Items) == 0 {
+			err = errors.New(util.NOT_FOUND)
+			return WorkspaceUser{}, err
+		} else {
+			err = dynamodbattribute.UnmarshalListOfMaps(result.Items, workspaceUser)
+		}
+	}
+	return (*workspaceUser)[0], err
+
 }
