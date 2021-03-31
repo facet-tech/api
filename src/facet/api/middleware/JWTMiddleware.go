@@ -21,6 +21,7 @@ func JWTVerify() gin.HandlerFunc {
 		tokenString := c.GetHeader("AccessToken")
 		_, err := jwt.Parse(tokenString, getKey)
 		if err != nil {
+			fmt.Println("PAKETO FRONTEND")
 			c.AbortWithStatus(http.StatusUnauthorized)
 		}
 		// TODO: verify claims against the Cognito Pool https://github.com/facets-io/api/issues/13

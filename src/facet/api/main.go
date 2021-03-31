@@ -48,7 +48,7 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 			configuration.Route(router)
 			notification.Route(router)
 		}
-
+		
 		// frontend routes
 		router.Group("/")
 		{

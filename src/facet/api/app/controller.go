@@ -2,6 +2,7 @@ package app
 
 import (
 	"encoding/json"
+	"facet/api/middleware"
 	"io/ioutil"
 
 	"facet/api/util"
@@ -17,17 +18,17 @@ const (
 )
 
 func Route(router *gin.Engine) {
-	router.GET(BaseUrl, Get)
-	router.POST(BaseUrl, Post)
-	router.DELETE(BaseUrl, Delete)
+	router.GET(BaseUrl, middleware.APIKeyVerify(), Get)
+	router.POST(BaseUrl, middleware.APIKeyVerify(), Post)
+	router.DELETE(BaseUrl, middleware.APIKeyVerify(), Delete)
 }
 
 func Get(c *gin.Context) {
 	app := App{}
 	app.Id = c.Request.URL.Query().Get(IdQueryParameter)
 	app.WorkspaceId = c.Request.URL.Query().Get(WorkspaceIdPathQueryParameter)
-	app.Name =  c.Request.URL.Query().Get(NameQueryParameter)
-	app.Environment =  c.Request.URL.Query().Get(EnvironmentIdQueryParameter)
+	app.Name = c.Request.URL.Query().Get(NameQueryParameter)
+	app.Environment = c.Request.URL.Query().Get(EnvironmentIdQueryParameter)
 	var appArray *[]App
 	var error error
 	if app.Name == "" && app.Id == "" {
