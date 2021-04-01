@@ -21,8 +21,8 @@ func Route(router *gin.Engine) {
 func Get(c *gin.Context) {
 	user := User{}
 	user.Email = c.Request.URL.Query().Get(EMAIL_QUERY_PARAMATER)
-	error := user.fetch()
-	util.SetResponseCode(user, error, c)
+	WorkspaceUser, error := user.fetch()
+	util.SetResponseCode(WorkspaceUser, error, c)
 }
 
 func Post(c *gin.Context) {

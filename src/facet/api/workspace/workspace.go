@@ -2,7 +2,6 @@ package workspace
 
 import (
 	"errors"
-
 	"facet/api/db"
 	"facet/api/util"
 	"github.com/aws/aws-sdk-go/aws"

@@ -2,6 +2,7 @@ package backend
 
 import (
 	"encoding/json"
+	"facet/api/middleware"
 	"facet/api/util"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
@@ -14,9 +15,9 @@ const (
 )
 
 func Route(router *gin.Engine) {
-	router.GET(BaseUrl, Get)
-	router.POST(BaseUrl, Post)
-	router.DELETE(BaseUrl, Delete)
+	router.GET(BaseUrl, middleware.APIKeyVerify(), Get)
+	router.POST(BaseUrl, middleware.APIKeyVerify(), Post)
+	router.DELETE(BaseUrl, middleware.APIKeyVerify(), Delete)
 }
 
 func Get(c *gin.Context) {
