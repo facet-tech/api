@@ -12,7 +12,7 @@ import (
 type Configuration struct {
 	Property  string                 `json:"property"`
 	Id        string                 `json:"id"`
-	Attribute map[string]interface{} `json:"attribute,omitempty"`
+	Attribute interface{} `json:"attribute,omitempty"`
 }
 
 func (configuration *Configuration) fetch() error {
