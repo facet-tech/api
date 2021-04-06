@@ -32,5 +32,8 @@ out
 # terraform
 .terraform
 
-#debugging folder
+# debugging folder
 debugging
+
+# macos
+.DS_Store
