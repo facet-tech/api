@@ -10,13 +10,27 @@ import (
 )
 
 type Annotation struct {
-	Name    string            `json:"name"`
+	ClassName  string            `json:"className"`
 	Parameters map[string]string `json:"parameters,omitempty"`
+	Visibility map[string]string `json:"visibility,omitempty"`
+}
+
+type CircuitBreaker struct {
+	Precedence      int      `json:"precedence"`
+	MethodsToCreate []Method `json:"methodsToCreate"`
+	Toggle          Toggle   `json:"Toggle"`
+	ReturnType      string   `json:"returnType"`
+}
+
+type Exception struct {
+	ClassName string `json:"className"`
 }
 
 type Framework struct {
-	Name    string `json:"name"`
-	Version string `json:"version"`
+	Name            string           `json:"name"`
+	CircuitBreakers []CircuitBreaker `json:"circuitBreakers"`
+	Sensors         []Sensor         `json:"sensors"`
+	Version         string           `json:"version"`
 }
 
 type Language struct {
@@ -24,18 +38,41 @@ type Language struct {
 	Version string `json:"version"`
 }
 
+type Method struct {
+	Annotations []Annotation `json:"annotations"`
+	Body        string       `json:"body"`
+	Exceptions  []Exception  `json:"exceptions"`
+	Modifier    string       `json:"modifier"`
+	Name        string       `json:"name"`
+	Parameters  []Parameter  `json:"parameters"`
+	ReturnType  string       `json:"returnType"`
+}
+
 type Parameter struct {
-	Name string `json:"name"`
-	Type string `json:"type"`
+	ClassName string      `json:"className"`
+	Name      string      `json:"name"`
+	Values    interface{} `json:"values"`
+	Type      interface{} `json:"type"`
+	Position  int         `json:"position"`
+}
+
+type Toggle struct {
+	Method           []Method          `json:"method"`
+	ParameterMapping map[string]string `json:"parameterMapping"`
+}
+
+type Sensor struct {
+	Annotations []Annotation `json:"annotations"`
+	ReturnType  string       `json:"returnType"`
 }
 
 type Signature struct {
-	Enabled    bool         `json:"enabled"`
-	Name       string       `json:"name"`
-	Signature  string       `json:"signature"`
-	Parameter  []Parameter  `json:"parameter"`
-	ReturnType string       `json:"returnType"`
-	Annotation []Annotation `json:"annotation,omitempty"`
+	Enabled                bool         `json:"enabled"`
+	Name                   string       `json:"name"`
+	Parameter              []Parameter  `json:"parameter"`
+	ReturnType             string       `json:"returnType"`
+	Signature              string       `json:"signature"`
+	Annotation             []Annotation `json:"annotation,omitempty"`
 }
 
 type DTO struct {
