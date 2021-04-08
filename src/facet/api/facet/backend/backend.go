@@ -11,7 +11,7 @@ import (
 
 type Annotation struct {
 	ClassName  string            `json:"className"`
-	Parameters map[string]string `json:"parameters,omitempty"`
+	Parameters []Parameter       `json:"parameters,omitempty"`
 	Visibility map[string]string `json:"visibility,omitempty"`
 }
 
@@ -52,6 +52,7 @@ type Parameter struct {
 	ClassName string      `json:"className"`
 	Name      string      `json:"name"`
 	Values    interface{} `json:"values"`
+	Value     string      `json:"value`
 	Type      interface{} `json:"type"`
 	Position  int         `json:"position"`
 }
@@ -67,12 +68,12 @@ type Sensor struct {
 }
 
 type Signature struct {
-	Enabled                bool         `json:"enabled"`
-	Name                   string       `json:"name"`
-	Parameter              []Parameter  `json:"parameter"`
-	ReturnType             string       `json:"returnType"`
-	Signature              string       `json:"signature"`
-	Annotation             []Annotation `json:"annotation,omitempty"`
+	Enabled    bool         `json:"enabled"`
+	Name       string       `json:"name"`
+	Parameter  []Parameter  `json:"parameter"`
+	ReturnType string       `json:"returnType"`
+	Signature  string       `json:"signature"`
+	Annotation []Annotation `json:"annotation,omitempty"`
 }
 
 type DTO struct {
