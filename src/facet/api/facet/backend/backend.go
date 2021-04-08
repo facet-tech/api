@@ -18,7 +18,7 @@ type Annotation struct {
 type CircuitBreaker struct {
 	Precedence      int      `json:"precedence"`
 	MethodsToCreate []Method `json:"methodsToCreate"`
-	Toggle          Toggle   `json:"Toggle"`
+	Toggle          Toggle   `json:"toggle"`
 	ReturnType      string   `json:"returnType"`
 }
 
@@ -52,7 +52,7 @@ type Parameter struct {
 	ClassName string      `json:"className"`
 	Name      string      `json:"name"`
 	Values    interface{} `json:"values"`
-	Value     string      `json:"value`
+	Value     string      `json:"value"`
 	Type      interface{} `json:"type"`
 	Position  int         `json:"position"`
 }
