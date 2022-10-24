@@ -58,7 +58,7 @@ jobs:
       run: cd deploy && terraform init && terraform apply -auto-approve
 
     - name: Run JMeter on Test Endpoint
-      uses: rbhadti94/apache-jmeter-action@v0.3.2
+      uses: rbhadti94/apache-jmeter-action@v0.6.0
       with:
         testFilePath: test/jmeter.jmx
         outputReportsFolder: test/results/
